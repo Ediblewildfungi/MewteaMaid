@@ -4,10 +4,6 @@
 
 var http = require('http');
 
-class http{
-  
-}
-
 
 // HTTP服务
 http.createServer(function (req, res) {
