@@ -8,15 +8,10 @@ const fs = require('fs')
 // 是否开启单元测试模式，开启后单元可独立测试
 const UNIT_TEST_MODE = true
 
-
-
-
 // 日志记录方法
 class Logger {
 
-
   _fsStream = null
-
   _silenceMode = true
 
   constructor(logFilePath, isSilence = true) {
@@ -27,7 +22,7 @@ class Logger {
     const logsDate = logsNewDate.toLocaleDateString()
 
     // 以日期为文件名创建log文件
-    logFilePath  = './logs/' + logsDate + ".log"
+    logFilePath  = '../logs/' + logsDate + ".log"
 
     if (typeof logFilePath !== 'string' || logFilePath === '') {
       throw new Error('Logger constructor: logFilePath must be string')
@@ -83,6 +78,7 @@ class Logger {
 //   console.log(logsDateTime)
 
 // }
+
 
 // 单元测试代码
 if (UNIT_TEST_MODE) {
