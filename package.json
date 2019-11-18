@@ -1,0 +1,23 @@
+{
+  "name": "mewteamaid",
+  "version": "0.1.0",
+  "description": "A QQBOT  FOR FFXIV",
+  "main": "main.js",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ediblewildfungi/MewteaMaid.git"
+  },
+  "author": "Ediblewildfungi <jianghhui@gmail.com> (https://github.com/Ediblewildfungi)",
+  "contributors": [
+    "horochx <horochx@gmail.com> (https://github.com/horochx)"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Ediblewildfungi/MewteaMaid/issues"
+  },
+  "homepage": "https://github.com/Ediblewildfungi/MewteaMaid#readme"
+}
