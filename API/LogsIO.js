@@ -29,7 +29,7 @@ class Logger {
     }
 
     if (!fs.existsSync(logFilePath)) {
-      fs.writeFileSync(logFilePath)
+      fs.writeFileSync(logFilePath, '')
     }
 
     this._fsStream = fs.createWriteStream(logFilePath, {
