@@ -1,48 +1,89 @@
-"use strict"
+/**
+ * 日志记录模块
+ */
 
-// 日志写入模块
-
-// 导入fs模块gir
 const fs = require('fs')
+const path = require('path')
 
-// 是否开启单元测试模式，开启后单元可独立测试
-const UNIT_TEST_MODE = true
+/**
+ * 日期格式化
+ * @param {Date} date
+ */
+const dateFormatter = date => {
+  const yyyy = date.getFullYear()
+  const MM = date.getMonth()
+  const dd = date.getDate()
 
-// 日志记录方法
+  return yyyy + '-' + (MM < 10 ? '0' + MM : MM) + '-' + (dd < 10 ? '0' + dd : dd)
+}
+
+/**
+ * 时间格式化
+ * @param {Date} date
+ */
+const timeFormatter = date => {
+  const hh = date.getHours()
+  const mm = date.getMinutes()
+  const ss = date.getSeconds()
+
+  return hh + ':' + (mm < 10 ? '0' + mm : mm) + ':' + (ss < 10 ? '0' + ss : ss)
+}
+
 class Logger {
+  todayTimestamp = 0
 
   _fsStream = null
+
   _silenceMode = true
 
-  constructor(logFilePath, isSilence = true) {
+  _logDir = ''
 
-    // 获取当前日期
-    const logsNewDate = new Date();
-    const logsDateTime = logsNewDate.toLocaleString()
-    const logsDate = logsNewDate.toLocaleDateString()
+  /**
+   *
+   * @param {string} logDir 日志文件夹
+   * @param {boolean} isSilence 静默模式，启用时不输出日志到控制台，默认启用
+   */
+  constructor(logDir, isSilence = true) {
+    this._logDir = logDir
+    this._silenceMode = isSilence
 
+    const nowDate = new Date()
+
+    this._initFsStream(nowDate)
+
+    nowDate.setHours(0, 0, 0, 0)
+    this.todayTimestamp = nowDate.getTime()
+  }
+
+  _initFsStream(date) {
     // 以日期为文件名创建log文件
-    logFilePath  = '../logs/' + logsDate + ".log"
+    const logFilePath = path.resolve(__dirname, this._logDir, dateFormatter(date) + '.log')
 
-    if (typeof logFilePath !== 'string' || logFilePath === '') {
-      throw new Error('Logger constructor: logFilePath must be string')
-    }
-
-    if (!fs.existsSync(logFilePath)) {
-      fs.writeFileSync(logFilePath, '')
-    }
-
+    this._fsStream && this._fsStream.close()
     this._fsStream = fs.createWriteStream(logFilePath, {
       flags: 'a',
     })
-    this._silenceMode = isSilence
+  }
+
+  _checkLogFileIsExpired(date) {
+    // 86400000 = 24 * 60 * 60 * 1000
+    if (date - this.todayTimestamp < 86400000) {
+      return
+    }
+
+    this._initFsStream(date)
   }
 
   _print(level, logText) {
-    const logTime = new Date().toLocaleString()
+    const nowDate = new Date()
+
+    this._checkLogFileIsExpired(nowDate)
+
+    const logTime = timeFormatter(nowDate)
+
     if (!this._silenceMode) {
       const textColor = level === 'error' ? '41' : 42
-      console.log(`\u001b[${textColor};30m[${level}] \u001b[0m \u001b[44;30m [${logTime}] \u001b[0m : ${logText}\n`)
+      console.log(`\u001b[${textColor};30m [${level}] \u001b[0m \u001b[44;30m [${logTime}] \u001b[0m : ${logText}\n`)
     }
 
     this._fsStream.write(`[ ${level} ] [${logTime}]: ${logText}\n`)
@@ -57,40 +98,4 @@ class Logger {
   }
 }
 
-
-// function LogsIo(message) {
-
-//   // 获取当前日期
-//   const logsNewDate = new Date();
-//   const logsDateTime = logsNewDate.toLocaleString()
-//   const logsDate = logsNewDate.toLocaleDateString()
-
-//   //写入日志的内容
-//   const logsMessage = logsDateTime + " " + message + "\n"
-
-//   // 创建日志文件
-//   LogsFs.appendFile('./logs/' + logsDate + '.txt', logsMessage, function (err) {
-//     if (err) throw err
-//     console.log('Saved!')
-//   })
-
-
-//   console.log(logsDateTime)
-
-// }
-
-
-// 单元测试代码
-if (UNIT_TEST_MODE) {
-
-  const logger = new Logger('./demo.log', false)
-
-  const message = ""
-
-  setInterval(() => {
-    logger[Math.random() < 0.5 ? 'info' : 'error']('滴答')
-  }, 1000)
-
-}
-
-
+module.exports = Logger
