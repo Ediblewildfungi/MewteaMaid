@@ -1,2 +1,2 @@
-# MewteaMaid
-A QQBOT  FOR FFXIV
+# mewtea-maid
+A QQBot for FFXIV

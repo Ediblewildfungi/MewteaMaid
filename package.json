@@ -1,7 +1,7 @@
 {
-  "name": "mewteamaid",
+  "name": "mewtea-maid",
   "version": "0.1.0",
-  "description": "A QQBOT  FOR FFXIV",
+  "description": "A QQBot for FFXIV",
   "main": "main.js",
   "private": true,
   "scripts": {
