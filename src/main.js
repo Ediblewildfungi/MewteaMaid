@@ -9,6 +9,7 @@ const Logger = require('./helpers/logger')
 const responseCz = require('./middleware/responsecz')
 
 const hitokoto = require('./routes/hitokoto')
+const ffxiv = require('./routes/ffxiv')
 
 const app = new Koa()
 
@@ -22,7 +23,7 @@ router.all('/api/v1', (ctx, next) => {
   return next()
 })
 
-router.use('/api/v1', hitokoto.routes())
+router.use('/api/v1', hitokoto.routes(), ffxiv.routes())
 
 const logger = Logger(path.resolve(__dirname, '../logs'), process.env.NODE_ENV !== 'development')
 
@@ -48,12 +49,18 @@ app.use(koaJson({ pretty: process.env.NODE_ENV !== 'production' }))
 app.use(responseCz())
 app.use(router.routes())
 
-const server = app.listen(process.env.PROT, () => {
-  logger.info(`Koa is running on port ${ process.env.PROT }`)
-})
+if (process.env.NODE_ENV === 'development') {
+  console.log('routes: ', router.stack.map(i => i.path))
+}
+
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(process.env.PROT, () => {
+    logger.info(`Koa is running on port ${ process.env.PROT }`)
+  })
+}
 
 app.on('error', err => {
   logger.error('server error! ', err.message)
 })
 
-module.exports = server
+module.exports = app

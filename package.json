@@ -8,7 +8,7 @@
     "dev": "node -r dotenv/config src/main.js dotenv_config_path=.env.dev",
     "start": "node -r dotenv/config src/main.js",
     "commit": "git-cz",
-    "test": "jest --setupFiles dotenv/config"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -35,19 +35,12 @@
   },
   "dependencies": {
     "@koa/router": "^8.0.2",
+    "cheerio": "^1.0.0-rc.3",
     "dotenv": "^8.2.0",
     "koa": "^2.11.0",
     "koa-bodyparser": "^4.2.1",
     "koa-json": "^2.0.2",
     "koa-logger": "^3.2.1",
     "node-fetch": "^2.6.0"
-  },
-  "jest": {
-    "verbose": true,
-    "collectCoverage": true,
-    "coveragePathIgnorePatterns": [
-      "node_modules",
-      "src/main.js"
-    ]
   }
 }
