@@ -2,11 +2,13 @@
   "name": "mewtea-maid",
   "version": "0.1.0",
   "description": "A QQBot for FFXIV",
-  "main": "main.js",
+  "main": "src/main.js",
   "private": true,
   "scripts": {
+    "dev": "node -r dotenv/config src/main.js dotenv_config_path=.env.dev",
+    "start": "node -r dotenv/config src/main.js",
     "commit": "git-cz",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --setupFiles dotenv/config"
   },
   "repository": {
     "type": "git",
@@ -22,11 +24,30 @@
   },
   "homepage": "https://github.com/Ediblewildfungi/MewteaMaid#readme",
   "devDependencies": {
-    "cz-conventional-changelog": "^3.0.2"
+    "cz-conventional-changelog": "^3.0.2",
+    "jest": "^24.9.0",
+    "supertest": "^4.0.2"
   },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "dependencies": {
+    "@koa/router": "^8.0.2",
+    "dotenv": "^8.2.0",
+    "koa": "^2.11.0",
+    "koa-bodyparser": "^4.2.1",
+    "koa-json": "^2.0.2",
+    "koa-logger": "^3.2.1",
+    "node-fetch": "^2.6.0"
+  },
+  "jest": {
+    "verbose": true,
+    "collectCoverage": true,
+    "coveragePathIgnorePatterns": [
+      "node_modules",
+      "src/main.js"
+    ]
   }
 }
