@@ -1,6 +1,8 @@
 const fetch = require('node-fetch')
 const cheerio = require('cheerio')
 
+const getEorzeaWeather = require('../helpers/eorzeaWeather')
+
 const getText = (el) => {
   return el
     .text()
@@ -55,6 +57,20 @@ module.exports = {
     } catch (e) {
       ctx.logger.error(`素素时尚品鉴异常: ${ e.message }`)
       ctx.sendError(e.message || '素素时尚品鉴暂不可用，请稍后重试！')
+    }
+
+    return next()
+  },
+
+  createWeatherForecast: (ctx, next) => {
+    const { timestamp = Date.now(), areaName, targetWeather, prevWeather } = ctx.request.query
+
+    const ans = getEorzeaWeather(timestamp, areaName, targetWeather, prevWeather)
+
+    if (typeof ans === 'string') {
+      ctx.sendError(ans)
+    } else {
+      ctx.sendOk(ans)
     }
 
     return next()

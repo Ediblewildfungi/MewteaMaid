@@ -8,4 +8,6 @@ const router = new Router({
 
 router.get('/fashionReport', ffxivController.fetchFashionReport)
 
+router.get('/weather', ffxivController.createWeatherForecast)
+
 module.exports = router
