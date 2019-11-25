@@ -54,8 +54,8 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 if (process.env.NODE_ENV !== 'test') {
-  app.listen(process.env.PROT, () => {
-    logger.info(`Koa is running on port ${ process.env.PROT }`)
+  app.listen(process.env.PORT, () => {
+    logger.info(`Koa is running on port ${ process.env.PORT }`)
   })
 }
 
