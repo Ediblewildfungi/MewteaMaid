@@ -2,11 +2,11 @@
   "name": "mewtea-maid",
   "version": "0.1.0",
   "description": "A QQBot for FFXIV",
-  "main": "src/main.js",
+  "main": "src/server/main.js",
   "private": true,
   "scripts": {
-    "dev": "node -r dotenv/config src/main.js dotenv_config_path=.env.dev",
-    "start": "node -r dotenv/config src/main.js",
+    "dev": "node -r dotenv/config src/server/main.js dotenv_config_path=.env.dev",
+    "start": "node -r dotenv/config src/server/main.js",
     "commit": "git-cz",
     "test": "jest"
   },

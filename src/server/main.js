@@ -5,7 +5,7 @@ const bodyParser = require('koa-bodyparser')
 const koaJson = require('koa-json')
 const Router = require('@koa/router')
 
-const Logger = require('./helpers/logger')
+const Logger = require('../helpers/logger')
 const responseCz = require('./middleware/responsecz')
 
 const hitokoto = require('./routes/hitokoto')
@@ -25,7 +25,7 @@ router.all('/api/v1', (ctx, next) => {
 
 router.use('/api/v1', hitokoto.routes(), ffxiv.routes())
 
-const logger = Logger(path.resolve(__dirname, '../logs'), process.env.NODE_ENV !== 'development')
+const logger = Logger(path.resolve(__dirname, '../../logs'), process.env.NODE_ENV !== 'development')
 
 // If in a production environment, the log will be output to the hard disk
 if (process.env.NODE_ENV === 'production') {

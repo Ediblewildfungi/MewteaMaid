@@ -1,7 +1,7 @@
 const fetch = require('node-fetch')
 const cheerio = require('cheerio')
 
-const getEorzeaWeather = require('../helpers/eorzeaWeather')
+const getEorzeaWeather = require('../../helpers/eorzeaWeather')
 
 const getText = (el) => {
   return el
