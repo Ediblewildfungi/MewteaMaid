@@ -28,7 +28,7 @@ class KQ_Accept {
 
         // 信息传入
         // 前端类型
-        const transfer = new Transfer()
+        // const transfer = new Transfer()
         
 
 
