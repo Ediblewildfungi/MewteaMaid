@@ -14,6 +14,7 @@ const ffxiv = require('./routes/ffxiv')
 const app = new Koa()
 
 const router = new Router()
+const PORT = process.env.PORT || 3600
 
 router.all('/api/v1', (ctx, next) => {
   ctx.sendOk({
@@ -54,8 +55,8 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 if (process.env.NODE_ENV !== 'test') {
-  app.listen(process.env.PORT, () => {
-    logger.info(`Koa is running on port ${ process.env.PORT }`)
+  app.listen(PORT, () => {
+    logger.info(`Koa is running on port ${ PORT }`)
   })
 }
 
