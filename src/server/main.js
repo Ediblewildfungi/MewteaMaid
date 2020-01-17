@@ -3,6 +3,7 @@ const Koa = require('koa')
 const koaLogger = require('koa-logger')
 const bodyParser = require('koa-bodyparser')
 const koaJson = require('koa-json')
+const koaFavicon = require('koa-favicon');
 const Router = require('@koa/router')
 
 const Logger = require('../helpers/logger')
@@ -24,6 +25,7 @@ router.all('/api/v1', (ctx, next) => {
   return next()
 })
 
+app.use(koaFavicon('./favicon.png')); 
 router.use('/api/v1', hitokoto.routes(), ffxiv.routes())
 
 const logger = Logger(path.resolve(__dirname, '../../logs'), process.env.NODE_ENV !== 'development')
