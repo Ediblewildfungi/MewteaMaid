@@ -75,4 +75,38 @@ module.exports = {
 
     return next()
   },
+  createConcertForecast: async (ctx, next) => {
+    try {
+      
+
+      // 抓取首页html
+      // const articleDetailResponse = await fetch('http://event.ffxiv.cat/')
+      
+      // 获取ID为26的页面的数据
+      const articleDetailResponseJson = await fetch('http://event.ffxiv.cat/wp-json/wp/v2/pages/26')
+      const articleDetail = await articleDetailResponseJson.json()
+
+      const { content, title, AuName, modified } = articleDetail
+
+      // 从文章的 HTML 文本中解析装备列表
+      const $ = cheerio.load(`<div>${ content.rendered }</div>`)
+      const time = getText($('div.dt-fancy-title'))
+      const hand = getText($('div.wpb_wrapper'))
+
+      ctx.sendOk({
+        title: "FFXIV 音乐会信息",
+        author: "黑尾白猫",
+        update: modified,
+        answer: {
+          time,
+          hand,
+        },
+      })
+    } catch (e) {
+      ctx.logger.error(`白猫抛出了一个异常: ${ e.message }`)
+      ctx.sendError(e.message || '白猫老师抛出了一个异常，请稍后重试！')
+    }
+
+    return next()
+  },
 }
