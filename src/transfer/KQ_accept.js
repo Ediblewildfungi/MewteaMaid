@@ -35,7 +35,6 @@ class KQ_Accept {
         // 获取KQ回传的机器人id、 发送者id、  消息类型、     群组id（若有）、消息内容
         //            self_id,  user_id,   message_type,  group_id,      message
         console.log(message_data.self_id)
-        console.log()
 
         //格式化字符串，替换换行字符
         message_data.message = message_data.message.replace(/[\r]/g, " /r ");
