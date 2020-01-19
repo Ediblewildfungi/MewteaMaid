@@ -57,7 +57,7 @@ const transfer = class Transfer {
                     var REdata = hitokoto_data.data
 
                     //输出一言与来源
-                    var REdata = REdata.hitokoto + "\r\n" + "————" + REdata.from
+                    var REdata = REdata.hitokoto + "\r\n" + "——" + REdata.from
                     resolve(REdata)
                 })
             })
@@ -66,6 +66,8 @@ const transfer = class Transfer {
         //返回函数
         return HitokotoHttp
     }
+
+    //金蝶暖暖
     Nuannuan() {
         const NuannuanHttp = new Promise(function (resolve, reject) {
             //get 请求核心服务
@@ -95,25 +97,91 @@ const transfer = class Transfer {
         const EorzeaWeatherHttp = new Promise(function (resolve, reject) {
             console.log(messageArr[1])
             var Address = messageArr[1]
-            var SrcAddAddress = EorzeaWeatherSrc + "?areaName="+ Address
-            //get 请求核心服务
-            http.get(SrcAddAddress, function (req, res) {
-                var content = ''
-                req.on('data', function (data) {
-                    content += data
-                })
-                req.on('end', function () {
+            var Weather = messageArr[2]
 
-                    // 格式化返回数据
-                    var EorzeaWeather_data = JSON.parse(content)
-                    var REdata = EorzeaWeather_data.data
+            //判断是否存在地区参数，如不存在，返回错误
+            if (Address != undefined) {
 
-                    var REdata = REdata[0].weather
+                //判断是否存在天气参数，若不存在：
+                if (Weather == undefined) {
+                    var SrcAddAddress = EorzeaWeatherSrc + "?areaName=" + Address
 
+                    //get 请求核心服务
+                    http.get(SrcAddAddress, function (req, res) {
+                        var content = ''
+                        req.on('data', function (data) {
+                            content += data
+                        })
+                        req.on('end', function () {
 
-                    resolve(REdata)
-                })
-            })
+                            // 格式化返回数据
+                            var EorzeaWeather_data = JSON.parse(content)
+
+                            //核心服务返回ok
+                            if (EorzeaWeather_data.ok == true) {
+                                var REdataJSON = EorzeaWeather_data.data
+                                var REdata = Address + "天气情况\r\n"
+
+                                //限制返回数量最多为5条
+                                if (REdataJSON.length > 5) {
+                                    REdataJSON.length = 5
+                                }
+
+                                //字符拼接，根据返回数组长度进行输出
+                                for (let i = 0; i < REdataJSON.length; i++) {
+                                    REdata += REdataJSON[i].startTime + ":00 " + REdataJSON[i].weather + "\r\n"
+                                }
+
+                                //核心服务返回错误信息
+                            } else {
+                                var REdata = "喵天气：" + EorzeaWeather_data.message
+                            }
+
+                            //返回结果
+                            resolve(REdata)
+                        })
+                    })
+                }
+
+                //判断是否存在天气参数 ，若存在
+                else {
+                    var SrcAddAddress = EorzeaWeatherSrc + "?areaName=" + Address + "&targetWeather=" + Weather
+
+                    //get 请求核心服务
+                    http.get(SrcAddAddress, function (req, res) {
+                        var content = ''
+                        req.on('data', function (data) {
+                            content += data
+                        })
+                        req.on('end', function () {
+
+                            // 格式化返回数据
+                            var EorzeaWeather_data = JSON.parse(content)
+
+                            //核心服务返回ok
+                            if (EorzeaWeather_data.ok == true) {
+                                var EorzeaWeather_data = JSON.parse(content)
+                                var REdataJSON = EorzeaWeather_data.data
+                                var REdata = Address + Weather + "天气情况\r\n"
+
+                                //字符拼接，根据返回数组长度进行输出
+                                for (let i = 0; i < REdataJSON.length; i++) {
+                                    REdata += REdataJSON[i].startTime + ":00 " + REdataJSON[i].LocalTime + " " + REdataJSON[i].weather + "\r\n"
+                                }
+
+                                //核心服务返回错误信息
+                            } else {
+                                var REdata = "喵天气：" + EorzeaWeather_data.message
+                            }
+
+                            //返回结果
+                            resolve(REdata)
+                        })
+                    })
+                }
+            } else {
+                resolve("喵天气：请指定地图")
+            }
         })
         //返回函数
         return EorzeaWeatherHttp
@@ -131,25 +199,6 @@ const transfer = class Transfer {
         return OtherMessage
     }
 
-
-}
-
-
-var hitokototest = "00"
-// 测试
-if (hitokototest == "ture") {
-
-    const accept = new transfer("KQ_Accept", "1034614154", "message_data.user_id", "message_data.message_type", "message_data.group_id", "喵一言")
-
-    // 打印了一个函数
-    console.log(accept.REmessage)
-
-    //返回值
-    accept.REmessage.then(function (value) {
-        console.log(value)
-
-    })
-} else {
 
 }
 
