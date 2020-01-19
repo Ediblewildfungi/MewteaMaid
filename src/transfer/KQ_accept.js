@@ -43,35 +43,72 @@ class KQ_Accept {
         //消息日志记录
         logger.info(`KQ_Accept - Accept - ID:${message_data.self_id}  message: ${message_data.message}`)
 
-        //消息处理
+        //回复消息处理
         //群消息处理
         if (message_data.message_type == "group") {
 
           //消息传入语言处理单元
-          const transfer2 = new transfer("KQ_Accept", "1034614154", "message_data.user_id", "message_data.message_type", "message_data.group_id", message_data.message)
+          const getTransfer = new transfer("KQ_Accept", "1034614154", "message_data.user_id", message_data.message_type, "message_data.group_id", message_data.message)
 
           // const transfer2 = new transfer("KQ_Accept", "1034614154", "message_data.user_id", "message_data.message_type", "message_data.group_id", "喵一言")
-          transfer2.REmessage.then(function (value) {
+          getTransfer.REmessage.then(function (value) {
             if (value !== 0) {
+
               //返回值操作
+
+              //返回信息内容
+              var REbody = {
+                "group_id": message_data.group_id,
+                "message": value
+              }
+
+              //格式化
+              REbody = JSON.stringify(REbody)
+
+              //http post参数
+              var REmessageOptions = {
+                host: '192.168.199.100',
+                port: 5700,
+                path: '/send_group_msg',
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Content-Length': REbody.length
+                }
+              }
               console.log(value)
-              const RESrc = "http://192.168.199.100:5700/send_group_msg?group_id=" + message_data.group_id + "&message=" + value
-              http.get(RESrc, function (req, res) {
+
+              //向CoolQ HTTP发送请求
+              var req = http.request(REmessageOptions, function (res) {
+                res.setEncoding('utf-8')
                 var content = ''
-                req.on('data', function (data) {
+                res.on('data', function (data) {
                   content += data
                 })
-                req.on('end', function () {
-                  // console.info(content)
-                  // var hitokoto_data = JSON.parse(content)
+
+                res.on('end', function () {
+
+                  //格式化返回参数
+                  content = JSON.parse(content)
                   console.log(content)
                 })
+
+                req.on('error', function (err) {
+                  // handle error.
+                  console.log(err)
+                })
               })
+
+              req.write(REbody)
+              req.end()
+
             }
 
 
           })
 
+        } else if (message_data.message_type == "private") {
+          
         } else {
 
         }
