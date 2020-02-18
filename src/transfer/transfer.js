@@ -12,6 +12,10 @@ const NuannuanSrc = KernelSrc + "ffxiv/fashionReport"
 //艾欧泽亚天气请求地址
 const EorzeaWeatherSrc = KernelSrc + "ffxiv/weather"
 
+//艾欧泽亚天气请求地址
+const ConcertSrc = KernelSrc + "ffxiv/concert"
+
+
 //输入处理
 const transfer = class Transfer {
 
@@ -28,7 +32,7 @@ const transfer = class Transfer {
         } else if (this.message.substring(0, 3) == "喵天气") {
             return this.EorzeaWeather(this.messageArr)
         } else if (this.message == "喵音乐会") {
-            return this.OtherMessage()
+            return this.ConcertInfo()
         } else if (this.message == "喵输出") {
             return this.OtherMessage()
         } else if (this.message == "喵预留1") {
@@ -187,6 +191,57 @@ const transfer = class Transfer {
         return EorzeaWeatherHttp
 
     }
+
+    //演奏音乐会情报
+    ConcertInfo() {
+        const ConcertHttp = new Promise(function (resolve, reject) {
+            //get 请求核心服务
+            http.get(ConcertSrc, function (req, res) {
+                var content = ''
+                req.on('data', function (data) {
+                    content += data
+                })
+                req.on('end', function () {
+
+                    // 格式化返回数据
+                    var Concert_data = JSON.parse(content)
+                    var REdata = Concert_data.data
+
+                    // 格式化返回数据
+                    var Concert_data = JSON.parse(content)
+
+                    //核心服务返回ok
+                    if (Concert_data.ok == true) {
+                        var REdataJSON = Concert_data.data
+                        var REdata = "音乐会情报\r\n" + "信息来源：" + REdataJSON[0].url + "\r\n"
+
+                        //限制返回数量最多为5条
+                        if (REdataJSON.length > 5) {
+                            REdataJSON.length = 5
+                        }
+
+                        //字符拼接，根据返回数组长度进行输出
+                        for (let i = 0; i < REdataJSON.length; i++) {
+                            // REdata += "数据更新： " + REdataJSON[i].update + " 数据源： " + REdataJSON[i].author + "\r\n" + "［演出日期］:" + REdataJSON[i].info.time + "\r\n" + "［入场］:" + REdataJSON[i].info.entranceTime + "［开演］:" + REdataJSON[i].info.startTime + "［持续时长］:约" + REdataJSON[i].info.duration + "分钟" + "\r\n" + "区服" + REdataJSON[i].info.concertServer + "\r\n"
+
+                            REdata += "数据更新： " + REdataJSON[i].update + "\r\n"+ "［区服］" + REdataJSON[i].info.concertServer + "\r\n" + "［演出日期］:" + REdataJSON[i].info.time + "\r\n" + "［入场］:" + REdataJSON[i].info.entranceTime  +"\r\n"
+                        }
+
+                        //核心服务返回错误信息
+                    } else {
+                        var REdata = "喵：" + Concert_data.message
+                    }
+
+                    //返回结果
+                    resolve(REdata)
+                })
+            })
+        })
+
+        //返回函数
+        return ConcertHttp
+    }
+
     //意外的输入
     OtherMessage() {
         // const aSrc = "http://127.0.0.1:3000/api/v1/hitokoto?c=a"

@@ -48,7 +48,7 @@ class KQ_Accept {
         if (message_data.message_type == "group") {
 
           //消息传入语言处理单元
-          const getTransfer = new transfer("KQ_Accept", "1034614154", "message_data.user_id", message_data.message_type, "message_data.group_id", message_data.message)
+          const getTransfer = new transfer("KQ_Accept", "1034614154", message_data.user_id, message_data.message_type, "message_data.group_id", message_data.message)
 
           // const transfer2 = new transfer("KQ_Accept", "1034614154", "message_data.user_id", "message_data.message_type", "message_data.group_id", "喵一言")
           getTransfer.REmessage.then(function (value) {
@@ -158,7 +158,7 @@ class KQ_Accept {
           })
 
         } else {
-          console.log("消息内容未知")
+          console.log("消息类型未知")
         }
 
 
