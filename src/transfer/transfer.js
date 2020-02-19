@@ -122,7 +122,7 @@ const transfer = class Transfer {
                             var EorzeaWeather_data = JSON.parse(content)
 
                             //核心服务返回ok
-                            if (EorzeaWeather_data.ok == true) {
+                            if (EorzeaWeather_data.ok === true) {
                                 var REdataJSON = EorzeaWeather_data.data
                                 var REdata = Address + "天气情况\r\n"
 
@@ -211,7 +211,7 @@ const transfer = class Transfer {
                     var Concert_data = JSON.parse(content)
 
                     //核心服务返回ok
-                    if (Concert_data.ok == true) {
+                    if (Concert_data.ok === true) {
                         var REdataJSON = Concert_data.data
                         var REdata = "音乐会情报\r\n" + "信息来源：" + REdataJSON[0].url + "\r\n"
 
