@@ -75,24 +75,18 @@ module.exports = {
 
     return next()
   },
-  createConcertForecast: async (ctx, next) => {
+
+  createConcertInfo: async (ctx, next) => {
     try {
-
-
-      // 抓取首页html
-      // const articleDetailResponse = await fetch('http://event.ffxiv.cat/')
 
       //获取最新更新页面信息
       const concertInfoListResponse = await fetch('http://event.ffxiv.cat/wp-json/wp/v2/pages')
-
       const concertInfoList = await concertInfoListResponse.json()
-
-
 
       // 取出最近的结果
       const cId = concertInfoList[0]['id']
 
-      // 获取ID为26的页面的数据
+      // 获取ID为cId的页面的数据
       const articleDetailResponseJson = await fetch(`http://event.ffxiv.cat/wp-json/wp/v2/pages/${cId}`)
       const articleDetail = await articleDetailResponseJson.json()
 
@@ -102,6 +96,8 @@ module.exports = {
       const $ = cheerio.load(`<div>${content.rendered}</div>`)
       let cDate = getText($('div.dt-fancy-title'))
       const fetchText = getText($('[style="text-align: center; color: #707070;"]'))
+
+      const concertTitle = getText($('[style="text-align: left; font-size: 42px; color: #191919;"]'))
 
       const concertCont = cDate.length / 5
 
@@ -113,9 +109,6 @@ module.exports = {
         cDate = cDate.replace(subStr, "")
       }
 
-
-
-      // hand
       //入场时间正则表达式  “场］”  “ /”之间
       var entranceTimeRe = /(?<=\u573a\uff3d).*?(?=\u002f)/g
 
@@ -126,22 +119,15 @@ module.exports = {
       var durationRe = /(?<=\u9884\u8ba1\u6f14\u594f\u65f6\u957f).*?(?=\u5206\u949f)/g
 
       //粉丝及情报群正则表达式  “粉丝及情报群”  “ 字母、中文”之间
-      var QQGroupRe = /(?<=\u60c5\u62a5\u7fa4).*?(?=[A-Za-z\u4e00-\u9fa5])/g
+      var QQGroupRe = /[1-9][0-9]{4,}/g
 
       //服务器  xxxx之间
       var concertServerRe = /(?<=\u7fa4).*?(?=\u5165)/g
-      
-
-      
 
       var entranceTime = fetchText.match(entranceTimeRe)
       var startTime = fetchText.match(startTimeRe)
       var duration = fetchText.match(durationRe)
       var QQGroup = fetchText.match(QQGroupRe)
-
-      
-
-
 
       var send = []
 
@@ -150,15 +136,17 @@ module.exports = {
         let d = {
           title: "FFXIV 音乐会信息",
           author: "白猫老师的发布站",
-          url:"http://event.ffxiv.cat/",
+          url: "http://event.ffxiv.cat/",
           update: modified,
           info: {
+            concertTitle,
             time: concertDate[i],
-            entranceTime:entranceTime[i],
-            startTime:startTime[i],
-            duration:duration[i],
-            QQGroup:QQGroup[i],
-            concertServer:"太难抓了放弃了,点上面链接查看",
+            entranceTime: entranceTime[i],
+            startTime: startTime[i],
+            duration: duration[i],
+            QQGroup: QQGroup[i],
+            concertServer: "太难抓了放弃了",
+            // fetchText,
             concertInfoListResponse,
           },
         }
@@ -166,9 +154,6 @@ module.exports = {
         send[i] = d
 
       }
-
-
-
 
       ctx.sendOk(send)
     } catch (e) {
