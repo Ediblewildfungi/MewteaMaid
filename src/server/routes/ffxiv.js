@@ -10,5 +10,5 @@ router.get('/fashionReport', ffxivController.fetchFashionReport)
 
 router.get('/weather', ffxivController.createWeatherForecast)
 
-router.get('/concert', ffxivController.createConcertForecast)
+router.get('/concert', ffxivController.createConcertInfo)
 module.exports = router
