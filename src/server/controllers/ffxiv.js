@@ -99,6 +99,8 @@ module.exports = {
 
       const concertTitle = getText($('[style="text-align: left; font-size: 42px; color: #191919;"]'))
 
+      concertLocal = (i) => getText($('.eventLoc').eq(i))
+
       const concertCont = cDate.length / 5
 
       let concertDate = []
@@ -121,8 +123,6 @@ module.exports = {
       //粉丝及情报群正则表达式  “粉丝及情报群”  “ 字母、中文”之间
       var QQGroupRe = /[1-9][0-9]{4,}/g
 
-      //服务器  xxxx之间
-      var concertServerRe = /(?<=\u7fa4).*?(?=\u5165)/g
 
       var entranceTime = fetchText.match(entranceTimeRe)
       var startTime = fetchText.match(startTimeRe)
@@ -145,7 +145,7 @@ module.exports = {
             startTime: startTime[i],
             duration: duration[i],
             QQGroup: QQGroup[i],
-            concertServer: "太难抓了放弃了",
+            concertLocal:concertLocal(i),
             // fetchText,
             concertInfoListResponse,
           },
