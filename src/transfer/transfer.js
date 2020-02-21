@@ -224,7 +224,7 @@ const transfer = class Transfer {
                         for (let i = 0; i < REdataJSON.length; i++) {
                             // REdata += "数据更新： " + REdataJSON[i].update + " 数据源： " + REdataJSON[i].author + "\r\n" + "［演出日期］:" + REdataJSON[i].info.time + "\r\n" + "［入场］:" + REdataJSON[i].info.entranceTime + "［开演］:" + REdataJSON[i].info.startTime + "［持续时长］:约" + REdataJSON[i].info.duration + "分钟" + "\r\n" + "区服" + REdataJSON[i].info.concertServer + "\r\n"
 
-                            REdata += "数据更新： " + REdataJSON[i].update + "\r\n"+ "［区服］" + REdataJSON[i].info.concertServer + "\r\n" + "［演出日期］:" + REdataJSON[i].info.time + "\r\n" + "［入场］:" + REdataJSON[i].info.entranceTime  +"\r\n"
+                            REdata += "数据更新： " + REdataJSON[i].update + "\r\n" + "［区服］" + REdataJSON[i].info.concertLocal + "\r\n" + "［演出日期］:" + REdataJSON[i].info.time + "\r\n" + "［入场］:" + REdataJSON[i].info.entranceTime + "\r\n"
                         }
 
                         //核心服务返回错误信息
