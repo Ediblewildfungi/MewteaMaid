@@ -145,3 +145,33 @@ test('艾欧泽亚天气 指定天气 不存在的前置天气', async (done) =>
 
   done()
 })
+
+test('艾欧泽亚演奏信息获取', async (done) => {
+  const response = await request(app.callback())
+    .get('/api/v1/ffxiv/concert')
+
+  expect(response.body.ok)
+    .toBe(true)
+
+  for (let i = 0; i < response.body.data.length; i++) {
+    
+  expect(response.body.data[i])
+    .toHaveProperty('info.concertTitle')
+
+  expect(response.body.data[i])
+    .toHaveProperty('info.time')
+
+  expect(response.body.data[i])
+    .toHaveProperty('info.entranceTime')
+
+  expect(response.body.data[i])
+    .toHaveProperty('info.startTime')
+
+  expect(response.body.data[i])
+    .toHaveProperty('info.duration')
+
+  expect(response.body.data[i])
+    .toHaveProperty('info.concertLocal')
+  }
+  done()
+})
