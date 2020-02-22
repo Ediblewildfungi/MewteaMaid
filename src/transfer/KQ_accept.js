@@ -28,17 +28,17 @@ class KQ_Accept {
         res.writeHead(200, { "Content-Type": "text/plain" })
 
         //接收传入的数据并显示
-        console.log(content)
+        // console.log(content)
 
         var message_data = JSON.parse(content)
-
-        // 获取KQ回传的机器人id、 发送者id、  消息类型、     群组id（若有）、消息内容
-        //            self_id,  user_id,   message_type,  group_id,      message
-        console.log(message_data.self_id)
 
         //格式化字符串，替换换行字符
         message_data.message = message_data.message.replace(/[\r]/g, " /r ");
         message_data.message = message_data.message.replace(/[\n]/g, " /n ");
+
+        // 获取KQ回传的机器人id、 发送者id、  消息类型、     群组id（若有）、消息内容
+        //            self_id,  user_id,   message_type,  group_id,      message
+        console.log("<-- " + message_data.user_id + " < " + message_data.message_type + " --< " + message_data.message)
 
         //消息日志记录
         logger.info(`KQ_Accept - Accept - ID:${message_data.self_id}  message: ${message_data.message}`)
@@ -76,7 +76,11 @@ class KQ_Accept {
                   'Content-Length': REbody.length
                 }
               }
-              console.log(value)
+
+              //格式化字符串，替换换行字符 输出日志
+              value = value.replace(/[\r]/g, "[\r] --> ");
+              value = value.replace(/[\n]/g, "\n");
+              console.log("--> " + value + ">" + message_data.group_id)
 
               //向CoolQ HTTP发送请求
               var req = http.request(REmessageOptions, function (res) {
@@ -89,11 +93,11 @@ class KQ_Accept {
 
                   //格式化返回参数
                   content = JSON.parse(content)
-                  console.log(content)
+                  console.log("--> status: " + content.status + " message_id: " + content.data.message_id + " retcode: " +content.retcode)
                 })
                 req.on('error', function (err) {
                   // handle error.
-                  console.log(err)
+                  console.log("--> " + err)
                 })
               })
               req.write(REbody)
@@ -132,7 +136,10 @@ class KQ_Accept {
                   'Content-Length': REbody.length
                 }
               }
-              console.log(value)
+              //格式化字符串，替换换行字符 输出日志
+              value = value.replace(/[\r]/g, "/r");
+              value = value.replace(/[\n]/g, "/n");
+              console.log("--> " + value + ">" + message_data.user_id)
 
               //向CoolQ HTTP发送请求
               var req = http.request(REmessageOptions, function (res) {
@@ -145,11 +152,11 @@ class KQ_Accept {
 
                   //格式化返回参数
                   content = JSON.parse(content)
-                  console.log(content)
+                  console.log("--> status: " + content.status + " message_id: " + content.data.message_id + " retcode: " +content.retcode)
                 })
                 req.on('error', function (err) {
                   // handle error.
-                  console.log(err)
+                  console.log("--> " + err)
                 })
               })
               req.write(REbody)
