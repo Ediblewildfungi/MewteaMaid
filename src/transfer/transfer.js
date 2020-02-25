@@ -1,10 +1,15 @@
 const http = require('http')
 const querystring = require("querystring")
+
+const config = require("./config")
 //核心服务版本以及请求地址
 const KernelSrc = "http://127.0.0.1:3000/api/v1/"
 
 //一言请求地址
 const HitokotoSrc = KernelSrc + "hitokoto"
+
+//地球天气请求地址
+const EWeatherSrc = KernelSrc + "eweather"
 
 //暖暖请求地址
 const NuannuanSrc = KernelSrc + "ffxiv/fashionReport"
@@ -108,10 +113,13 @@ const transfer = class Transfer {
 
                 //判断是否存在天气参数，若不存在：
                 if (Weather == undefined) {
-                    var SrcAddAddress = EorzeaWeatherSrc + "?areaName=" + Address
+
+                    var SrcEWAddAddress = EWeatherSrc + "?key=" + config.key.weatherKey + "&location=" + Address
+
+                    
 
                     //get 请求核心服务
-                    http.get(SrcAddAddress, function (req, res) {
+                    http.get(SrcEWAddAddress, function (req, res) {
                         var content = ''
                         req.on('data', function (data) {
                             content += data
@@ -119,32 +127,70 @@ const transfer = class Transfer {
                         req.on('end', function () {
 
                             // 格式化返回数据
-                            var EorzeaWeather_data = JSON.parse(content)
-
-                            //核心服务返回ok
-                            if (EorzeaWeather_data.ok === true) {
-                                var REdataJSON = EorzeaWeather_data.data
-                                var REdata = Address + "天气情况\r\n"
-
-                                //限制返回数量最多为5条
-                                if (REdataJSON.length > 5) {
-                                    REdataJSON.length = 5
-                                }
+                            var EWeather_data = JSON.parse(content)
+                            
+                            //核心/天气接口服务返回ok
+                            if (EWeather_data.data.HeWeather6[0].status === "ok") {
+                                var REdataJSON = EWeather_data.data.HeWeather6[0]
 
                                 //字符拼接，根据返回数组长度进行输出
-                                for (let i = 0; i < REdataJSON.length; i++) {
-                                    REdata += REdataJSON[i].startTime + ":00 " + REdataJSON[i].weather + "\r\n"
-                                }
+                                var REdata = REdataJSON.basic.location + "现在天气情况喵~\r\n"
+                                REdata += "天气: " + REdataJSON.now.cond_txt + "\r\n"
+                                REdata += "气温: " + REdataJSON.now.tmp + "\r\n"
+                                REdata += "体感温度: " + REdataJSON.now.fl + "\r\n"
+                                REdata += "相对湿度: " + REdataJSON.now.hum + "\r\n"
+                                REdata += "更新日期: 北京时间" + REdataJSON.update.loc + "\r\n"
+
+                                //返回结果
+                                resolve(REdata)
 
                                 //核心服务返回错误信息
                             } else {
-                                var REdata = "喵天气：" + EorzeaWeather_data.message
+
+                                var SrcAddAddress = EorzeaWeatherSrc + "?areaName=" + Address
+
+                                //get 请求核心服务
+                                http.get(SrcAddAddress, function (req, res) {
+                                    var content = ''
+                                    req.on('data', function (data) {
+                                        content += data
+                                    })
+                                    req.on('end', function () {
+
+                                        // 格式化返回数据
+                                        var EorzeaWeather_data = JSON.parse(content)
+
+                                        //核心服务返回ok
+                                        if (EorzeaWeather_data.ok === true) {
+                                            var REdataJSON = EorzeaWeather_data.data
+                                            var REdata = Address + "天气情况\r\n"
+
+                                            //限制返回数量最多为5条
+                                            if (REdataJSON.length > 5) {
+                                                REdataJSON.length = 5
+                                            }
+                                            //字符拼接，根据返回数组长度进行输出
+                                            for (let i = 0; i < REdataJSON.length; i++) {
+                                                REdata += REdataJSON[i].startTime + ":00 " + REdataJSON[i].weather + "\r\n"
+                                            }
+                                            console.log(REdata)
+                                            //核心服务返回错误信息
+                                        } else {
+                                            var REdata = "喵天气：" + EorzeaWeather_data.message
+                                        }
+                                        //返回结果
+                                        resolve(REdata)
+                                    })
+                                })
                             }
 
                             //返回结果
-                            resolve(REdata)
+                            // resolve(REdata)
                         })
                     })
+
+
+
                 }
 
                 //判断是否存在天气参数 ，若存在
@@ -260,3 +306,19 @@ const transfer = class Transfer {
 
 
 module.exports = transfer
+
+
+const getTransfer = new transfer("KQ_Accept", "1034614154", "message_data.user_id", "message_data.message_type", "message_data.group_id", "喵天气 格里达尼亚")
+
+// getTransfer.REmessage.then(function (value) {
+//     if (value !== 0) {
+
+//       //返回值操作
+
+//       //返回信息内容
+//       var REbody = {
+//         "message": value
+//       }
+//       console.log(value)
+//     }
+//   })
