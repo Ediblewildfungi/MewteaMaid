@@ -1,5 +1,10 @@
 module.exports = {
 
+    server: {
+
+        //KQ服务端口
+        KQ_PORT: 5000
+    },
     database: {
         host: "localhost",
         user: "",

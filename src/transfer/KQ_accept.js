@@ -4,13 +4,13 @@ const path = require('path')
 const http = require('http')
 const transfer = require('./transfer')
 const Logger = require('../helpers/logger')
+const config = require("./config")
 
 const logger = Logger(path.resolve(__dirname, '../../logs'), process.env.NODE_ENV !== 'development')
 
-//核心服务端口
-const PORT = process.env.PORT || 3600
 
-const KQ_PORT = 5000
+//核心服务端口
+const KQ_PORT = config.server.KQ_PORT
 
 class KQ_Accept {
   constructor() {
@@ -28,13 +28,25 @@ class KQ_Accept {
         res.writeHead(200, { "Content-Type": "text/plain" })
 
         //接收传入的数据并显示
-        // console.log(content)
+        console.log(content)
 
         var message_data = JSON.parse(content)
 
-        //格式化字符串，替换换行字符
-        message_data.message = message_data.message.replace(/[\r]/g, " /r ");
-        message_data.message = message_data.message.replace(/[\n]/g, " /n ");
+
+
+        if (message_data.message) {
+          //格式化字符串，替换换行字符
+          message_data.message = message_data.message.replace(/[\r]/g, " /r ");
+          message_data.message = message_data.message.replace(/[\n]/g, " /n ");
+        } else if (notice_type) {
+
+        } else {
+          message_data.message = "未定义消息"
+        }
+
+
+
+
 
         // 获取KQ回传的机器人id、 发送者id、  消息类型、     群组id（若有）、消息内容
         //            self_id,  user_id,   message_type,  group_id,      message
@@ -93,7 +105,7 @@ class KQ_Accept {
 
                   //格式化返回参数
                   content = JSON.parse(content)
-                  console.log("--> status: " + content.status + " message_id: " + content.data.message_id + " retcode: " +content.retcode)
+                  console.log("--> status: " + content.status + " message_id: " + content.data.message_id + " retcode: " + content.retcode)
                 })
                 req.on('error', function (err) {
                   // handle error.
@@ -152,7 +164,7 @@ class KQ_Accept {
 
                   //格式化返回参数
                   content = JSON.parse(content)
-                  console.log("--> status: " + content.status + " message_id: " + content.data.message_id + " retcode: " +content.retcode)
+                  console.log("--> status: " + content.status + " message_id: " + content.data.message_id + " retcode: " + content.retcode)
                 })
                 req.on('error', function (err) {
                   // handle error.
