@@ -24,7 +24,7 @@ const ConcertSrc = KernelSrc + "ffxiv/concert"
 //输入处理
 const transfer = class Transfer {
 
-    constructor(app, self_id, user_id, message_type, group_id, message) {
+    constructor(app, post_type, self_id, user_id, message_type, group_id, message) {
 
         this.message = message
         this.messageArr = this.message.split(/\s+/)
@@ -44,7 +44,15 @@ const transfer = class Transfer {
             return this.OtherMessage()
         } else if (this.message == "喵预留2") {
             return this.OtherMessage()
-        } else {
+
+            // 群成员增加
+        } else if (this.post_type == "notice" || this.message == "group_increase") {
+            return this.GroupUserIncrease()
+        }
+
+
+
+        else {
             return this.OtherMessage()
         }
 
@@ -116,8 +124,6 @@ const transfer = class Transfer {
 
                     var SrcEWAddAddress = EWeatherSrc + "?key=" + config.key.weatherKey + "&location=" + Address
 
-                    
-
                     //get 请求核心服务
                     http.get(SrcEWAddAddress, function (req, res) {
                         var content = ''
@@ -128,7 +134,7 @@ const transfer = class Transfer {
 
                             // 格式化返回数据
                             var EWeather_data = JSON.parse(content)
-                            
+
                             //核心/天气接口服务返回ok
                             if (EWeather_data.data.HeWeather6[0].status === "ok") {
                                 var REdataJSON = EWeather_data.data.HeWeather6[0]
@@ -288,6 +294,20 @@ const transfer = class Transfer {
         return ConcertHttp
     }
 
+
+    //群员增加
+    GroupUserIncrease() {
+        const GroupUserIncreasePromise = new Promise(function (resolve, reject) {
+            
+            var REdata = "欢迎~"
+
+            resolve(REdata)
+        })
+
+        //返回函数
+        return GroupUserIncreasePromise
+    }
+
     //意外的输入
     OtherMessage() {
         // const aSrc = "http://127.0.0.1:3000/api/v1/hitokoto?c=a"
@@ -308,7 +328,7 @@ const transfer = class Transfer {
 module.exports = transfer
 
 
-const getTransfer = new transfer("KQ_Accept", "1034614154", "message_data.user_id", "message_data.message_type", "message_data.group_id", "喵天气 格里达尼亚")
+const getTransfer = new transfer("KQ_Accept", "message_data.post_type", "1034614154", "message_data.user_id", "message_data.message_type", "message_data.group_id", "喵天气 格里达尼亚")
 
 // getTransfer.REmessage.then(function (value) {
 //     if (value !== 0) {

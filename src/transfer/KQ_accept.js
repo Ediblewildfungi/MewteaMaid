@@ -28,20 +28,37 @@ class KQ_Accept {
         res.writeHead(200, { "Content-Type": "text/plain" })
 
         //接收传入的数据并显示
-        console.log(content)
+        // console.log(content)
 
         var message_data = JSON.parse(content)
 
 
-
-        if (message_data.message) {
+        // 如果传入的内容为消息
+        if (message_data.post_type === "message") {
           //格式化字符串，替换换行字符
           message_data.message = message_data.message.replace(/[\r]/g, " /r ");
           message_data.message = message_data.message.replace(/[\n]/g, " /n ");
-        } else if (notice_type) {
 
+          // 如果传入的消息为通知
+        } else if (message_data.post_type === "notice") {
+
+          // 直接将通知内容转为消息传入
+          message_data.message = message_data.notice_type
+
+          //临时方案 ，采用group方式传入，后续需要重构
+          message_data.message_type ="group"
+
+          //如果传入的消息为好友请求/加群请求
+        } else if (message_data.post_type === "request") {
+
+          
+
+          // 直接将通知内容转为消息传入
+          message_data.message == message_data.request_type
         } else {
-          message_data.message = "未定义消息"
+
+          message_data.message = "未定义消息类型"
+
         }
 
 
@@ -53,14 +70,14 @@ class KQ_Accept {
         console.log("<-- " + message_data.user_id + " < " + message_data.message_type + " --< " + message_data.message)
 
         //消息日志记录
-        logger.info(`KQ_Accept - Accept - ID:${message_data.self_id}  message: ${message_data.message}`)
+        logger.info(`KQ_Accept - Accept - BOOTID:${message_data.self_id} UID:${message_data.user_id} message: ${message_data.message}`)
 
         //回复消息处理
         //群消息处理
         if (message_data.message_type == "group") {
 
           //消息传入语言处理单元
-          const getTransfer = new transfer("KQ_Accept", "1034614154", message_data.user_id, message_data.message_type, "message_data.group_id", message_data.message)
+          const getTransfer = new transfer("KQ_Accept", message_data.post_type, "1034614154", message_data.user_id, message_data.message_type, "message_data.group_id", message_data.message)
 
           // const transfer2 = new transfer("KQ_Accept", "1034614154", "message_data.user_id", "message_data.message_type", "message_data.group_id", "喵一言")
           getTransfer.REmessage.then(function (value) {
@@ -90,8 +107,8 @@ class KQ_Accept {
               }
 
               //格式化字符串，替换换行字符 输出日志
-              value = value.replace(/[\r]/g, "[\r] --> ");
-              value = value.replace(/[\n]/g, "\n");
+              value = value.replace(/[\r]/g, "\r");
+              value = value.replace(/[\n]/g, "\n"+"--> ");
               console.log("--> " + value + ">" + message_data.group_id)
 
               //向CoolQ HTTP发送请求
@@ -120,7 +137,7 @@ class KQ_Accept {
         //私聊消息处理 
         else if (message_data.message_type == "private") {
           //消息传入语言处理单元
-          const getTransfer = new transfer("KQ_Accept", "1034614154", "message_data.user_id", message_data.message_type, "message_data.group_id", message_data.message)
+          const getTransfer = new transfer("KQ_Accept", message_data.post_type, "1034614154", "message_data.user_id", message_data.message_type, "message_data.group_id", message_data.message)
 
           // const transfer2 = new transfer("KQ_Accept", "1034614154", "message_data.user_id", "message_data.message_type", "message_data.group_id", "喵一言")
           getTransfer.REmessage.then(function (value) {
