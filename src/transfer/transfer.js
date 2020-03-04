@@ -28,8 +28,11 @@ const transfer = class Transfer {
 
         this.message = message
         this.messageArr = this.message.split(/\s+/)
+        this.post_type = post_type
+        this.user_id = user_id
     }
     get REmessage() {
+        
         if (this.message == "喵一言") {
             return this.Hitokoto()
         } else if (this.message == "喵暖暖") {
@@ -46,8 +49,12 @@ const transfer = class Transfer {
             return this.OtherMessage()
 
             // 群成员增加
-        } else if (this.post_type == "notice" || this.message == "group_increase") {
+        } else if (this.post_type == "notice" && this.message == "group_increase") {
             return this.GroupUserIncrease()
+        }else if (this.message.substring(0,3) == "喵你说" && this.user_id == 1034614154) {
+
+            
+            return this.MewYouSay(this.message)
         }
 
 
@@ -300,6 +307,18 @@ const transfer = class Transfer {
         const GroupUserIncreasePromise = new Promise(function (resolve, reject) {
             
             var REdata = "欢迎~"
+
+            resolve(REdata)
+        })
+
+        //返回函数
+        return GroupUserIncreasePromise
+    }
+
+    MewYouSay(message) {
+        const GroupUserIncreasePromise = new Promise(function (resolve, reject) {
+            
+            var REdata = message.substring(3)
 
             resolve(REdata)
         })

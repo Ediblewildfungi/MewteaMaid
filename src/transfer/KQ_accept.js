@@ -137,7 +137,7 @@ class KQ_Accept {
         //私聊消息处理 
         else if (message_data.message_type == "private") {
           //消息传入语言处理单元
-          const getTransfer = new transfer("KQ_Accept", message_data.post_type, "1034614154", "message_data.user_id", message_data.message_type, "message_data.group_id", message_data.message)
+          const getTransfer = new transfer("KQ_Accept", message_data.post_type, "1034614154", message_data.user_id, message_data.message_type, "message_data.group_id", message_data.message)
 
           // const transfer2 = new transfer("KQ_Accept", "1034614154", "message_data.user_id", "message_data.message_type", "message_data.group_id", "喵一言")
           getTransfer.REmessage.then(function (value) {
