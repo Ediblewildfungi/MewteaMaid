@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "node -r dotenv/config src/server/main.js dotenv_config_path=.env.dev",
     "start": "node -r dotenv/config src/server/main.js",
+    "kqa": "node -r dotenv/config src/transfer/KQ_accept.js",
     "commit": "git-cz",
     "test": "jest"
   },
