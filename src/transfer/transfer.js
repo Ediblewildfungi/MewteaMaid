@@ -105,7 +105,8 @@ const transfer = class Transfer {
                     // 格式化返回数据
                     var nuanuan_data = JSON.parse(content)
                     var REdata = nuanuan_data.data
-                    var REdata = REdata.update + "\r\n" + REdata.answer
+                    var text ="\n 来源： 露儿[Yorushika] / 游玩c哩酱"
+                    var REdata = REdata.content  + text
                     resolve(REdata)
                 })
             })
