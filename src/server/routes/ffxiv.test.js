@@ -10,31 +10,17 @@ test('金蝶暖暖', async (done) => {
     .toBe(true)
 
   expect(response.body.data)
-    .toHaveProperty('answer.head')
+    .toHaveProperty('content')
 
   expect(response.body.data)
-    .toHaveProperty('answer.coat')
+    .toHaveProperty('content')
 
   expect(response.body.data)
-    .toHaveProperty('answer.hand')
+    .toHaveProperty('content')
 
   expect(response.body.data)
-    .toHaveProperty('answer.leg')
+    .toHaveProperty('content')
 
-  expect(response.body.data)
-    .toHaveProperty('answer.foot')
-
-  expect(response.body.data)
-    .toHaveProperty('answer.earring')
-
-  expect(response.body.data)
-    .toHaveProperty('answer.necklace')
-
-  expect(response.body.data)
-    .toHaveProperty('answer.bracelet')
-
-  expect(response.body.data)
-    .toHaveProperty('answer.ring')
 
   done()
 })
