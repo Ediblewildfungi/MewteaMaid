@@ -1,6 +1,9 @@
 # loacl config
 config.js
 
+# loacl test.js
+local_test.js
+
 # Logs
 logs
 *.log
