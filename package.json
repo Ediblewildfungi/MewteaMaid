@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/Ediblewildfungi/MewteaMaid#readme",
   "devDependencies": {
-    "cz-conventional-changelog": "^3.0.2",
+    "cz-conventional-changelog": "^3.1.0",
     "jest": "^24.9.0",
     "supertest": "^4.0.2"
   },
@@ -40,10 +40,10 @@
     "dotenv": "^8.2.0",
     "koa": "^2.11.0",
     "koa-bodyparser": "^4.2.1",
-    "koa-favicon": "^2.0.1",
+    "koa-favicon": "^2.1.0",
     "koa-json": "^2.0.2",
     "koa-logger": "^3.2.1",
-    "mongodb": "^3.5.3",
+    "mongodb": "^3.5.5",
     "node-fetch": "^2.6.0"
   }
 }
