@@ -15,8 +15,6 @@ const KQ_PORT = config.server.KQ_PORT
 class KQ_Accept {
   constructor() {
 
-
-
     // HTTP服务
     http.createServer(function (req, res) {
       var content = ""
@@ -46,12 +44,12 @@ class KQ_Accept {
           message_data.message = message_data.notice_type
 
           //临时方案 ，采用group方式传入，后续需要重构
-          message_data.message_type ="group"
+          message_data.message_type = "group"
 
           //如果传入的消息为好友请求/加群请求
         } else if (message_data.post_type === "request") {
 
-          
+
 
           // 直接将通知内容转为消息传入
           message_data.message == message_data.request_type
@@ -60,9 +58,6 @@ class KQ_Accept {
           message_data.message = "未定义消息类型"
 
         }
-
-
-
 
 
         // 获取KQ回传的机器人id、 发送者id、  消息类型、     群组id（若有）、消息内容
@@ -74,22 +69,43 @@ class KQ_Accept {
 
         //回复消息处理
         //群消息处理
-        if (message_data.message_type == "group") {
+        if (message_data.message_type == "group" || message_data.message_type == "private") {
+          if (message_data.message_type != "group") {
+            message_data.group_id = "none"
+          }
 
           //消息传入语言处理单元
-          const getTransfer = new transfer("KQ_Accept", message_data.post_type, "1034614154", message_data.user_id, message_data.message_type, "message_data.group_id", message_data.message)
+          const getTransfer = new transfer("KQ_Accept", message_data.post_type, message_data.self_id, message_data.user_id, message_data.message_type, message_data.group_id, message_data.message)
 
-          // const transfer2 = new transfer("KQ_Accept", "1034614154", "message_data.user_id", "message_data.message_type", "message_data.group_id", "喵一言")
-          getTransfer.REmessage.then(function (value) {
+             getTransfer.REmessage.then(function (value) {
             if (value !== 0) {
 
               //返回值操作
+              //判断回传的消息回复类型
+              if (value.re_type == "group") {
 
-              //返回信息内容
-              var REbody = {
-                "group_id": message_data.group_id,
-                "message": value
+                //发送给KQ-api的 路径
+                var RErouter = "/send_group_msg"
+
+                //返回信息内容
+                var REbody = {
+                  "group_id": value.re_id,
+                  "message": value.re_message
+                }
+
+              } else if (value.re_type == "private") {
+
+                //发送给KQ-api的 路径
+                var RErouter = "/send_private_msg"
+
+                //返回信息内容
+                var REbody = {
+                  "user_id": value.re_id,
+                  "message": value.re_message
+                }
               }
+
+              // logger.info(message_data.group_id + "///" +value.re_id + "///" +value.re_type + "///" + value.re_message )
 
               //格式化
               REbody = JSON.stringify(REbody)
@@ -98,7 +114,7 @@ class KQ_Accept {
               var REmessageOptions = {
                 host: '192.168.199.100',
                 port: 5700,
-                path: '/send_group_msg',
+                path: RErouter,
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
@@ -107,9 +123,9 @@ class KQ_Accept {
               }
 
               //格式化字符串，替换换行字符 输出日志
-              value = value.replace(/[\r]/g, "\r");
-              value = value.replace(/[\n]/g, "\n"+"--> ");
-              console.log("--> " + value + ">" + message_data.group_id)
+              value.re_message = value.re_message.replace(/[\r]/g, "\r");
+              value.re_message = value.re_message.replace(/[\n]/g, "\n" + "--> ")
+              console.log("--> " + value.re_message + ">" + value.re_id)
 
               //向CoolQ HTTP发送请求
               var req = http.request(REmessageOptions, function (res) {
@@ -134,70 +150,10 @@ class KQ_Accept {
             }
           })
         }
-        //私聊消息处理 
-        else if (message_data.message_type == "private") {
-          //消息传入语言处理单元
-          const getTransfer = new transfer("KQ_Accept", message_data.post_type, "1034614154", message_data.user_id, message_data.message_type, "message_data.group_id", message_data.message)
-
-          // const transfer2 = new transfer("KQ_Accept", "1034614154", "message_data.user_id", "message_data.message_type", "message_data.group_id", "喵一言")
-          getTransfer.REmessage.then(function (value) {
-            if (value !== 0) {
-
-              //返回值操作
-
-              //返回信息内容
-              var REbody = {
-                "user_id": message_data.user_id,
-                "message": value
-              }
-
-              //格式化
-              REbody = JSON.stringify(REbody)
-
-              //http post参数
-              var REmessageOptions = {
-                host: '192.168.199.100',
-                port: 5700,
-                path: '/send_private_msg',
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  'Content-Length': REbody.length
-                }
-              }
-              //格式化字符串，替换换行字符 输出日志
-              value = value.replace(/[\r]/g, "/r");
-              value = value.replace(/[\n]/g, "/n");
-              console.log("--> " + value + ">" + message_data.user_id)
-
-              //向CoolQ HTTP发送请求
-              var req = http.request(REmessageOptions, function (res) {
-                res.setEncoding('utf-8')
-                var content = ''
-                res.on('data', function (data) {
-                  content += data
-                })
-                res.on('end', function () {
-
-                  //格式化返回参数
-                  content = JSON.parse(content)
-                  console.log("--> status: " + content.status + " message_id: " + content.data.message_id + " retcode: " + content.retcode)
-                })
-                req.on('error', function (err) {
-                  // handle error.
-                  console.log("--> " + err)
-                })
-              })
-              req.write(REbody)
-              req.end()
-            }
-          })
-
-        } else {
+        //未知消息 
+        else {
           console.log("消息类型未知")
         }
-
-
         res.end()
       })
 

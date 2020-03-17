@@ -30,43 +30,46 @@ const transfer = class Transfer {
         this.messageArr = this.message.split(/\s+/)
         this.post_type = post_type
         this.user_id = user_id
+
+        if (group_id == "none") {
+            this.re_id = user_id
+            this.re_type = "private"
+        } else {
+            this.re_id = group_id
+            this.re_type = "group"
+        }
     }
     get REmessage() {
-        
+
         if (this.message == "喵一言") {
-            return this.Hitokoto()
+            return this.Hitokoto(this.re_type,this.re_id)
         } else if (this.message == "喵暖暖") {
-            return this.Nuannuan()
+            return this.Nuannuan(this.re_type,this.re_id)
         } else if (this.message.substring(0, 3) == "喵天气") {
-            return this.EorzeaWeather(this.messageArr)
+            return this.EorzeaWeather(this.re_type,this.re_id,this.messageArr)
         } else if (this.message == "喵音乐会") {
-            return this.ConcertInfo()
+            return this.ConcertInfo(this.re_type,this.re_id)
         } else if (this.message == "喵输出") {
-            return this.OtherMessage()
+            return this.OtherMessage(this.re_type,this.re_id)
         } else if (this.message == "喵预留1") {
-            return this.OtherMessage()
+            return this.OtherMessage(this.re_type,this.re_id)
         } else if (this.message == "喵预留2") {
-            return this.OtherMessage()
+            return this.OtherMessage(this.re_type,this.re_id)
 
             // 群成员增加
         } else if (this.post_type == "notice" && this.message == "group_increase") {
-            return this.GroupUserIncrease()
-        }else if (this.message.substring(0,3) == "喵你说" && this.user_id == 1034614154) {
-
+            return this.GroupUserIncrease(this.re_type,this.re_id)
+        } else if (this.message.substring(0, 3) == "喵你说" && this.user_id == 1034614154) {
             
-            return this.MewYouSay(this.message)
+            return this.MewYouSay(this.re_type,this.re_id,this.message)
+            
         }
-
-
-
         else {
             return this.OtherMessage()
         }
-
     }
-
     //一言处理
-    Hitokoto() {
+    Hitokoto(re_type,re_id) {
         const HitokotoHttp = new Promise(function (resolve, reject) {
             //get 请求核心服务
             http.get(HitokotoSrc, function (req, res) {
@@ -78,10 +81,19 @@ const transfer = class Transfer {
 
                     // 格式化返回数据
                     var hitokoto_data = JSON.parse(content)
-                    var REdata = hitokoto_data.data
+                    var re_message = hitokoto_data.data
 
                     //输出一言与来源
-                    var REdata = REdata.hitokoto + "\r\n" + "——" + REdata.from
+                    var re_message = re_message.hitokoto + "\r\n" + "——" + re_message.from
+                    
+
+
+                    var REdata = {
+                        re_type,
+                        re_id,
+                        re_message,
+                    }
+
                     resolve(REdata)
                 })
             })
@@ -92,7 +104,7 @@ const transfer = class Transfer {
     }
 
     //金蝶暖暖
-    Nuannuan() {
+    Nuannuan(re_type,re_id) {
         const NuannuanHttp = new Promise(function (resolve, reject) {
             //get 请求核心服务
             http.get(NuannuanSrc, function (req, res) {
@@ -104,9 +116,16 @@ const transfer = class Transfer {
 
                     // 格式化返回数据
                     var nuanuan_data = JSON.parse(content)
-                    var REdata = nuanuan_data.data
-                    var text ="\n 来源： 露儿[Yorushika] / 游玩c哩酱"
-                    var REdata = REdata.content  + text
+                    var re_message = nuanuan_data.data
+                    var text = "\n 来源： 露儿[Yorushika] / 游玩c哩酱"
+                    var re_message = re_message.content + text
+
+        
+                    var REdata = {
+                        re_type,
+                        re_id,
+                        re_message,
+                    }
                     resolve(REdata)
                 })
             })
@@ -118,7 +137,7 @@ const transfer = class Transfer {
     }
 
     //天气查询处理
-    EorzeaWeather(messageArr) {
+    EorzeaWeather(re_type,re_id,messageArr) {
         const EorzeaWeatherHttp = new Promise(function (resolve, reject) {
             // console.log(messageArr[1])
             var Address = messageArr[1]
@@ -148,13 +167,19 @@ const transfer = class Transfer {
                                 var REdataJSON = EWeather_data.data.HeWeather6[0]
 
                                 //字符拼接，根据返回数组长度进行输出
-                                var REdata = REdataJSON.basic.location + "现在天气情况喵~\r\n"
-                                REdata += "天气: " + REdataJSON.now.cond_txt + "\r\n"
-                                REdata += "气温: " + REdataJSON.now.tmp + "\r\n"
-                                REdata += "体感温度: " + REdataJSON.now.fl + "\r\n"
-                                REdata += "相对湿度: " + REdataJSON.now.hum + "\r\n"
-                                REdata += "更新日期: 北京时间" + REdataJSON.update.loc + "\r\n"
+                                var re_message = REdataJSON.basic.location + "现在天气情况喵~\r\n"
+                                re_message += "天气: " + REdataJSON.now.cond_txt + "\r\n"
+                                re_message += "气温: " + REdataJSON.now.tmp + "\r\n"
+                                re_message += "体感温度: " + REdataJSON.now.fl + "\r\n"
+                                re_message += "相对湿度: " + REdataJSON.now.hum + "\r\n"
+                                re_message += "更新日期: 北京时间" + REdataJSON.update.loc + "\r\n"
 
+                             
+                                var REdata = {
+                                    re_type,
+                                    re_id,
+                                    re_message,
+                                }
                                 //返回结果
                                 resolve(REdata)
 
@@ -177,7 +202,7 @@ const transfer = class Transfer {
                                         //核心服务返回ok
                                         if (EorzeaWeather_data.ok === true) {
                                             var REdataJSON = EorzeaWeather_data.data
-                                            var REdata = Address + "天气情况\r\n"
+                                            var re_message = Address + "天气情况\r\n"
 
                                             //限制返回数量最多为5条
                                             if (REdataJSON.length > 5) {
@@ -185,12 +210,19 @@ const transfer = class Transfer {
                                             }
                                             //字符拼接，根据返回数组长度进行输出
                                             for (let i = 0; i < REdataJSON.length; i++) {
-                                                REdata += REdataJSON[i].startTime + ":00 " + REdataJSON[i].weather + "\r\n"
+                                                re_message += REdataJSON[i].startTime + ":00 " + REdataJSON[i].weather + "\r\n"
                                             }
-                                            console.log(REdata)
+                                            console.log(re_message)
                                             //核心服务返回错误信息
                                         } else {
-                                            var REdata = "喵天气：" + EorzeaWeather_data.message
+                                            var re_message = "喵天气：" + EorzeaWeather_data.message
+                                        }
+
+                                    
+                                        var REdata = {
+                                            re_type,
+                                            re_id,
+                                            re_message,
                                         }
                                         //返回结果
                                         resolve(REdata)
@@ -226,18 +258,23 @@ const transfer = class Transfer {
                             if (EorzeaWeather_data.ok === true) {
                                 var EorzeaWeather_data = JSON.parse(content)
                                 var REdataJSON = EorzeaWeather_data.data
-                                var REdata = Address + Weather + "天气情况\r\n"
+                                var re_message = Address + Weather + "天气情况\r\n"
 
                                 //字符拼接，根据返回数组长度进行输出
                                 for (let i = 0; i < REdataJSON.length; i++) {
-                                    REdata += REdataJSON[i].startTime + ":00 " + REdataJSON[i].LocalTime + " " + REdataJSON[i].weather + "\r\n"
+                                    re_message += REdataJSON[i].startTime + ":00 " + REdataJSON[i].LocalTime + " " + REdataJSON[i].weather + "\r\n"
                                 }
 
                                 //核心服务返回错误信息
                             } else {
-                                var REdata = "喵天气：" + EorzeaWeather_data.message
+                                var re_message = "喵天气：" + EorzeaWeather_data.message
                             }
-
+                           
+                            var REdata = {
+                                re_type,
+                                re_id,
+                                re_message,
+                            }
                             //返回结果
                             resolve(REdata)
                         })
@@ -253,7 +290,7 @@ const transfer = class Transfer {
     }
 
     //演奏音乐会情报
-    ConcertInfo() {
+    ConcertInfo(re_type,re_id) {
         const ConcertHttp = new Promise(function (resolve, reject) {
             //get 请求核心服务
             http.get(ConcertSrc, function (req, res) {
@@ -265,7 +302,7 @@ const transfer = class Transfer {
 
                     // 格式化返回数据
                     var Concert_data = JSON.parse(content)
-                    var REdata = Concert_data.data
+                    var re_message = Concert_data.data
 
                     // 格式化返回数据
                     var Concert_data = JSON.parse(content)
@@ -273,7 +310,7 @@ const transfer = class Transfer {
                     //核心服务返回ok
                     if (Concert_data.ok === true) {
                         var REdataJSON = Concert_data.data
-                        var REdata = "音乐会情报\r\n" + "信息来源：" + REdataJSON[0].url + "\r\n"
+                        var re_message = "音乐会情报\r\n" + "信息来源：" + REdataJSON[0].url + "\r\n"
 
                         //限制返回数量最多为5条
                         if (REdataJSON.length > 5) {
@@ -282,16 +319,21 @@ const transfer = class Transfer {
 
                         //字符拼接，根据返回数组长度进行输出
                         for (let i = 0; i < REdataJSON.length; i++) {
-                            // REdata += "数据更新： " + REdataJSON[i].update + " 数据源： " + REdataJSON[i].author + "\r\n" + "［演出日期］:" + REdataJSON[i].info.time + "\r\n" + "［入场］:" + REdataJSON[i].info.entranceTime + "［开演］:" + REdataJSON[i].info.startTime + "［持续时长］:约" + REdataJSON[i].info.duration + "分钟" + "\r\n" + "区服" + REdataJSON[i].info.concertServer + "\r\n"
+                            // re_message += "数据更新： " + REdataJSON[i].update + " 数据源： " + REdataJSON[i].author + "\r\n" + "［演出日期］:" + REdataJSON[i].info.time + "\r\n" + "［入场］:" + REdataJSON[i].info.entranceTime + "［开演］:" + REdataJSON[i].info.startTime + "［持续时长］:约" + REdataJSON[i].info.duration + "分钟" + "\r\n" + "区服" + REdataJSON[i].info.concertServer + "\r\n"
 
-                            REdata += "数据更新： " + "白猫老师！" + "\r\n" + "［区服］" + REdataJSON[i].info.concertLocal + "\r\n" + "［演出日期］:" + REdataJSON[i].info.time + "\r\n" + "［入场］:" + REdataJSON[i].info.entranceTime + "\r\n"
+                            re_message += "数据更新： " + "白猫老师！" + "\r\n" + "［区服］" + REdataJSON[i].info.concertLocal + "\r\n" + "［演出日期］:" + REdataJSON[i].info.time + "\r\n" + "［入场］:" + REdataJSON[i].info.entranceTime + "\r\n"
                         }
 
                         //核心服务返回错误信息
                     } else {
-                        var REdata = "喵：" + Concert_data.message
+                        var re_message = "喵：" + Concert_data.message
                     }
-
+                  
+                    var REdata = {
+                        re_type,
+                        re_id,
+                        re_message,
+                    }
                     //返回结果
                     resolve(REdata)
                 })
@@ -302,12 +344,17 @@ const transfer = class Transfer {
         return ConcertHttp
     }
 
-
     //群员增加
-    GroupUserIncrease() {
+    GroupUserIncrease(re_type,re_id) {
         const GroupUserIncreasePromise = new Promise(function (resolve, reject) {
-            
-            var REdata = "欢迎~"
+
+            var re_message = "欢迎~"
+        
+            var REdata = {
+                re_type,
+                re_id,
+                re_message,
+            }
 
             resolve(REdata)
         })
@@ -316,11 +363,16 @@ const transfer = class Transfer {
         return GroupUserIncreasePromise
     }
 
-    MewYouSay(message) {
+    MewYouSay(re_type,re_id,message) {
         const GroupUserIncreasePromise = new Promise(function (resolve, reject) {
-            
-            var REdata = message.substring(3)
 
+            var re_message = message.substring(3)
+
+            var REdata = {
+                re_type:"group",
+                re_id:"875182235",
+                re_message,
+            }
             resolve(REdata)
         })
 
@@ -344,21 +396,4 @@ const transfer = class Transfer {
 }
 
 
-
 module.exports = transfer
-
-
-const getTransfer = new transfer("KQ_Accept", "message_data.post_type", "1034614154", "message_data.user_id", "message_data.message_type", "message_data.group_id", "喵天气 格里达尼亚")
-
-// getTransfer.REmessage.then(function (value) {
-//     if (value !== 0) {
-
-//       //返回值操作
-
-//       //返回信息内容
-//       var REbody = {
-//         "message": value
-//       }
-//       console.log(value)
-//     }
-//   })
