@@ -20,6 +20,8 @@ const EorzeaWeatherSrc = KernelSrc + "ffxiv/weather"
 //艾欧泽亚天气请求地址
 const ConcertSrc = KernelSrc + "ffxiv/concert"
 
+//零式出警请求地址
+const RaidSrc = KernelSrc + "ffxiv/raid"
 
 //输入处理
 const transfer = class Transfer {
@@ -42,34 +44,34 @@ const transfer = class Transfer {
     get REmessage() {
 
         if (this.message == "喵一言") {
-            return this.Hitokoto(this.re_type,this.re_id)
+            return this.Hitokoto(this.re_type, this.re_id)
         } else if (this.message == "喵暖暖") {
-            return this.Nuannuan(this.re_type,this.re_id)
+            return this.Nuannuan(this.re_type, this.re_id)
         } else if (this.message.substring(0, 3) == "喵天气") {
-            return this.EorzeaWeather(this.re_type,this.re_id,this.messageArr)
+            return this.EorzeaWeather(this.re_type, this.re_id, this.messageArr)
         } else if (this.message == "喵音乐会") {
-            return this.ConcertInfo(this.re_type,this.re_id)
+            return this.ConcertInfo(this.re_type, this.re_id)
         } else if (this.message == "喵输出") {
-            return this.OtherMessage(this.re_type,this.re_id)
-        } else if (this.message == "喵预留1") {
-            return this.OtherMessage(this.re_type,this.re_id)
+            return this.OtherMessage(this.re_type, this.re_id)
+        } else if (this.message.substring(0, 3) == "喵零式") {
+            return this.EorzeaRaidInfo(this.re_type, this.re_id, this.messageArr)
         } else if (this.message == "喵预留2") {
-            return this.OtherMessage(this.re_type,this.re_id)
+            return this.OtherMessage(this.re_type, this.re_id)
 
             // 群成员增加
         } else if (this.post_type == "notice" && this.message == "group_increase") {
-            return this.GroupUserIncrease(this.re_type,this.re_id)
+            return this.GroupUserIncrease(this.re_type, this.re_id)
         } else if (this.message.substring(0, 3) == "喵你说" && this.user_id == 1034614154) {
-            
-            return this.MewYouSay(this.re_type,this.re_id,this.message)
-            
+
+            return this.MewYouSay(this.re_type, this.re_id, this.message)
+
         }
         else {
             return this.OtherMessage()
         }
     }
     //一言处理
-    Hitokoto(re_type,re_id) {
+    Hitokoto(re_type, re_id) {
         const HitokotoHttp = new Promise(function (resolve, reject) {
             //get 请求核心服务
             http.get(HitokotoSrc, function (req, res) {
@@ -85,7 +87,7 @@ const transfer = class Transfer {
 
                     //输出一言与来源
                     var re_message = re_message.hitokoto + "\r\n" + "——" + re_message.from
-                    
+
 
 
                     var REdata = {
@@ -104,7 +106,7 @@ const transfer = class Transfer {
     }
 
     //金蝶暖暖
-    Nuannuan(re_type,re_id) {
+    Nuannuan(re_type, re_id) {
         const NuannuanHttp = new Promise(function (resolve, reject) {
             //get 请求核心服务
             http.get(NuannuanSrc, function (req, res) {
@@ -120,7 +122,7 @@ const transfer = class Transfer {
                     var text = "\n 来源： 露儿[Yorushika] / 游玩c哩酱"
                     var re_message = re_message.content + text
 
-        
+
                     var REdata = {
                         re_type,
                         re_id,
@@ -137,7 +139,7 @@ const transfer = class Transfer {
     }
 
     //天气查询处理
-    EorzeaWeather(re_type,re_id,messageArr) {
+    EorzeaWeather(re_type, re_id, messageArr) {
         const EorzeaWeatherHttp = new Promise(function (resolve, reject) {
             // console.log(messageArr[1])
             var Address = messageArr[1]
@@ -174,7 +176,7 @@ const transfer = class Transfer {
                                 re_message += "相对湿度: " + REdataJSON.now.hum + "\r\n"
                                 re_message += "更新日期: 北京时间" + REdataJSON.update.loc + "\r\n"
 
-                             
+
                                 var REdata = {
                                     re_type,
                                     re_id,
@@ -218,7 +220,7 @@ const transfer = class Transfer {
                                             var re_message = "喵天气：" + EorzeaWeather_data.message
                                         }
 
-                                    
+
                                         var REdata = {
                                             re_type,
                                             re_id,
@@ -269,7 +271,7 @@ const transfer = class Transfer {
                             } else {
                                 var re_message = "喵天气：" + EorzeaWeather_data.message
                             }
-                           
+
                             var REdata = {
                                 re_type,
                                 re_id,
@@ -290,7 +292,7 @@ const transfer = class Transfer {
     }
 
     //演奏音乐会情报
-    ConcertInfo(re_type,re_id) {
+    ConcertInfo(re_type, re_id) {
         const ConcertHttp = new Promise(function (resolve, reject) {
             //get 请求核心服务
             http.get(ConcertSrc, function (req, res) {
@@ -328,7 +330,7 @@ const transfer = class Transfer {
                     } else {
                         var re_message = "喵：" + Concert_data.message
                     }
-                  
+
                     var REdata = {
                         re_type,
                         re_id,
@@ -345,11 +347,11 @@ const transfer = class Transfer {
     }
 
     //群员增加
-    GroupUserIncrease(re_type,re_id) {
+    GroupUserIncrease(re_type, re_id) {
         const GroupUserIncreasePromise = new Promise(function (resolve, reject) {
 
             var re_message = "欢迎~"
-        
+
             var REdata = {
                 re_type,
                 re_id,
@@ -363,14 +365,14 @@ const transfer = class Transfer {
         return GroupUserIncreasePromise
     }
 
-    MewYouSay(re_type,re_id,message) {
+    MewYouSay(re_type, re_id, message) {
         const GroupUserIncreasePromise = new Promise(function (resolve, reject) {
 
             var re_message = message.substring(3)
 
             var REdata = {
-                re_type:"group",
-                re_id:"875182235",
+                re_type: "group",
+                re_id: "875182235",
                 re_message,
             }
             resolve(REdata)
@@ -378,6 +380,54 @@ const transfer = class Transfer {
 
         //返回函数
         return GroupUserIncreasePromise
+    }
+
+    EorzeaRaidInfo(re_type, re_id, messageArr) {
+        const RaidHttp = new Promise(function (resolve, reject) {
+
+            var serverName = messageArr[1]
+            var userName = messageArr[2]
+
+            var SrcRaidAddress = RaidSrc + "?serverName=" + serverName + "&userName=" + userName
+
+            //get 请求核心服务
+            http.get(SrcRaidAddress, function (req, res) {
+                var content = ''
+                req.on('data', function (data) {
+                    content += data
+                })
+                req.on('end', function () {
+
+                    // 格式化返回数据
+                    var raid_data = JSON.parse(content)
+                    var raid_data = raid_data.data.Attach
+
+                    var l1 = raid_data.Level1.replace(/^(\d{4})(\d{2})(\d{2})$/, "$1年$2月$3日")
+                    var l2 = raid_data.Level2.replace(/^(\d{4})(\d{2})(\d{2})$/, "$1年$2月$3日")
+                    var l3 = raid_data.Level3.replace(/^(\d{4})(\d{2})(\d{2})$/, "$1年$2月$3日")
+                    var l4 = raid_data.Level4.replace(/^(\d{4})(\d{2})(\d{2})$/, "$1年$2月$3日")
+                    
+                    var re_message = userName + "的零式通关数据喵~ \r\n"
+
+                    re_message += l1 + " 攻破了E1S \r\n"
+                    re_message += l2 + " 攻破了E2S \r\n"
+                    re_message += l3 + " 攻破了E3S \r\n"
+                    re_message += l4 + " 攻破了E4S \r\n"
+                    re_message += "呜喵~"
+
+                    var REdata = {
+                        re_type,
+                        re_id,
+                        re_message,
+                    }
+
+                    resolve(REdata)
+                })
+            })
+        })
+
+        //返回函数
+        return RaidHttp
     }
 
     //意外的输入

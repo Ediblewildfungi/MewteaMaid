@@ -62,7 +62,7 @@ class KQ_Accept {
 
         // 获取KQ回传的机器人id、 发送者id、  消息类型、     群组id（若有）、消息内容
         //            self_id,  user_id,   message_type,  group_id,      message
-        console.log("<-- " + message_data.user_id + " < " + message_data.message_type + " --< " + message_data.message)
+        // console.log("<-- " + message_data.user_id + " < " + message_data.message_type + " --< " + message_data.message)
 
         //消息日志记录
         logger.info(`KQ_Accept - Accept - BOOTID:${message_data.self_id} UID:${message_data.user_id} message: ${message_data.message}`)
@@ -105,8 +105,6 @@ class KQ_Accept {
                 }
               }
 
-              // logger.info(message_data.group_id + "///" +value.re_id + "///" +value.re_type + "///" + value.re_message )
-
               //格式化
               REbody = JSON.stringify(REbody)
 
@@ -123,9 +121,13 @@ class KQ_Accept {
               }
 
               //格式化字符串，替换换行字符 输出日志
-              value.re_message = value.re_message.replace(/[\r]/g, "\r");
-              value.re_message = value.re_message.replace(/[\n]/g, "\n" + "--> ")
-              console.log("--> " + value.re_message + ">" + value.re_id)
+              value.re_messageLog = value.re_message.replace(/[\r]/g, "\r");
+              value.re_messageLog = value.re_messageLog.replace(/[\n]/g, "\n" + "--> ")
+              console.log("--> " + value.re_messageLog + ">" + value.re_id)
+
+              value.re_message = value.re_message.replace(/[\r]/g, " /r ");
+              value.re_message = value.re_message.replace(/[\n]/g, " /n ");
+              logger.info(`KQ_Accept - -Send- - BOOTID:${message_data.self_id} UID:${value.re_id} message: ${value.re_message}`)
 
               //向CoolQ HTTP发送请求
               var req = http.request(REmessageOptions, function (res) {

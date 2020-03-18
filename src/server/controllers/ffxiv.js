@@ -2,6 +2,7 @@ const fetch = require('node-fetch')
 const cheerio = require('cheerio')
 
 const getEorzeaWeather = require('../../helpers/eorzeaWeather')
+const getEorzeaServerChID = require('../../helpers/eorzeaServerCh')
 
 const getText = (el) => {
   return el
@@ -132,6 +133,51 @@ module.exports = {
       ctx.logger.error(`白猫老师抛出了一个异常: ${e.message}`)
       ctx.sendError(e.message || '白猫老师抛出了一个异常，请稍后重试！')
     }
+
+    return next()
+  },
+  createRaidInfo: async (ctx, next) => {
+
+    let fashionReportListResponse = null
+
+    const {serverName,userName} = ctx.request.query
+
+    const fashionReportListSource = ['http://act.ff.sdo.com/20180525HeroList/Server/HeroList190128.ashx?']
+
+    const ans = getEorzeaServerChID(serverName)
+    
+    questData = {
+
+      method:"queryhreodata",
+      Stage :2,
+      Name:userName,
+      AreaId:ans.areaid,
+      GroupId:ans.serverid,
+    }
+
+    // JSON.string(questData)
+
+    
+// /---------------------
+    ///服务器 
+
+    // ctx.request.search
+
+    for (let i = 0; i < fashionReportListSource.length; i++) {
+      fashionReportListResponse = await fetch(`${fashionReportListSource[i]}${new URLSearchParams(questData).toString()}`, { method: 'POST'})
+
+      if (fashionReportListResponse.ok) {
+        ctx.sendOk(await fashionReportListResponse.json())
+
+        return next()
+
+      }
+    }
+
+    ctx.logger.error('sdo服务异常')
+    ctx.sendError("喵！！呜呜呜喵~ 出错了！喵呜呜呜~")
+
+
 
     return next()
   },
