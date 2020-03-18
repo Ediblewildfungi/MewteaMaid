@@ -1,4 +1,5 @@
 const http = require('http')
+const config = require("./config")
 const querystring = require("querystring")
 
 const config = require("./config")
@@ -61,7 +62,7 @@ const transfer = class Transfer {
             // 群成员增加
         } else if (this.post_type == "notice" && this.message == "group_increase") {
             return this.GroupUserIncrease(this.re_type, this.re_id)
-        } else if (this.message.substring(0, 3) == "喵你说" && this.user_id == 1034614154) {
+        } else if (this.message.substring(0, 3) == "喵你说" && this.user_id == config.server.Admin.id) {
 
             return this.MewYouSay(this.re_type, this.re_id, this.message)
 
@@ -372,7 +373,7 @@ const transfer = class Transfer {
 
             var REdata = {
                 re_type: "group",
-                re_id: "875182235",
+                re_id: config.server.Admin.group,
                 re_message,
             }
             resolve(REdata)
