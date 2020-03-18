@@ -2,7 +2,6 @@ const http = require('http')
 const config = require("./config")
 const querystring = require("querystring")
 
-const config = require("./config")
 //核心服务版本以及请求地址
 const KernelSrc = "http://127.0.0.1:3000/api/v1/"
 
