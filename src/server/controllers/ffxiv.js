@@ -62,14 +62,12 @@ module.exports = {
       // 获取ID为cId的页面的数据
       const articleDetailResponseJson = await fetch(`http://event.ffxiv.cat/wp-json/wp/v2/pages/${cId}`)
       const articleDetail = await articleDetailResponseJson.json()
-
       const { content, title, AuName, modified } = articleDetail
 
       // 从文章的 HTML 文本中解析列表
       const $ = cheerio.load(`<div>${content.rendered}</div>`)
       let cDate = getText($('div.dt-fancy-title'))
       const fetchText = getText($('[style="text-align: center; color: #707070;"]'))
-
       const concertTitle = getText($('[style="text-align: left; font-size: 42px; color: #191919;"]'))
 
       concertLocal = (i) => getText($('.eventLoc').eq(i))
@@ -139,15 +137,11 @@ module.exports = {
   createRaidInfo: async (ctx, next) => {
 
     let fashionReportListResponse = null
-
     const {serverName,userName} = ctx.request.query
-
     const fashionReportListSource = ['http://act.ff.sdo.com/20180525HeroList/Server/HeroList190128.ashx?']
-
     const ans = getEorzeaServerChID(serverName)
     
     questData = {
-
       method:"queryhreodata",
       Stage :2,
       Name:userName,
@@ -155,29 +149,16 @@ module.exports = {
       GroupId:ans.serverid,
     }
 
-    // JSON.string(questData)
-
-    
-// /---------------------
-    ///服务器 
-
-    // ctx.request.search
-
     for (let i = 0; i < fashionReportListSource.length; i++) {
       fashionReportListResponse = await fetch(`${fashionReportListSource[i]}${new URLSearchParams(questData).toString()}`, { method: 'POST'})
-
       if (fashionReportListResponse.ok) {
         ctx.sendOk(await fashionReportListResponse.json())
-
         return next()
-
       }
     }
 
     ctx.logger.error('sdo服务异常')
     ctx.sendError("喵！！呜呜呜喵~ 出错了！喵呜呜呜~")
-
-
 
     return next()
   },

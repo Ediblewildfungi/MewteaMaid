@@ -26,6 +26,18 @@ const RaidSrc = KernelSrc + "ffxiv/raid"
 //输入处理
 const transfer = class Transfer {
 
+    /**
+     * 处理输入组件
+     * @param app 传入的应用程序
+     * @param post_type 输入类型 - 信息、通知
+     * @param self_id 机器人id
+     * @param user_id 用户id
+     * @param message_type 消息类别 - 群组、私聊
+     * @param group_id 群组id - 如无需要定义 "none"
+     * @param message 信息内容
+     * 
+     */
+
     constructor(app, post_type, self_id, user_id, message_type, group_id, message) {
 
         this.message = message
@@ -219,8 +231,6 @@ const transfer = class Transfer {
                                         } else {
                                             var re_message = "喵天气：" + EorzeaWeather_data.message
                                         }
-
-
                                         var REdata = {
                                             re_type,
                                             re_id,
@@ -231,14 +241,10 @@ const transfer = class Transfer {
                                     })
                                 })
                             }
-
                             //返回结果
                             // resolve(REdata)
                         })
                     })
-
-
-
                 }
 
                 //判断是否存在天气参数 ，若存在
@@ -402,17 +408,27 @@ const transfer = class Transfer {
                     var raid_data = JSON.parse(content)
                     var raid_data = raid_data.data.Attach
 
-                    var l1 = raid_data.Level1.replace(/^(\d{4})(\d{2})(\d{2})$/, "$1年$2月$3日")
-                    var l2 = raid_data.Level2.replace(/^(\d{4})(\d{2})(\d{2})$/, "$1年$2月$3日")
-                    var l3 = raid_data.Level3.replace(/^(\d{4})(\d{2})(\d{2})$/, "$1年$2月$3日")
-                    var l4 = raid_data.Level4.replace(/^(\d{4})(\d{2})(\d{2})$/, "$1年$2月$3日")
+                    var levelData = ""
                     
-                    var re_message = userName + "的零式通关数据喵~ \r\n"
+                    for (let i = 1; i < 5; i++) {
 
-                    re_message += l1 + " 攻破了E1S \r\n"
-                    re_message += l2 + " 攻破了E2S \r\n"
-                    re_message += l3 + " 攻破了E3S \r\n"
-                    re_message += l4 + " 攻破了E4S \r\n"
+                        let Data = 'raid_data.Level' + i
+
+                        if (eval(Data) != "" && eval(Data)) {
+
+                            levelData = levelData + eval(Data).replace(/^(\d{4})(\d{2})(\d{2})$/, "$1年$2月$3日") + " 攻破了E" + i +"S \r\n"
+
+                        }else{
+                            levelData  = levelData + " 尚未攻破E" + i +"S，加油哦 \r\n"
+                        }
+                        if (i == 4 && eval(Data) != "" && eval(Data)) {
+                            levelData = levelData + "太强了"
+                        }
+                    }
+
+                    //拼接
+                    var re_message = userName + "的零式通关数据喵~ \r\n"
+                    re_message += levelData
                     re_message += "呜喵~"
 
                     var REdata = {
@@ -441,8 +457,6 @@ const transfer = class Transfer {
         //返回函数
         return OtherMessage
     }
-
-
 }
 
 
