@@ -13,4 +13,6 @@ router.get('/weather', ffxivController.createWeatherForecast)
 router.get('/concert', ffxivController.createConcertInfo)
 
 router.get('/raid', ffxivController.createRaidInfo)
+
+router.get('/dpsrank', ffxivController.createDpsRank)
 module.exports = router

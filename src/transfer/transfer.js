@@ -23,6 +23,9 @@ const ConcertSrc = KernelSrc + "ffxiv/concert"
 //零式出警请求地址
 const RaidSrc = KernelSrc + "ffxiv/raid"
 
+//logs排行请求地址
+const DpsrankSrc = KernelSrc + "ffxiv/dpsrank"
+
 //输入处理
 const transfer = class Transfer {
 
@@ -63,8 +66,8 @@ const transfer = class Transfer {
             return this.EorzeaWeather(this.re_type, this.re_id, this.messageArr)
         } else if (this.message == "喵音乐会") {
             return this.ConcertInfo(this.re_type, this.re_id)
-        } else if (this.message == "喵输出") {
-            return this.OtherMessage(this.re_type, this.re_id)
+        } else if (this.message.substring(0, 3) == "喵输出") {
+            return this.EorzeaDpsRank(this.re_type, this.re_id, this.messageArr)
         } else if (this.message.substring(0, 3) == "喵零式") {
             return this.EorzeaRaidInfo(this.re_type, this.re_id, this.messageArr)
         } else if (this.message == "喵预留2") {
@@ -409,17 +412,17 @@ const transfer = class Transfer {
                     var raid_data = raid_data.data.Attach
 
                     var levelData = ""
-                    
+
                     for (let i = 1; i < 5; i++) {
 
                         let Data = 'raid_data.Level' + i
 
                         if (eval(Data) != "" && eval(Data)) {
 
-                            levelData = levelData + eval(Data).replace(/^(\d{4})(\d{2})(\d{2})$/, "$1年$2月$3日") + " 攻破了E" + i +"S \r\n"
+                            levelData = levelData + eval(Data).replace(/^(\d{4})(\d{2})(\d{2})$/, "$1年$2月$3日") + " 攻破了E" + i + "S \r\n"
 
-                        }else{
-                            levelData  = levelData + " 尚未攻破E" + i +"S，加油哦 \r\n"
+                        } else {
+                            levelData = levelData + " 尚未攻破E" + i + "S，加油哦 \r\n"
                         }
                         if (i == 4 && eval(Data) != "" && eval(Data)) {
                             levelData = levelData + "太强了"
@@ -430,6 +433,63 @@ const transfer = class Transfer {
                     var re_message = userName + "的零式通关数据喵~ \r\n"
                     re_message += levelData
                     re_message += "呜喵~"
+
+                    var REdata = {
+                        re_type,
+                        re_id,
+                        re_message,
+                    }
+
+                    resolve(REdata)
+                })
+            })
+        })
+
+        //返回函数
+        return RaidHttp
+    }
+    EorzeaDpsRank(re_type, re_id, messageArr) {
+        const RaidHttp = new Promise(function (resolve, reject) {
+
+            var josbName = messageArr[1]
+            var bossName = messageArr[2]
+
+            var SrcDpsRankAddress = DpsrankSrc + "?josbName=" + josbName + "&bossName=" + bossName
+
+            //get 请求核心服务
+            http.get(SrcDpsRankAddress, function (req, res) {
+                var content = ''
+                req.on('data', function (data) {
+                    content += data
+                })
+                req.on('end', function () {
+
+                    // 格式化返回数据
+                    var raid_data = JSON.parse(content)
+                    var raid_data = raid_data.data
+
+                    var levelData = ""
+
+                    if (raid_data.boss.cnName) {
+                        if (raid_data.job.cnName) {
+                            levelData = raid_data.job.cnName + "的<" + raid_data.boss.cnName + ">数据喵~ \r\n"
+                            levelData += "10% ->" + raid_data.DpsRank10 + "\r\n"
+                            levelData += "25% ->" + raid_data.DpsRank25 + "\r\n"
+                            levelData += "50% ->" + raid_data.DpsRank50 + "\r\n"
+                            levelData += "75% ->" + raid_data.DpsRank75 + "\r\n"
+                            levelData += "95% ->" + raid_data.DpsRank95 + "\r\n"
+                            levelData += "TOP ->" + raid_data.DpsRank100 + "\r\n"
+                        } else {
+                            levelData = "职业木有找到"
+                        }
+                    } else {
+                        levelData = "木有找到数据喵，这是什么过气boss"
+                    }
+
+
+
+                    //拼接
+                    var re_message = levelData + "呜喵~"
 
                     var REdata = {
                         re_type,

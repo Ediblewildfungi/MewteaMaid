@@ -154,7 +154,8 @@ class KQ_Accept {
         }
         //未知消息 
         else {
-          console.log("消息类型未知")
+          
+          console.log("消息类型未知" + JSON.stringify(message_data))
         }
         res.end()
       })
