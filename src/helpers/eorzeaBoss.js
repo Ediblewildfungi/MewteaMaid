@@ -1887,13 +1887,11 @@ const getEorzeaBoss = (bossNickName) => {
     // 29-伊甸园 28-5.0蛮神 30-巴哈/究极 31-亚历山大
 
     const zoneId = [23,29, 28, 30, 31, 32]
-    let xx = 0
 
     if (bossNickName) {
 
         for (let i = 0; i < zoneId.length; i++) {
 
-  
             for (let x = 0; x < eorzeaBoss.length; x++) {
 
                 if (eorzeaBoss[x].id == zoneId[i]) {
@@ -1914,8 +1912,6 @@ const getEorzeaBoss = (bossNickName) => {
                                     boss.bossCnServer = eorzeaBoss[x].encounters[y].bossCnServer
                                 
                                 }
-                                
-
                                 // return 0;
                                 break;
 

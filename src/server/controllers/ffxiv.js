@@ -151,14 +151,11 @@ module.exports = {
       GroupId: ans.serverid,
     }
 
-
     RaidInfoResponse = await fetch(`${RaidInfoSource}${new URLSearchParams(questData).toString()}`, { method: 'POST' })
     if (RaidInfoResponse.ok) {
       ctx.sendOk(await RaidInfoResponse.json())
       return next()
     }
-
-
     ctx.logger.error('sdo服务异常')
     ctx.sendError("喵！！呜呜呜喵~ 出错了！喵呜呜呜~")
 
@@ -166,126 +163,69 @@ module.exports = {
   },
 
   createDpsRank: async (ctx, next) => {
-
-    let DpsRankResponse = null
-    const { bossName, josbName } = ctx.request.query
-
-    const job =  getEorzeaJob(josbName)
-    const boss =  getEorzeaBoss(bossName)
-
-    if (job.ok && boss.ok) {
-      job.name = job.name.replace(/\s+/g,"");
-    
-    // DpsRankSource =  https://www.fflogs.com/zone/statistics/table/{z}/dps/{id}/{s}/8/{s}/100/1000/7/{0}/Global/{jobna}/All/0/normalized/single/0/-1/?keystone=15&dpstype={rdps}
-    // DpsRankSource = 'https://www.fflogs.com/zone/statistics/table/28/dps/1046/100/8/5/100/1000/7/0/Global/Astrologian/All/0/normalized/single/0/-1/?keystone=15&dpstype=adps'
-    // DpsRankSource = 'https://cn.fflogs.com/zone/statistics/table/32/dps/1050/100/8/3/100/1/14/0/Global/Astrologian/All/0/normalized/single/0/-1/?keystone=15&dpstype=rdps'
-    DpsRankSource = "https://cn.fflogs.com/zone/statistics/table/"+boss.zone+"/dps/"+boss.id +"/100/8/"+boss.bossCnServer+"/100/1/14/0/Global/"+ job.name +"/All/0/normalized/single/0/-1/?keystone=15&dpstype=rdps"
-
-
-    // questData = {
-    //   bossQuest: "queryhreodata",
-    //   bossId: 1046,
-    //   bossSavage: 100,
-    //   bossCnServer: 3,
-    //   bossPatch: 0,
-    //   jobName: "Astrologian",
-    //   dps_type: "rdps"
-    // }
-
-    DpsRankResponse = await fetch(DpsRankSource, { headers: { 'referer': 'https://cn.fflogs.com' } })
-
-    DpsRankResponse = await DpsRankResponse.text()
-  }else{
-    DpsRankResponse = ""
-  }
-    
-
-    // let DpsRankData = "			singleColumnSeries.data.push({ color: series10.color, name: series10.name, y: 4047.9305075723 })}} else {series.data.push(8707.959258219);if (canHavePercentileSeries) {		series99.data.push(8351.5138648352);		series95.data.push(7974.3283257208);		series75.data.push(7090.1522263676);		series50.data.push(6177.2208944802);		series25.data.push(5185.8511316847);	series10.data.push(4047.9305075723);	}}"
-
-
-
-    const percent = [10, 25, 50, 75, 95, 99, 100]
-
-    var DpsRank = []
-    var reg = null
-
-    for (let i = 0; i < percent.length; i++) {
-
-      if (i == 6) {
-
-        reg = new RegExp(/(?<=series\.data\.push\()\d+.../)
-        // reg = new RegExp(/8707/, 'g')
-
-        DpsRank[i] = DpsRankResponse.match(reg)
-        // DpsRank[i] = "1231"
-
-      } else {
-        // DpsRank[i] = /(?<=series99\.data\.push\().*?(?=\))/g
-        // reg = new RegExp(/(?<=series99\.data\.push\()\d+.../)
-        // reg = new RegExp('(?<=(series99\.data\.push\())\d+...')
-        reg = new RegExp(/series\d+\.data\.push\(([\d\.]+)\)/)
-        // var re = new RegExp("^\\d+" + 变量 + "$", "abc")
-        DpsRank[i] = DpsRankResponse.match(reg)
-
-      }
-    }
-
-    reg7 = new RegExp(/(?<=series\.data\.push\()\d+.../)
-    reg1 = new RegExp(/(?<=(series10\.data\.push\())\d+.../)
-    reg2 = new RegExp(/(?<=(series25\.data\.push\())\d+.../)
-    reg3 = new RegExp(/(?<=(series50\.data\.push\())\d+.../)
-    reg4 = new RegExp(/(?<=(series75\.data\.push\())\d+.../)
-    reg5 = new RegExp(/(?<=(series95\.data\.push\())\d+.../)
-    reg6 = new RegExp(/(?<=(series99\.data\.push\())\d+.../)
-
-
-    let send = {
-
-      job:job,
-      boss:boss,
-
-      DpsRank10 : parseFloat(DpsRankResponse.match(reg1)),
-      DpsRank25 : parseFloat(DpsRankResponse.match(reg2)),
-      DpsRank50 : parseFloat(DpsRankResponse.match(reg3)),
-      DpsRank75 : parseFloat(DpsRankResponse.match(reg4)),
-      DpsRank95 : parseFloat(DpsRankResponse.match(reg5)),
-      DpsRank99 : parseFloat(DpsRankResponse.match(reg6)),
-      DpsRank100 : parseFloat(DpsRankResponse.match(reg7)),
-      
-
-    }
-
     try {
+      let DpsRankResponse = null
+      const { bossName, josbName, type } = ctx.request.query
 
+      const job = getEorzeaJob(josbName)
+      const boss = getEorzeaBoss(bossName)
 
+      if (job.ok && boss.ok) {
+        job.name = job.name.replace(/\s+/g, "");
 
+        // DpsRankSource =  https://www.fflogs.com/zone/statistics/table/{z}/dps/{id}/{s}/8/{s}/100/1000/7/{0}/Global/{jobna}/All/0/normalized/single/0/-1/?keystone=15&dpstype={rdps}
+        // DpsRankSource = 'https://www.fflogs.com/zone/statistics/table/28/dps/1046/100/8/5/100/1000/7/0/Global/Astrologian/All/0/normalized/single/0/-1/?keystone=15&dpstype=adps'
+        // DpsRankSource = 'https://cn.fflogs.com/zone/statistics/table/32/dps/1050/100/8/3/100/1/14/0/Global/Astrologian/All/0/normalized/single/0/-1/?keystone=15&dpstype=rdps'
+        DpsRankSource = "https://cn.fflogs.com/zone/statistics/table/" + boss.zone + "/dps/" + boss.id + "/100/8/" + boss.bossCnServer + "/100/1/14/0/Global/" + job.name + "/All/0/normalized/single/0/-1/?keystone=15&dpstype=rdps"
 
-      // var DpsRank99 = /(?<=series99\.data\.push\().*?(?=\))/g
+        // questData = {
+        //   zoneid: boss.zone,
+        //   bossId: boss.id,
+        //   bossSavage: 100,
+        //   bossCnServer: boss.bossCnServer,
+        //   bossPatch: 0,
+        //   jobName: job.name,
+        //   dps_type: "rdps"
+        // }
+
+        DpsRankResponse = await fetch(DpsRankSource, { headers: { 'referer': 'https://cn.fflogs.com' } })
+        DpsRankResponse = await DpsRankResponse.text()
+      } else {
+        DpsRankResponse = ""
+      }
+
+      const percent = [10, 25, 50, 75, 95, 99, 100]
+
+      var DpsRank = []
+      var reg = null
+
+      //dps 10 ~ 99
+      reg = /series(\d+)\.data\.push\(([\d\.]+)\)/g
+      Percent = Array.from(DpsRankResponse.matchAll(reg)).reduce((acc, item) => {
+        acc[item[1]] = item[2]
+        return acc
+      }, {})
+
+      //dps 100
+      reg = new RegExp(/series\.data\.push\(([\d\.]+)\)/)
+      Percent["100"] = DpsRankResponse.match(reg)[1]
+
+      let send = {
+        job,
+        boss,
+        Percent,
+      }
 
       ctx.sendOk(send)
-
 
     } catch (e) {
       ctx.logger.error('sdo服务异常')
       ctx.sendError("喵！！呜呜呜喵~ 出错了！喵呜呜呜~")
     }
-
-    // if (DpsRankResponse.ok) {
-
-    //   DpsRankResponse = await JSON.stringify(DpsRankResponse)
-
-    //   ctx.sendOk(DpsRankResponse)
-
-    //   ctx.logger.info(DpsRankResponse)
-
-    //   return next()
-    // }
-
-
-
-
     return next()
   },
+
+
 
 
 

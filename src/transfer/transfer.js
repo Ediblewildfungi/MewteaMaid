@@ -470,20 +470,21 @@ const transfer = class Transfer {
 
                     var levelData = ""
 
-                    if (raid_data.boss.cnName) {
-                        if (raid_data.job.cnName) {
+                    if (raid_data.job.cnName) {
+                        if (raid_data.boss.cnName) {
                             levelData = raid_data.job.cnName + "的<" + raid_data.boss.cnName + ">数据喵~ \r\n"
-                            levelData += "10% ->" + raid_data.DpsRank10 + "\r\n"
-                            levelData += "25% ->" + raid_data.DpsRank25 + "\r\n"
-                            levelData += "50% ->" + raid_data.DpsRank50 + "\r\n"
-                            levelData += "75% ->" + raid_data.DpsRank75 + "\r\n"
-                            levelData += "95% ->" + raid_data.DpsRank95 + "\r\n"
-                            levelData += "TOP ->" + raid_data.DpsRank100 + "\r\n"
+                            levelData += "10% -> " + raid_data.Percent["10"] + "\r\n"
+                            levelData += "25% -> " + raid_data.Percent["25"] + "\r\n"
+                            levelData += "50% -> " + raid_data.Percent["50"] + "\r\n"
+                            levelData += "75% -> " + raid_data.Percent["75"] + "\r\n"
+                            levelData += "95% -> " + raid_data.Percent["95"] + "\r\n"
+                            levelData += "99% -> " + raid_data.Percent["99"] + "\r\n"
+                            levelData += "TOP -> " + raid_data.Percent["100"] + "\r\n"
                         } else {
-                            levelData = "职业木有找到"
+                            levelData = "木有找到数据喵，这是什么过气boss"
                         }
                     } else {
-                        levelData = "木有找到数据喵，这是什么过气boss"
+                        levelData = "职业木有找到"
                     }
 
 
