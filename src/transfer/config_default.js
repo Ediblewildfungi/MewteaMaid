@@ -6,6 +6,9 @@ module.exports = {
     },
     server: {
 
+        //运行酷Q机器的IP地址
+        host: "localhost",
+
         //KQ服务端口
         KQ_PORT: 5000
     },

@@ -26,7 +26,7 @@ class KQ_Accept {
         res.writeHead(200, { "Content-Type": "text/plain" })
 
         //接收传入的数据并显示
-        // console.log(content)
+        console.log(content)
 
         var message_data = JSON.parse(content)
 
@@ -110,7 +110,7 @@ class KQ_Accept {
 
               //http post参数
               var REmessageOptions = {
-                host: '192.168.199.100',
+                host: config.server.host,
                 port: 5700,
                 path: RErouter,
                 method: 'POST',
@@ -140,7 +140,7 @@ class KQ_Accept {
 
                   //格式化返回参数
                   content = JSON.parse(content)
-                  console.log("--> status: " + content.status + " message_id: " + content.data.message_id + " retcode: " + content.retcode)
+                  console.log("--> status: " + content.status +  " retcode: " + content.retcode)
                 })
                 req.on('error', function (err) {
                   // handle error.
