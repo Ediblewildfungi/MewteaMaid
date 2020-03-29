@@ -219,13 +219,46 @@ module.exports = {
       ctx.sendOk(send)
 
     } catch (e) {
-      ctx.logger.error('sdo服务异常')
+      ctx.logger.error('logs服务异常')
       ctx.sendError("喵！！呜呜呜喵~ 出错了！喵呜呜呜~")
     }
     return next()
   },
 
+  createDpsCheck: async (ctx, next) => {
 
+    const { serverName, userName , bossName } = ctx.request.query
+
+    const ans = getEorzeaServerChID(serverName)
+
+    if (ans.areaId) {
+      
+      const getLogsUidSource = 'https://cn.fflogs.com/character/cn/'+ serverName +'/'+ userName +'?'
+      getLogsUidResponse = await fetch(getLogsUidSource)
+      getLogsUidResponse = await getLogsUidResponse.text()
+
+      reg = /series(\d+)\.data\.push\(([\d\.]+)\)/g
+      
+      LogsUid = DpsRankResponse.match(reg)[1]
+      
+
+    }
+
+    // var characterID = 12124402;
+    // https://cn.fflogs.com/character/rankings-zone/12124402/dps/3/29/0/101/8/5/Any/rankings/0/0?dpstype=rdps
+    
+    // '/character/rankings-zone/' + characterID + '/' + filterPlayerMetric + '/' + raidType + '/' + filterZone + '/' + filterBoss  + '/' + filterDifficulty + '/' + filterSize + '/' + filterPartition + '/' + filterSpec +  '/' + filterMetricCompare + '/' + filterByBracket + '/' + includePrivateLogs + "?dpstype=" + filterDPSType
+
+}	
+
+
+    try {
+
+    } catch (e) {
+      ctx.logger.error('logs服务异常')
+      ctx.sendError("喵！！呜呜呜喵~ 出错了！喵呜呜呜~")
+    }
+  },
 
 
 
