@@ -652,15 +652,15 @@ const eorzeaBoss = [
                 "id": 1040,
                 "name": "Byakko",
                 "cnName": "极白虎",
-                "nickname": ["极白虎","白虎"],
-                "bossCnServer":3
+                "nickname": ["极白虎", "白虎"],
+                "bossCnServer": 3
             },
             {
                 "id": 1041,
                 "name": "Tsukuyomi",
                 "cnName": "极月读",
-                "nickname": ["极月读","月读"],
-                "bossCnServer":3
+                "nickname": ["极月读", "月读"],
+                "bossCnServer": 3
             },
             {
                 "id": 1043,
@@ -672,8 +672,8 @@ const eorzeaBoss = [
                 "id": 1044,
                 "name": "Seiryu",
                 "cnName": "极青龙",
-                "nickname": ["极青龙","青龙"],
-                "bossCnServer":3
+                "nickname": ["极青龙", "青龙"],
+                "bossCnServer": 3
             }
         ],
         "brackets": {
@@ -885,13 +885,14 @@ const eorzeaBoss = [
         "id": 19,
         "name": "The Unending Coil of Bahamut",
         "frozen": true,
+        "difficulty":100,
         "encounters": [
             {
                 "id": 1039,
                 "name": "Bahamut Prime",
-                "cnName": "绝巴哈姆特-旧",
-                "nickname": ["绝巴哈姆特-旧"],
-                "bossCnServer":3
+                "cnName": "绝巴哈姆特-4.0",
+                "nickname": ["绝巴哈姆特-4.0"],
+                "bossCnServer": 3
             }
         ],
         "brackets": {
@@ -1103,13 +1104,14 @@ const eorzeaBoss = [
         "id": 23,
         "name": "The Weapon's Refrain",
         "frozen": true,
+        "difficulty": 100,
         "encounters": [
             {
                 "id": 1042,
                 "name": "The Ultima Weapon",
-                "cnName": "绝究极神兵",
-                "nickname": ["究极神兵","绝神兵","绝究极神兵","神兵"],
-                "amount":"amount"
+                "cnName": "绝究极神兵-4.0",
+                "nickname": ["究极神兵-4.0", "绝神兵-4.0", "绝究极神兵-4.0", "神兵-4.0"],
+                "amount": "amount"
             }
         ],
         "brackets": {
@@ -1158,30 +1160,31 @@ const eorzeaBoss = [
         "id": 24,
         "name": "Omega: Alphascape (Story)",
         "frozen": true,
+        "difficulty":100,
         "encounters": [
             {
                 "id": 56,
                 "name": "Chaos",
                 "cnName": "",
-                "nickname": ["0"],
+                "nickname": ["卡奥斯","o9s"],
             },
             {
                 "id": 57,
                 "name": "Midgardsormr",
                 "cnName": "",
-                "nickname": ["0"],
+                "nickname": ["o10s"],
             },
             {
                 "id": 58,
                 "name": "Omega",
                 "cnName": "",
-                "nickname": ["0"],
+                "nickname": ["o11s"],
             },
             {
                 "id": 59,
                 "name": "Omega-M and Omega-F",
                 "cnName": "",
-                "nickname": ["0"],
+                "nickname": ["o12s"],
             }
         ],
         "brackets": {
@@ -1458,6 +1461,8 @@ const eorzeaBoss = [
         "id": 28,
         "name": "Trials (Extreme)",
         "frozen": false,
+        "difficulty":100,
+        
         "encounters": [
             {
                 "id": 1045,
@@ -1546,12 +1551,13 @@ const eorzeaBoss = [
         "id": 29,
         "name": "Eden's Gate",
         "frozen": false,
+        "difficulty":101,
         "encounters": [
             {
                 "id": 65,
                 "name": "Eden Prime",
                 "cnName": "至尊伊甸",
-                "nickname": ["至尊伊甸", "1S", "e1s", "E1S"]
+                "nickname": ["至尊伊甸", "1S", "1s", "e1s", "E1S"]
 
 
 
@@ -1560,19 +1566,19 @@ const eorzeaBoss = [
                 "id": 66,
                 "name": "Voidwalker",
                 "cnName": "虚无行者",
-                "nickname": ["虚无行者", "2S", "e2s", "E2S"]
+                "nickname": ["虚无行者", "2S", "2s", "e2s", "E2S"]
             },
             {
                 "id": 67,
                 "name": "Leviathan",
                 "cnName": "利维亚桑",
-                "nickname": ["利维亚桑", "3S", "e3s", "E3S"]
+                "nickname": ["利维亚桑", "3S", "3s", "e3s", "E3S"]
             },
             {
                 "id": 68,
                 "name": "Titan",
                 "cnName": "泰坦",
-                "nickname": ["泰坦", "4S", "e4s", "E4S"]
+                "nickname": ["泰坦", "4S", "4s", "e4s", "E4S"]
             }
         ],
         "brackets": {
@@ -1631,21 +1637,22 @@ const eorzeaBoss = [
         "id": 30,
         "name": "Ultimates (Stormblood)",
         "frozen": false,
+        "difficulty":100,
         "encounters": [
             {
                 "id": 1047,
                 "name": "The Unending Coil of Bahamut",
                 "cnName": "绝巴哈姆特",
-                "nickname": ["绝巴哈", "巴哈"],
-                "bossCnServer":3
+                "nickname": ["绝巴哈", "巴哈","绝巴哈姆特","巴哈姆特"],
+                "bossCnServer": 3
 
             },
             {
                 "id": 1048,
                 "name": "The Weapon's Refrain",
                 "cnName": "绝究极神兵",
-                "nickname": ["究极神兵", "究极"],
-                "bossCnServer":3
+                "nickname": ["究极神兵", "究极","绝究极神兵","绝神兵","神兵"],
+                "bossCnServer": 3
             }
         ],
         "brackets": {
@@ -1751,13 +1758,14 @@ const eorzeaBoss = [
         "id": 32,
         "name": "Ultimates",
         "frozen": false,
+        "difficulty":100,
         "encounters": [
             {
                 "id": 1050,
                 "name": "The Epic of Alexander",
                 "cnName": "绝亚历山大",
                 "nickname": ["绝亚", "亚历山大"],
-                "bossCnServer":3
+                "bossCnServer": 3
 
             }
         ],
@@ -1881,12 +1889,13 @@ const getEorzeaBoss = (bossNickName) => {
 
     let boss = {
         ok: false,
-        bossCnServer:5
+        bossCnServer: 5,
+        difficulty:101
     }
 
     // 29-伊甸园 28-5.0蛮神 30-巴哈/究极 31-亚历山大
 
-    const zoneId = [23,29, 28, 30, 31, 32]
+    const zoneId = [23, 29, 28, 30, 31, 32]
 
     if (bossNickName) {
 
@@ -1907,10 +1916,13 @@ const getEorzeaBoss = (bossNickName) => {
                                 boss.name = eorzeaBoss[x].encounters[y].name
                                 boss.cnName = eorzeaBoss[x].encounters[y].cnName
 
-                                if (eorzeaBoss[x].encounters[y].bossCnServer ) {
+                                if (eorzeaBoss[x].encounters[y].bossCnServer) {
 
                                     boss.bossCnServer = eorzeaBoss[x].encounters[y].bossCnServer
-                                
+
+                                }
+                                if (eorzeaBoss[x].difficulty) {
+                                    boss.difficulty = eorzeaBoss[x].difficulty
                                 }
                                 // return 0;
                                 break;

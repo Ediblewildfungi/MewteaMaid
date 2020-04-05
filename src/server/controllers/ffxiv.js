@@ -176,12 +176,13 @@ module.exports = {
         // DpsRankSource =  https://www.fflogs.com/zone/statistics/table/{z}/dps/{id}/{s}/8/{s}/100/1000/7/{0}/Global/{jobna}/All/0/normalized/single/0/-1/?keystone=15&dpstype={rdps}
         // DpsRankSource = 'https://www.fflogs.com/zone/statistics/table/28/dps/1046/100/8/5/100/1000/7/0/Global/Astrologian/All/0/normalized/single/0/-1/?keystone=15&dpstype=adps'
         // DpsRankSource = 'https://cn.fflogs.com/zone/statistics/table/32/dps/1050/100/8/3/100/1/14/0/Global/Astrologian/All/0/normalized/single/0/-1/?keystone=15&dpstype=rdps'
-        DpsRankSource = "https://cn.fflogs.com/zone/statistics/table/" + boss.zone + "/dps/" + boss.id + "/100/8/" + boss.bossCnServer + "/100/1/14/0/Global/" + job.name + "/All/0/normalized/single/0/-1/?keystone=15&dpstype=rdps"
-
+        DpsRankSource = "https://cn.fflogs.com/zone/statistics/table/" + boss.zone + "/dps/" + boss.id + "/" + boss.difficulty + "/8/" + boss.bossCnServer + "/100/1/14/0/Global/" + job.name + "/All/0/normalized/single/0/-1/?keystone=15&dpstype=rdps"
+        // DpsRankSourc3 = "https://cn.fflogs.com/zone/statistics/table/    30           /dps/     1048      /101/8/       3                 /100/1/14/0/Global/BlackMage       /All/0/normalized/single/0/-1/?keystone=15&dpstype=rdps"
+        // DpsRankSource = "https://cn.fflogs.com/zone/statistics/table/30/dps/1048/100/8/3/100/1/14/0/Global/BlackMage/All/0/normalized/single/0/-1/?keystone=15&dpstype=rdps"
         // questData = {
         //   zoneid: boss.zone,
         //   bossId: boss.id,
-        //   bossSavage: 100,
+        //   bossSavage: 100/101,
         //   bossCnServer: boss.bossCnServer,
         //   bossPatch: 0,
         //   jobName: job.name,
@@ -194,7 +195,7 @@ module.exports = {
         DpsRankResponse = ""
       }
 
-      const percent = [10, 25, 50, 75, 95, 99, 100]
+      // const percent = [10, 25, 50, 75, 95, 99, 100]
 
       var DpsRank = []
       var reg = null
@@ -202,13 +203,24 @@ module.exports = {
       //dps 10 ~ 99
       reg = /series(\d+)\.data\.push\(([\d\.]+)\)/g
       Percent = Array.from(DpsRankResponse.matchAll(reg)).reduce((acc, item) => {
-        acc[item[1]] = item[2]
+
+        try {
+          acc[item[1]] = parseFloat(item[2]).toFixed(2)
+        } catch (error) {
+          acc[item[1]] = "无数据"
+        }
+
         return acc
       }, {})
 
       //dps 100
       reg = new RegExp(/series\.data\.push\(([\d\.]+)\)/)
-      Percent["100"] = DpsRankResponse.match(reg)[1]
+      try {
+        Percent["100"] = parseFloat(DpsRankResponse.match(reg)[1]).toFixed(2)
+      } catch (error) {
+        Percent["100"] = "无数据"
+      }
+
 
       let send = {
         job,
@@ -220,39 +232,39 @@ module.exports = {
 
     } catch (e) {
       ctx.logger.error('logs服务异常')
-      ctx.sendError("喵！！呜呜呜喵~ 出错了！喵呜呜呜~")
+      ctx.sendError("喵！！呜呜呜喵~ 出错了！喵呜呜呜~" + e)
     }
     return next()
   },
 
-//   createDpsCheck: async (ctx, next) => {
+  //   createDpsCheck: async (ctx, next) => {
 
-//     const { serverName, userName , bossName } = ctx.request.query
+  //     const { serverName, userName , bossName } = ctx.request.query
 
-//     const ans = getEorzeaServerChID(serverName)
+  //     const ans = getEorzeaServerChID(serverName)
 
-//     if (ans.areaId) {
-      
-//       const getLogsUidSource = 'https://cn.fflogs.com/character/cn/'+ serverName +'/'+ userName +'?'
-//       getLogsUidResponse = await fetch(getLogsUidSource)
-//       getLogsUidResponse = await getLogsUidResponse.text()
+  //     if (ans.areaId) {
 
-//       reg = /series(\d+)\.data\.push\(([\d\.]+)\)/g
-      
-//       LogsUid = DpsRankResponse.match(reg)[1]
-      
+  //       const getLogsUidSource = 'https://cn.fflogs.com/character/cn/'+ serverName +'/'+ userName +'?'
+  //       getLogsUidResponse = await fetch(getLogsUidSource)
+  //       getLogsUidResponse = await getLogsUidResponse.text()
 
-//     }
+  //       reg = /series(\d+)\.data\.push\(([\d\.]+)\)/g
 
-//     // var characterID = 12124402;
-//     // https://cn.fflogs.com/character/rankings-zone/12124402/dps/3/29/0/101/8/5/Any/rankings/0/0?dpstype=rdps
-    
-//     // '/character/rankings-zone/' + characterID + '/' + filterPlayerMetric + '/' + raidType + '/' + filterZone + '/' + filterBoss  + '/' + filterDifficulty + '/' + filterSize + '/' + filterPartition + '/' + filterSpec +  '/' + filterMetricCompare + '/' + filterByBracket + '/' + includePrivateLogs + "?dpstype=" + filterDPSType
-
-// }	
+  //       LogsUid = DpsRankResponse.match(reg)[1]
 
 
- 
+  //     }
+
+  //     // var characterID = 12124402;
+  //     // https://cn.fflogs.com/character/rankings-zone/12124402/dps/3/29/0/101/8/5/Any/rankings/0/0?dpstype=rdps
+
+  //     // '/character/rankings-zone/' + characterID + '/' + filterPlayerMetric + '/' + raidType + '/' + filterZone + '/' + filterBoss  + '/' + filterDifficulty + '/' + filterSize + '/' + filterPartition + '/' + filterSpec +  '/' + filterMetricCompare + '/' + filterByBracket + '/' + includePrivateLogs + "?dpstype=" + filterDPSType
+
+  // }	
+
+
+
 
 
 
