@@ -165,10 +165,16 @@ module.exports = {
   createDpsRank: async (ctx, next) => {
     try {
       let DpsRankResponse = null
-      const { bossName, josbName, type } = ctx.request.query
+      const { bossName, josbName, dpsType } = ctx.request.query
 
       const job = getEorzeaJob(josbName)
       const boss = getEorzeaBoss(bossName)
+
+      let sdpsType = "rdps"
+
+      if (dpsType == "adps") {
+        sdpsType = "pdps"
+      } 
 
       if (job.ok && boss.ok) {
         job.name = job.name.replace(/\s+/g, "");
@@ -176,7 +182,7 @@ module.exports = {
         // DpsRankSource =  https://www.fflogs.com/zone/statistics/table/{z}/dps/{id}/{s}/8/{s}/100/1000/7/{0}/Global/{jobna}/All/0/normalized/single/0/-1/?keystone=15&dpstype={rdps}
         // DpsRankSource = 'https://www.fflogs.com/zone/statistics/table/28/dps/1046/100/8/5/100/1000/7/0/Global/Astrologian/All/0/normalized/single/0/-1/?keystone=15&dpstype=adps'
         // DpsRankSource = 'https://cn.fflogs.com/zone/statistics/table/32/dps/1050/100/8/3/100/1/14/0/Global/Astrologian/All/0/normalized/single/0/-1/?keystone=15&dpstype=rdps'
-        DpsRankSource = "https://cn.fflogs.com/zone/statistics/table/" + boss.zone + "/dps/" + boss.id + "/" + boss.difficulty + "/8/" + boss.bossCnServer + "/100/1/14/0/Global/" + job.name + "/All/0/normalized/single/0/-1/?keystone=15&dpstype=rdps"
+        DpsRankSource = "https://cn.fflogs.com/zone/statistics/table/" + boss.zone + "/dps/" + boss.id + "/" + boss.difficulty + "/8/" + boss.bossCnServer + "/100/1/14/0/Global/" + job.name + "/All/0/normalized/single/0/-1/?keystone=15&dpstype=" + sdpsType
         // DpsRankSourc3 = "https://cn.fflogs.com/zone/statistics/table/    30           /dps/     1048      /101/8/       3                 /100/1/14/0/Global/BlackMage       /All/0/normalized/single/0/-1/?keystone=15&dpstype=rdps"
         // DpsRankSource = "https://cn.fflogs.com/zone/statistics/table/30/dps/1048/100/8/3/100/1/14/0/Global/BlackMage/All/0/normalized/single/0/-1/?keystone=15&dpstype=rdps"
         // questData = {

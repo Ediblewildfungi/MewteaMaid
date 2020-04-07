@@ -26,7 +26,7 @@ class KQ_Accept {
         res.writeHead(200, { "Content-Type": "text/plain" })
 
         //接收传入的数据并显示
-        console.log(content)
+        // console.log(content)
 
         var message_data = JSON.parse(content)
 
@@ -49,10 +49,12 @@ class KQ_Accept {
           //如果传入的消息为好友请求/加群请求
         } else if (message_data.post_type === "request") {
 
-
-
           // 直接将通知内容转为消息传入
           message_data.message == message_data.request_type
+        }
+        else if (message_data.post_type === "meta_event") {
+          // 酷Q HTTP服务启动 
+          message_data.message = "酷Q HTTP服务启动 "
         } else {
 
           message_data.message = "未定义消息类型"
@@ -64,8 +66,10 @@ class KQ_Accept {
         //            self_id,  user_id,   message_type,  group_id,      message
         // console.log("<-- " + message_data.user_id + " < " + message_data.message_type + " --< " + message_data.message)
 
-        //消息日志记录
-        logger.info(`KQ_Accept - Accept - BOOTID:${message_data.self_id} UID:${message_data.user_id} message: ${message_data.message}`)
+        if (message_data.post_type !== "meta_event") {
+          //消息日志记录
+          logger.info(`KQ_Accept - Accept - BOOTID:${message_data.self_id} UID:${message_data.user_id} message: ${message_data.message}`)
+        }
 
         //回复消息处理
         //群消息处理
@@ -77,7 +81,7 @@ class KQ_Accept {
           //消息传入语言处理单元
           const getTransfer = new transfer("KQ_Accept", message_data.post_type, message_data.self_id, message_data.user_id, message_data.message_type, message_data.group_id, message_data.message)
 
-             getTransfer.REmessage.then(function (value) {
+          getTransfer.REmessage.then(function (value) {
             if (value !== 0) {
 
               //返回值操作
@@ -140,7 +144,7 @@ class KQ_Accept {
 
                   //格式化返回参数
                   content = JSON.parse(content)
-                  console.log("--> status: " + content.status +  " retcode: " + content.retcode)
+                  console.log("--> status: " + content.status + " retcode: " + content.retcode)
                 })
                 req.on('error', function (err) {
                   // handle error.
@@ -152,11 +156,22 @@ class KQ_Accept {
             }
           })
         }
+
+        else if (message_data.post_type == "meta_event") {
+
+          console.log("酷Q HTTP服务启动 服务妹抖ID：" + message_data.self_id)
+          logger.info(`KQ_Accept - Accept - BOOTID:${message_data.self_id}  KQ-HTTP START/RESTART`)
+
+        }
+
         //未知消息 
         else {
-          
+
           console.log("消息类型未知" + JSON.stringify(message_data))
         }
+
+
+
         res.end()
       })
 

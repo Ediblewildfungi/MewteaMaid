@@ -454,7 +454,14 @@ const transfer = class Transfer {
             var josbName = messageArr[1]
             var bossName = messageArr[2]
 
-            var SrcDpsRankAddress = DpsrankSrc + "?josbName=" + josbName + "&bossName=" + bossName
+            var dpsType = "rdps"
+
+            if (messageArr[3] == "adps") {
+                dpsType = "adps"
+            }
+
+
+            var SrcDpsRankAddress = DpsrankSrc + "?josbName=" + josbName + "&bossName=" + bossName + "&dpsType=" + dpsType
 
             //get 请求核心服务
             http.get(SrcDpsRankAddress, function (req, res) {
@@ -472,7 +479,7 @@ const transfer = class Transfer {
 
                     if (raid_data.job.cnName) {
                         if (raid_data.boss.cnName) {
-                            levelData = raid_data.job.cnName + "的<" + raid_data.boss.cnName + ">数据喵~ \r\n"
+                            levelData = raid_data.job.cnName + "的<" + raid_data.boss.cnName + "> ["+ dpsType +"] 数据喵~ \r\n"
                             levelData += "10% -> " + raid_data.Percent["10"] + "\r\n"
                             levelData += "25% -> " + raid_data.Percent["25"] + "\r\n"
                             levelData += "50% -> " + raid_data.Percent["50"] + "\r\n"
