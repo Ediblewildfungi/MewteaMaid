@@ -67,7 +67,7 @@ const eorzeaJobs = [
     "id": 11,
     "name": "Summoner",
     "cnName": "召唤师",
-    "nickname": ["召唤师","召","召唤师", "巴哈"]
+    "nickname": ["召唤师","召","召唤", "巴哈"]
   },
   {
     "id": 12,
