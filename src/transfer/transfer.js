@@ -70,8 +70,8 @@ const transfer = class Transfer {
             return this.EorzeaDpsRank(this.re_type, this.re_id, this.messageArr)
         } else if (this.message.substring(0, 3) == "喵零式") {
             return this.EorzeaRaidInfo(this.re_type, this.re_id, this.messageArr)
-        } else if (this.message == "喵预留2") {
-            return this.OtherMessage(this.re_type, this.re_id)
+        } else if (this.message == "喵帮助") {
+            return this.MewHelp(this.re_type, this.re_id)
 
             // 群成员增加
         } else if (this.post_type == "notice" && this.message == "group_increase") {
@@ -85,6 +85,33 @@ const transfer = class Transfer {
             return this.OtherMessage()
         }
     }
+
+    MewHelp(re_type, re_id) {
+        const GroupUserIncreasePromise = new Promise(function (resolve, reject) {
+
+            var re_message = "目前支持的功能有: \n"
+            re_message = re_message + "喵一言 \n"
+            re_message = re_message + "喵暖暖 \n"
+            re_message = re_message + "喵天气 地球城市/艾欧泽亚城市 \n"
+            re_message = re_message + "喵天气 艾欧泽亚城市 天气类型 \n"
+            re_message = re_message + "喵输出 职业名(昵称) 副本名(简称)	 \n"
+            re_message = re_message + "喵零式 服务器 玩家名称	 \n"
+            re_message = re_message + "喵出警 还没开发喵	 \n"
+            re_message = re_message + "喵色图 （？？ 不存在的 \n"
+            re_message = re_message + "喵你说 （限定"
+            var REdata = {
+                re_type,
+                re_id,
+                re_message,
+            }
+            resolve(REdata)
+        })
+
+        //返回函数
+        return GroupUserIncreasePromise
+    }
+    
+
     //一言处理
     Hitokoto(re_type, re_id) {
         const HitokotoHttp = new Promise(function (resolve, reject) {
@@ -359,7 +386,7 @@ const transfer = class Transfer {
     GroupUserIncrease(re_type, re_id) {
         const GroupUserIncreasePromise = new Promise(function (resolve, reject) {
 
-            var re_message = "欢迎~"
+            var re_message = "欢迎喵~"
 
             var REdata = {
                 re_type,
@@ -488,7 +515,7 @@ const transfer = class Transfer {
                             levelData += "99% -> " + raid_data.Percent["99"] + "\r\n"
                             levelData += "TOP -> " + raid_data.Percent["100"] + "\r\n"
                         } else {
-                            levelData = "木有找到数据喵，这是什么过气boss"
+                            levelData = "木有找到数据喵，这是什么过气boss喵~"
                         }
                     } else {
                         levelData = "职业木有找到"
