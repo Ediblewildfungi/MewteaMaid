@@ -1818,19 +1818,27 @@ const eorzeaBoss = [
         "encounters": [
             {
                 "id": 69,
-                "name": "Ramuh"
+                "name": "Ramuh",
+                "cnName": "拉姆",
+                "nickname": ["拉姆", "5S", "5s", "e5s", "E5S"],
             },
             {
                 "id": 70,
-                "name": "Ifrit and Garuda"
+                "name": "Ifrit and Garuda",
+                "cnName": "伊芙利特与迦楼罗",
+                "nickname": ["伊芙利特与迦楼罗", "6S", "6s", "e6s", "E6S"],
             },
             {
                 "id": 71,
-                "name": "The Idol of Darkness"
+                "name": "The Idol of Darkness",
+                "cnName": "暗之巫女",
+                "nickname": ["暗之巫女", "7S", "7s", "e7s", "E7S"],
             },
             {
                 "id": 72,
-                "name": "Shiva"
+                "name": "Shiva",
+                "cnName": "希瓦",
+                "nickname": ["希瓦", "8S", "8s", "e8s", "E8S"],
             }
         ],
         "brackets": {
