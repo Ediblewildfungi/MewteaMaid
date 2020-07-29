@@ -1821,24 +1821,28 @@ const eorzeaBoss = [
                 "name": "Ramuh",
                 "cnName": "拉姆",
                 "nickname": ["拉姆", "5S", "5s", "e5s", "E5S"],
+                "bossCnServer": 3
             },
             {
                 "id": 70,
                 "name": "Ifrit and Garuda",
                 "cnName": "伊芙利特与迦楼罗",
                 "nickname": ["伊芙利特与迦楼罗", "6S", "6s", "e6s", "E6S"],
+                "bossCnServer": 3
             },
             {
                 "id": 71,
                 "name": "The Idol of Darkness",
                 "cnName": "暗之巫女",
                 "nickname": ["暗之巫女", "7S", "7s", "e7s", "E7S"],
+                "bossCnServer": 3
             },
             {
                 "id": 72,
                 "name": "Shiva",
                 "cnName": "希瓦",
                 "nickname": ["希瓦", "8S", "8s", "e8s", "E8S"],
+                "bossCnServer": 3
             }
         ],
         "brackets": {
@@ -1903,7 +1907,7 @@ const getEorzeaBoss = (bossNickName) => {
 
     // 29-伊甸园 28-5.0蛮神 30-巴哈/究极 31-亚历山大
 
-    const zoneId = [23, 29, 28, 30, 31, 32]
+    const zoneId = [23, 29, 28, 30, 31, 32,33]
 
     if (bossNickName) {
 
