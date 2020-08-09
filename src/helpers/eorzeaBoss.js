@@ -1485,14 +1485,14 @@ const eorzeaBoss = [
             {
                 "id": 1051,
                 "name": "The Ruby Weapon I",
-                "cnName": "RubyWeapon",
-                "nickname": ["RubyWeapon"]
+                "cnName": "红玉神兵门神",
+                "nickname": ["RubyWeapon","红玉神兵1","红玉神兵"]
             },
             {
                 "id": 1052,
                 "name": "The Ruby Weapon II",
-                "cnName": "RubyWeapon2",
-                "nickname": ["RubyWeapon2"]
+                "cnName": "红玉神兵本体",
+                "nickname": ["RubyWeapon2","红玉神兵2","红玉神兵本体"]
             }
         ],
         "brackets": {
