@@ -145,7 +145,7 @@ module.exports = {
 
     questData = {
       method: "queryhreodata",
-      Stage: 2,
+      Stage: 3,
       Name: userName,
       AreaId: ans.areaid,
       GroupId: ans.serverid,
@@ -174,7 +174,7 @@ module.exports = {
 
       if (dpsType == "adps") {
         sdpsType = "pdps"
-      } 
+      }
 
       if (job.ok && boss.ok) {
         job.name = job.name.replace(/\s+/g, "");
@@ -243,31 +243,10 @@ module.exports = {
     return next()
   },
 
-  //   createDpsCheck: async (ctx, next) => {
-
-  //     const { serverName, userName , bossName } = ctx.request.query
-
-  //     const ans = getEorzeaServerChID(serverName)
-
-  //     if (ans.areaId) {
-
-  //       const getLogsUidSource = 'https://cn.fflogs.com/character/cn/'+ serverName +'/'+ userName +'?'
-  //       getLogsUidResponse = await fetch(getLogsUidSource)
-  //       getLogsUidResponse = await getLogsUidResponse.text()
-
-  //       reg = /series(\d+)\.data\.push\(([\d\.]+)\)/g
-
-  //       LogsUid = DpsRankResponse.match(reg)[1]
+  fetchUniversalis: async (ctx, next) => {
 
 
-  //     }
-
-  //     // var characterID = 12124402;
-  //     // https://cn.fflogs.com/character/rankings-zone/12124402/dps/3/29/0/101/8/5/Any/rankings/0/0?dpstype=rdps
-
-  //     // '/character/rankings-zone/' + characterID + '/' + filterPlayerMetric + '/' + raidType + '/' + filterZone + '/' + filterBoss  + '/' + filterDifficulty + '/' + filterSize + '/' + filterPartition + '/' + filterSpec +  '/' + filterMetricCompare + '/' + filterByBracket + '/' + includePrivateLogs + "?dpstype=" + filterDPSType
-
-  // }	
+  },
 
 
 

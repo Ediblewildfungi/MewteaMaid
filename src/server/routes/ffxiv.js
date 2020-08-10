@@ -15,4 +15,7 @@ router.get('/concert', ffxivController.createConcertInfo)
 router.get('/raid', ffxivController.createRaidInfo)
 
 router.get('/dpsrank', ffxivController.createDpsRank)
+
+router.get('/universalis', ffxivController.fetchUniversalis)
+
 module.exports = router
