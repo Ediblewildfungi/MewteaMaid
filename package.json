@@ -8,6 +8,7 @@
     "dev": "node -r dotenv/config src/server/main.js dotenv_config_path=.env.dev",
     "start": "node -r dotenv/config src/server/main.js",
     "kqa": "node -r dotenv/config src/transfer/KQ_accept.js",
+    "mia": "node -r dotenv/config src/transfer/MiraiApiHttp_accept.js",
     "commit": "git-cz",
     "test": "jest"
   },
