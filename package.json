@@ -44,6 +44,6 @@
     "koa-json": "^2.0.2",
     "koa-logger": "^3.2.1",
     "mongodb": "^3.5.9",
-    "node-fetch": "^2.6.0"
+    "node-fetch": "^2.6.1"
   }
 }
