@@ -9,6 +9,7 @@
     "start": "node -r dotenv/config src/server/main.js",
     "kqa": "node -r dotenv/config src/transfer/KQ_accept.js",
     "mia": "node -r dotenv/config src/transfer/MiraiApiHttp_accept.js",
+    "miat": "node -r dotenv/config src/transfer/mirai_test.js",
     "commit": "git-cz",
     "test": "jest"
   },

@@ -4,7 +4,7 @@
  */
 const dateFormatter = date => {
   const yyyy = date.getFullYear()
-  const MM = date.getMonth()
+  const MM = date.getMonth() +1
   const dd = date.getDate()
 
   return yyyy + '-' + (MM < 10 ? '0' + MM : MM) + '-' + (dd < 10 ? '0' + dd : dd)
