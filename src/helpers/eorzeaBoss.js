@@ -1481,18 +1481,6 @@ const eorzeaBoss = [
                 "name": "Hades",
                 "cnName": "哈迪斯",
                 "nickname": ["哈迪斯", "极哈迪斯", "极哈"]
-            },
-            {
-                "id": 1051,
-                "name": "The Ruby Weapon I",
-                "cnName": "红玉神兵门神",
-                "nickname": ["RubyWeapon","红玉神兵1","红玉神兵"]
-            },
-            {
-                "id": 1052,
-                "name": "The Ruby Weapon II",
-                "cnName": "红玉神兵本体",
-                "nickname": ["RubyWeapon2","红玉神兵2","红玉神兵本体"]
             }
         ],
         "brackets": {
@@ -1614,6 +1602,7 @@ const eorzeaBoss = [
                 "compact": "Standard",
                 "default": true,
                 "area": 2
+                
             },
             {
                 "name": "Non-Standard Comps",
@@ -1847,7 +1836,357 @@ const eorzeaBoss = [
         ],
         "brackets": {
             "min": 5,
-            "max": 5.2,
+            "max": 5.4,
+            "bucket": 0.1,
+            "type": "Patch"
+        },
+        "partitions": [
+            {
+                "name": "Standard Comps",
+                "compact": "Standard",
+                "area": 1,
+                "default": true
+            },
+            {
+                "name": "Non-Standard Comps",
+                "compact": "Non-Standard",
+                "area": 1
+            },
+            {
+                "name": "Standard Comps",
+                "compact": "Standard",
+                "default": true,
+                "area": 2
+            },
+            {
+                "name": "Non-Standard Comps",
+                "compact": "Non-Standard",
+                "area": 2
+            },
+            {
+                "name": "Standard Comps",
+                "compact": "Standard",
+                "default": true,
+                "area": 3
+            },
+            {
+                "name": "Non-Standard Comps",
+                "compact": "Non-Standard",
+                "area": 3
+            },
+            {
+                "name": "Standard Comps (5.3)",
+                "compact": "Standard (5.3)",
+                "filtered_name": "5.3",
+                "area": 1
+            },
+            {
+                "name": "Non-Standard Comps (5.3)",
+                "compact": "Non-Standard (5.3)",
+                "area": 1
+            }, {
+                "name": "Standard Comps (5.3)",
+                "compact": "Standard (5.3)",
+                "filtered_name": "5.3",
+                "area": 2
+            },
+            {
+                "name": "Non-Standard Comps (5.3)",
+                "compact": "Non-Standard (5.3)",
+                "area": 2
+            },
+            {
+                "name": "Standard Comps (5.3)",
+                "compact": "Standard (5.3)",
+                "filtered_name": "5.3",
+                "area": 3,
+                "default": true
+            },
+            {
+                "name": "Non-Standard Comps (5.3)",
+                "compact": "Non-Standard (5.3)",
+                "area": 3
+            }
+        ]
+    },
+    {
+        "id": 34,
+        "name": "Trials II (Extreme)",
+        "frozen": false,
+        "encounters": [
+            {
+                "id": 1051,
+                "name": "The Ruby Weapon I",
+                "cnName": "红玉神兵门神",
+                "nickname": ["RubyWeapon","红玉神兵1","红玉神兵"],
+                "bossCnServer": 3
+                
+            },
+            {
+                "id": 1052,
+                "name": "The Ruby Weapon II",
+                "cnName": "红玉神兵本体",
+                "nickname": ["RubyWeapon2","红玉神兵2","红玉神兵本体"],
+                "bossCnServer": 3
+            },
+            {
+                "id": 1053,
+                "name": "Varis Yae Galvus",
+                "cnName": "瓦厉斯",
+                "nickname": ["瓦厉斯"],
+                "bossCnServer": 3
+            },
+            {
+                "id": 1054,
+                "name": "Warrior of Light",
+                "cnName": "",
+                "nickname": ["极光战"],
+                "bossCnServer": 3
+            }
+        ],
+        "brackets": {
+            "min": 5,
+            "max": 5.4,
+            "bucket": 0.1,
+            "type": "Patch"
+        },
+        "partitions": [
+            {
+                "name": "Standard Comps (5.0)",
+                "compact": "Standard (5.0)",
+                "filtered_name": "Pre-Savage (5.0)",
+                "area": 1
+            },
+            {
+                "name": "Non-Standard Comps (5.0)",
+                "compact": "Non-Standard (5.0)",
+                "area": 1
+            },
+            {
+                "name": "Standard Comps",
+                "compact": "Standard",
+                "filtered_name": "5.0-5.2",
+                "area": 1
+            },
+            {
+                "name": "Non-Standard Comps",
+                "compact": "Non-Standard",
+                "area": 1
+            },
+            {
+                "name": "Standard Comps",
+                "compact": "Standard",
+                "filtered_name": "5.0-5.2",
+                "area": 2
+            },
+            {
+                "name": "Non-Standard Comps",
+                "compact": "Non-Standard",
+                "area": 2
+            },
+            {
+                "name": "Standard Comps",
+                "compact": "Standard",
+                "filtered_name": "5.0-5.2",
+                "area": 3
+            },
+            {
+                "name": "Non-Standard Comps",
+                "compact": "Non-Standard",
+                "area": 3
+            },
+            {
+                "name": "Standard Comps (5.3)",
+                "compact": "Standard (5.3)",
+                "filtered_name": "5.3",
+                "area": 1
+            },
+            {
+                "name": "Non-Standard Comps (5.3)",
+                "compact": "Non-Standard (5.3)",
+                "area": 1
+            },
+            {
+                "name": "Standard Comps (5.3)",
+                "compact": "Standard (5.3)",
+                "filtered_name": "5.3",
+                "area": 2
+            },
+            {
+                "name": "Non-Standard Comps (5.3)",
+                "compact": "Non-Standard (5.3)",
+                "area": 2
+            },
+            {
+                "name": "Standard Comps (5.3)",
+                "compact": "Standard (5.3)",
+                "filtered_name": "5.3",
+                "area": 3,
+                "default": true
+            },
+            {
+                "name": "Non-Standard Comps (5.3)",
+                "compact": "Non-Standard (5.3)",
+                "area": 3
+            },
+            {
+                "name": "Standard Comps (5.4)",
+                "compact": "Standard (5.4)",
+                "filtered_name": "5.4",
+                "area": 1
+            },
+            {
+                "name": "Non-Standard Comps (5.4)",
+                "compact": "Non-Standard (5.4)",
+                "area": 1
+            },
+            {
+                "name": "Standard Comps (5.4)",
+                "compact": "Standard (5.4)",
+                "filtered_name": "5.4",
+                "area": 2,
+                "default": true
+            },
+            {
+                "name": "Non-Standard Comps (5.4)",
+                "compact": "Non-Standard (5.4)",
+                "area": 2
+            },
+            {
+                "name": "Standard Comps (5.4)",
+                "compact": "Standard (5.4)",
+                "filtered_name": "5.4",
+                "area": 3
+            },
+            {
+                "name": "Non-Standard Comps (5.4)",
+                "compact": "Non-Standard (5.4)",
+                "area": 3
+            },
+            {
+                "name": "Standard Comps (5.5)",
+                "compact": "Standard (5.5)",
+                "filtered_name": "5.5",
+                "area": 1,
+                "default": true
+            },
+            {
+                "name": "Non-Standard Comps (5.5)",
+                "compact": "Non-Standard (5.5)",
+                "area": 1
+            },
+            {
+                "name": "Standard Comps (5.5)",
+                "compact": "Standard (5.5)",
+                "filtered_name": "5.5",
+                "area": 2
+            },
+            {
+                "name": "Non-Standard Comps (5.5)",
+                "compact": "Non-Standard (5.5)",
+                "area": 2
+            },
+            {
+                "name": "Standard Comps (5.5)",
+                "compact": "Standard (5.5)",
+                "filtered_name": "5.5",
+                "area": 3
+            },
+            {
+                "name": "Non-Standard Comps (5.5)",
+                "compact": "Non-Standard (5.5)",
+                "area": 3
+            }
+        ]
+    },
+    {
+        "id": 35,
+        "name": "The Puppets' Bunker",
+        "frozen": false,
+        "encounters": [
+            {
+                "id": 2024,
+                "name": "813P-Operated Aegis Unit",
+                "cnName": "",
+                "nickname": ["0"],
+            },
+            {
+                "id": 2025,
+                "name": "Superior Flight Units",
+                "cnName": "",
+                "nickname": ["0"],
+            },
+            {
+                "id": 2026,
+                "name": "905P-Operated Heavy Artillery Unit",
+                "cnName": "",
+                "nickname": ["0"],
+            },
+            {
+                "id": 2027,
+                "name": "Compound 2P",
+                "cnName": "",
+                "nickname": ["0"],
+            }
+        ],
+        "brackets": {
+            "min": 5,
+            "max": 5.4,
+            "bucket": 0.1,
+            "type": "Patch"
+        },
+        "partitions": [
+            {
+                "name": "default",
+                "compact": "default",
+                "default": true,
+                "area": 1
+            },
+            {
+                "name": "default",
+                "compact": "default",
+                "default": true,
+                "area": 2
+            },
+            {
+                "name": "default",
+                "compact": "default",
+                "default": true,
+                "area": 3
+            }
+        ]
+    },
+    {
+        "id": 36,
+        "name": "Trials (Unreal)",
+        "frozen": false,
+        "difficulty":100,
+        "encounters": [
+            {
+                "id": 3001,
+                "name": "Shiva",
+                "cnName": "幻希瓦",
+                "nickname": ["幻希瓦"],
+                "bossCnServer": 3,
+            },
+            {
+                "id": 3002,
+                "name": "Titan",
+                "cnName": "幻泰坦",
+                "nickname": ["幻泰坦"],
+                "bossCnServer": 3,
+            },
+            {
+                "id": 3003,
+                "name": "Leviathan",
+                "cnName": "幻水神",
+                "nickname": ["幻水神"],
+                "bossCnServer": 3,
+            }
+        ],
+        "brackets": {
+            "min": 5,
+            "max": 5.4,
             "bucket": 0.1,
             "type": "Patch"
         },
@@ -1886,6 +2225,346 @@ const eorzeaBoss = [
                 "area": 3
             }
         ]
+    },
+    {
+        "id": 37,
+        "name": "Trials III (Extreme)",
+        "frozen": false,
+        "encounters": [
+            {
+                "id": 1055,
+                "name": "The Emerald Weapon II",
+                "cnName": "",
+                "nickname": ["0"],
+            },
+            {
+                "id": 1056,
+                "name": "The Emerald Weapon I",
+                "cnName": "",
+                "nickname": ["0"],
+            },
+            {
+                "id": 1057,
+                "name": "The Diamond Weapon",
+                "cnName": "",
+                "nickname": ["0"],
+            }
+        ],
+        "brackets": {
+            "min": 5,
+            "max": 5.4,
+            "bucket": 0.1,
+            "type": "Patch"
+        },
+        "partitions": [
+            {
+                "name": "Standard Comps (5.4)",
+                "compact": "Standard (5.4)",
+                "filtered_name": "5.4",
+                "area": 1
+            },
+            {
+                "name": "Non-Standard Comps (5.4)",
+                "compact": "Non-Standard (5.4)",
+                "area": 1
+            },
+            {
+                "name": "Standard Comps (5.4)",
+                "compact": "Standard (5.4)",
+                "filtered_name": "5.4",
+                "area": 2,
+                "default": true
+            },
+            {
+                "name": "Non-Standard Comps (5.4)",
+                "compact": "Non-Standard (5.4)",
+                "area": 2
+            },
+            {
+                "name": "Standard Comps (5.4)",
+                "compact": "Standard (5.4)",
+                "filtered_name": "5.4",
+                "area": 3,
+                "default": true
+            },
+            {
+                "name": "Non-Standard Comps (5.4)",
+                "compact": "Non-Standard (5.4)",
+                "area": 3
+            },
+            {
+                "name": "Standard Comps (5.5)",
+                "compact": "Standard (5.5)",
+                "filtered_name": "5.5",
+                "area": 1,
+                "default": true
+            },
+            {
+                "name": "Non-Standard Comps (5.5)",
+                "compact": "Non-Standard (5.5)",
+                "area": 1
+            },
+            {
+                "name": "Standard Comps (5.5)",
+                "compact": "Standard (5.5)",
+                "filtered_name": "5.5",
+                "area": 2
+            },
+            {
+                "name": "Non-Standard Comps (5.5)",
+                "compact": "Non-Standard (5.5)",
+                "area": 2
+            },
+            {
+                "name": "Standard Comps (5.5)",
+                "compact": "Standard (5.5)",
+                "filtered_name": "5.5",
+                "area": 3
+            },
+            {
+                "name": "Non-Standard Comps (5.5)",
+                "compact": "Non-Standard (5.5)",
+                "area": 3
+            }
+        ]
+    },
+    {
+        "id": 38,
+        "name": "Eden's Promise",
+        "frozen": false,
+        "encounters": [
+            {
+                "id": 73,
+                "name": "Cloud of Darkness",
+                "cnName": "暗黑之云",
+                "nickname": ["暗黑之云","E9S","e9s"],
+                "bossCnServer": 3,
+            },
+            {
+                "id": 74,
+                "name": "Shadowkeeper",
+                "cnName": "隐匿者",
+                "nickname": ["隐匿者","影之王","E10S","e10s"],
+                "bossCnServer": 3,
+            },
+            {
+                "id": 75,
+                "name": "Fatebreaker",
+                "cnName": "绝命战士",
+                "nickname": ["绝命战士","E11S","e11s"],
+                "bossCnServer": 3,
+            },
+            {
+                "id": 76,
+                "name": "Eden's Promise",
+                "cnName": "暗黑神谕者",
+                "nickname": ["12","E12S","e12s"],
+                "bossCnServer": 3,
+            },
+            {
+                "id": 77,
+                "name": "Oracle of Darkness",
+                "cnName": "",
+                "nickname": ["0"],
+            }
+        ],
+        "brackets": {
+            "min": 5,
+            "max": 5.4,
+            "bucket": 0.1,
+            "type": "Patch"
+        },
+        "partitions": [
+            {
+                "name": "Standard Comps (5.4)",
+                "compact": "Standard (5.4)",
+                "filtered_name": "5.4",
+                "area": 1
+            },
+            {
+                "name": "Non-Standard Comps (5.4)",
+                "compact": "Non-Standard (5.4)",
+                "area": 1
+            },
+            {
+                "name": "Standard Comps (5.4)",
+                "compact": "Standard (5.4)",
+                "filtered_name": "5.4",
+                "area": 2,
+                "default": true
+            },
+            {
+                "name": "Non-Standard Comps (5.4)",
+                "compact": "Non-Standard (5.4)",
+                "area": 2
+            },
+            {
+                "name": "Standard Comps (5.4)",
+                "compact": "Standard (5.4)",
+                "filtered_name": "5.4",
+                "area": 3,
+                "default": true
+            },
+            {
+                "name": "Non-Standard Comps (5.4)",
+                "compact": "Non-Standard (5.4)",
+                "area": 3
+            },
+            {
+                "name": "Standard Comps (5.5)",
+                "compact": "Standard (5.5)",
+                "filtered_name": "5.5",
+                "area": 1,
+                "default": true
+            },
+            {
+                "name": "Non-Standard Comps (5.5)",
+                "compact": "Non-Standard (5.5)",
+                "area": 1
+            },
+            {
+                "name": "Standard Comps (5.5)",
+                "compact": "Standard (5.5)",
+                "filtered_name": "5.5",
+                "area": 2
+            },
+            {
+                "name": "Non-Standard Comps (5.5)",
+                "compact": "Non-Standard (5.5)",
+                "area": 2
+            },
+            {
+                "name": "Standard Comps (5.5)",
+                "compact": "Standard (5.5)",
+                "filtered_name": "5.5",
+                "area": 3
+            },
+            {
+                "name": "Non-Standard Comps (5.5)",
+                "compact": "Non-Standard (5.5)",
+                "area": 3
+            }
+        ]
+    },
+    {
+        "id": 39,
+        "name": "Delubrum Reginae",
+        "frozen": false,
+        "encounters": [
+            {
+                "id": 2028,
+                "name": "Trinity Seeker",
+                "cnName": "",
+                "nickname": ["0"],
+            },
+            {
+                "id": 2029,
+                "name": "The Queen's Guard",
+                "cnName": "",
+                "nickname": ["0"],
+            },
+            {
+                "id": 2030,
+                "name": "Trinity Avowed",
+                "cnName": "",
+                "nickname": ["0"],
+            },
+            {
+                "id": 2031,
+                "name": "The Queen",
+                "cnName": "",
+                "nickname": ["0"],
+            }
+        ],
+        "brackets": {
+            "min": 5,
+            "max": 5.4,
+            "bucket": 0.1,
+            "type": "Patch"
+        },
+        "partitions": [
+            {
+                "name": "default",
+                "compact": "default",
+                "default": true,
+                "area": 1
+            },
+            {
+                "name": "default",
+                "compact": "default",
+                "default": true,
+                "area": 2
+            },
+            {
+                "name": "default",
+                "compact": "default",
+                "default": true,
+                "area": 3
+            }
+        ]
+    },
+    {
+        "id": 40,
+        "name": "The Tower at Paradigm's Breach",
+        "frozen": false,
+        "encounters": [
+            {
+                "id": 2032,
+                "name": "Knave of Hearts",
+                "cnName": "",
+                "nickname": ["0"],
+            },
+            {
+                "id": 2033,
+                "name": "Hansel and Gretel",
+                "cnName": "",
+                "nickname": ["0"],
+            },
+            {
+                "id": 2034,
+                "name": "Red Girl",
+                "cnName": "",
+                "nickname": ["0"],
+            },
+            {
+                "id": 2035,
+                "name": "False Idol",
+                "cnName": "",
+                "nickname": ["0"],
+            },
+            {
+                "id": 2036,
+                "name": "Her Inflorescence",
+                "cnName": "",
+                "nickname": ["0"],
+            }
+        ],
+        "brackets": {
+            "min": 5,
+            "max": 5.4,
+            "bucket": 0.1,
+            "type": "Patch"
+        },
+        "partitions": [
+            {
+                "name": "default",
+                "compact": "default",
+                "default": true,
+                "area": 1
+            },
+            {
+                "name": "default",
+                "compact": "default",
+                "default": true,
+                "area": 2
+            },
+            {
+                "name": "default",
+                "compact": "default",
+                "default": true,
+                "area": 3
+            }
+        ]
     }
 ]
 
@@ -1907,7 +2586,7 @@ const getEorzeaBoss = (bossNickName) => {
 
     // 29-伊甸园 28-5.0蛮神 30-巴哈/究极 31-亚历山大
 
-    const zoneId = [23, 29, 28, 30, 31, 32,33]
+    const zoneId = [23, 29, 28, 30, 31, 32,33,34,36,38]
 
     if (bossNickName) {
 
