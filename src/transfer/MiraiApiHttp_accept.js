@@ -1,34 +1,136 @@
-// 服务入口 接收CQP 的上报消息 并转换为 API指令传入
+// 服务入口  接收Mirai 的 ws 消息 并转换为 API指令传入
+
 // 开发中
+
+
 const path = require('path')
-const http = require('http')
-const Koa = require('koa')
-const fetch = require('node-fetch')
-const bodyParser = require('koa-bodyparser')
-const transfer = require('./transfer')
 const Logger = require('../helpers/logger')
 const config = require("./config")
 
+// const logger = Logger(path.resolve(__dirname, '../../logs'), process.env.NODE_ENV !== 'development')
 
-const logger = Logger(path.resolve(__dirname, '../../logs'), process.env.NODE_ENV !== 'development')
+const WebSocket = require('ws');
+const transfer = require('./transfer')
+const server = config.server.host + ":" + config.server.port
+const ServerHost = "http://" + server
 
+const ws = new WebSocket('ws://'+server+'/all?sessionKey=' + config.server.MI_SKey)
 
-//服务端口
-const MI_PORT = config.server.MI_PORT
+const sendMSGurl = ServerHost + "/sendGroupMessage"
 
-const app = new Koa()
+ws.onopen = () => {
+    console.log('WebSocket onopen')
+}
 
-app.use(bodyParser())
+ws.onmessage = e => {
 
+    var post_type, message, user_id, group_id, message_type
+    // console.log('WebSocket message received：', e)
+    console.log('WebSocket data received：', e.data)
+    var receivedData = JSON.parse(e.data)
+    var self_id = "1304665612"
+    var request = require('request')
+    if (receivedData.type == "GroupMessage") {
 
-app.use( async (ctx) => {
+        if (receivedData.messageChain[1].type === "Plain") {
+            post_type = "message"
+            message_type = "group"
+            message = receivedData.messageChain[1].text
+            user_id = receivedData.sender.id
+            group_id = receivedData.sender.group.id
+            console.log(group_id, user_id)
+        } else {
+            post_type = "message"
+            message_type = "group"
+            message = "none"
+            user_id = receivedData.sender.id
+            group_id = receivedData.sender.group.id
+            console.log(group_id, user_id)
+        }
+       
+    }
+    else if (receivedData.type == "FriendMessage") {
 
-    ctx.body = {
-        ok: true,
-        data: ctx.request.body,
-      }
-})
+        post_type = "message"
+        message = receivedData.messageChain[1].text
+        message_type = "private"
+        user_id = receivedData.sender.id
+        group_id = "none"
+        console.log(group_id, user_id)
+    }
+    else if (receivedData.type == "MemberJoinEvent") {
 
-app.listen(MI_PORT, () => {
-    logger.info(`KQ_Accept is running on port ${MI_PORT}`)
-})
+        post_type = "notice"
+        message = "group_increase"
+        message_type = "group"
+        user_id = receivedData.member.id
+        group_id = receivedData.member.group.id
+
+    } else {
+        post_type = "message"
+        message_type = "group"
+        message = "group_increase"
+        user_id = "member.id"
+        group_id = "member.group.id"
+        console.log(group_id, user_id)
+    }
+    console.log(receivedData)
+
+    //消息传入语言处理单元
+    const getTransfer = new transfer("Mia_Accept", post_type, self_id, user_id, message_type, group_id, message)
+
+    ////// getTransfer.REmessage//////////
+    getTransfer.REmessage.then(function (value) {
+
+        if (value !== 0) {
+
+            //返回值
+            if (value.re_type == "group") {
+
+                //返回信息内容
+                var REbody = {
+                    "group_id": value.re_id,
+                    "message": value.re_message
+                }
+                console.log(REbody)
+
+            }
+            ////////verifyRequestData/////////
+            var verifyRequestData = {
+                sessionKey: config.server.MI_SKey,
+                target: REbody.group_id,
+                messageChain: [
+                    {
+                        "type": "Plain",
+                        "text": REbody.message
+                    }
+                ]
+
+            }
+            /////////request////////
+            request({
+                url: sendMSGurl,
+                method: "POST",
+                json: true,
+                headers: {
+                    "content-type": "application/json",
+                },
+                body: verifyRequestData
+            }, function (error, response, body) {
+                if (!error && response.statusCode == 200) {
+                    // 请求成功
+                    console.log(body)
+                    console.log(body.msg)
+                }
+            })
+            //////////request///////////
+        }
+        /////////if/////////////
+    })
+    ////// getTransfer.REmessage//////////
+
+}
+
+ws.onclose = e => {
+    console.log("WebSocket onclose")
+}
