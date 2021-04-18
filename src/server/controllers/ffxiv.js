@@ -140,12 +140,12 @@ module.exports = {
 
     let RaidInfoResponse = null
     const { serverName, userName } = ctx.request.query
-    const RaidInfoSource = 'http://act.ff.sdo.com/20180525HeroList/Server/HeroList190128.ashx?'
+    const RaidInfoSource = 'https://actff1.web.sdo.com/20180525HeroList/Server/HeroList190128.ashx?'
     const ans = getEorzeaServerChID(serverName)
 
     questData = {
       method: "queryhreodata",
-      Stage: 3,
+      Stage: 4,
       Name: userName,
       AreaId: ans.areaid,
       GroupId: ans.serverid,
@@ -153,9 +153,12 @@ module.exports = {
 
     RaidInfoResponse = await fetch(`${RaidInfoSource}${new URLSearchParams(questData).toString()}`, { method: 'POST' })
     if (RaidInfoResponse.ok) {
+      
+      ctx.logger.info("Server - QuestData - " + `${RaidInfoSource}${new URLSearchParams(questData).toString()}`)
       ctx.sendOk(await RaidInfoResponse.json())
       return next()
     }
+
     ctx.logger.error('sdo服务异常')
     ctx.sendError("喵！！呜呜呜喵~ 出错了！喵呜呜呜~")
 
@@ -183,6 +186,7 @@ module.exports = {
         // DpsRankSource = 'https://www.fflogs.com/zone/statistics/table/28/dps/1046/100/8/5/100/1000/7/0/Global/Astrologian/All/0/normalized/single/0/-1/?keystone=15&dpstype=adps'
         // DpsRankSource = 'https://cn.fflogs.com/zone/statistics/table/32/dps/1050/100/8/3/100/1/14/0/Global/Astrologian/All/0/normalized/single/0/-1/?keystone=15&dpstype=rdps'
         DpsRankSource = "https://cn.fflogs.com/zone/statistics/table/" + boss.zone + "/dps/" + boss.id + "/" + boss.difficulty + "/8/" + boss.bossCnServer + "/100/1/14/0/Global/" + job.name + "/All/0/normalized/single/0/-1/?keystone=15&dpstype=" + sdpsType
+        
         // DpsRankSourc3 = "https://cn.fflogs.com/zone/statistics/table/    30           /dps/     1048      /101/8/       3                 /100/1/14/0/Global/BlackMage       /All/0/normalized/single/0/-1/?keystone=15&dpstype=rdps"
         // DpsRankSource = "https://cn.fflogs.com/zone/statistics/table/30/dps/1048/100/8/3/100/1/14/0/Global/BlackMage/All/0/normalized/single/0/-1/?keystone=15&dpstype=rdps"
         // questData = {
@@ -194,7 +198,7 @@ module.exports = {
         //   jobName: job.name,
         //   dps_type: "rdps"
         // }
-
+        ctx.logger.info("Server - QuestData - " + DpsRankSource)
         DpsRankResponse = await fetch(DpsRankSource, { headers: { 'referer': 'https://cn.fflogs.com' } })
         DpsRankResponse = await DpsRankResponse.text()
       } else {

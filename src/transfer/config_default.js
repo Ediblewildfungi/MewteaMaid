@@ -19,7 +19,14 @@ module.exports = {
         MI_PORT: 5200,
 
         //Mirai http AUTH_KEY
-        MI_AUTHKEY: "MEWTEAMAID"
+        MI_AUTHKEY: "MEWTEAMAID",
+
+        //SETU url
+        SETU: "http://192.168.199.100/d/setu/",
+
+        //SETU_NUM
+        SETU_NUM: 13
+
     },
     database: {
         host: "localhost",

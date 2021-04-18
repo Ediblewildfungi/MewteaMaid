@@ -1,6 +1,7 @@
 const http = require('http')
 const config = require("./config")
-const querystring = require("querystring")
+// const querystring = require("querystring")
+const random = require("./modules/random")
 
 //核心服务版本以及请求地址
 const KernelSrc = "http://127.0.0.1:3000/api/v1/"
@@ -25,6 +26,10 @@ const RaidSrc = KernelSrc + "ffxiv/raid"
 
 //logs排行请求地址
 const DpsrankSrc = KernelSrc + "ffxiv/dpsrank"
+
+const SETUSrc = config.server.SETU
+
+
 
 //输入处理
 const transfer = class Transfer {
@@ -70,8 +75,11 @@ const transfer = class Transfer {
             return this.EorzeaDpsRank(this.re_type, this.re_id, this.messageArr)
         } else if (this.message.substring(0, 3) == "喵零式") {
             return this.EorzeaRaidInfo(this.re_type, this.re_id, this.messageArr)
+        } else if (this.message == "喵色图") {
+            return this.MiaoSetu(this.re_type, this.re_id)
         } else if (this.message == "喵帮助") {
             return this.MewHelp(this.re_type, this.re_id)
+
 
             // 群成员增加
         } else if (this.post_type == "notice" && this.message == "group_increase") {
@@ -145,6 +153,28 @@ const transfer = class Transfer {
 
         //返回函数
         return HitokotoHttp
+    }
+
+    MiaoSetu(re_type, re_id) {
+        const MiaoSetu = new Promise(function (resolve, reject) {
+            var num = config.server.SETU_NUM
+            // var SETUid = pad(randomNum(1,num),3)
+            var SETUid = random(1,num,3)
+            var link = SETUSrc + SETUid + ".jpg"
+            var re_message = link
+
+            // console.log(re_message)
+
+            var REdata = {
+                re_type,
+                re_id,
+                re_message,
+            }
+            resolve(REdata)
+        })
+
+        //返回函数
+        return MiaoSetu
     }
 
     //金蝶暖暖
@@ -436,6 +466,7 @@ const transfer = class Transfer {
 
                     // 格式化返回数据
                     var raid_data = JSON.parse(content)
+                    // console.log(raid_data)
                     var raid_data = raid_data.data.Attach
 
                     var levelData = ""
@@ -446,7 +477,8 @@ const transfer = class Transfer {
 
                         if (eval(Data) != "" && eval(Data)) {
 
-                            levelData = levelData + eval(Data).replace(/^(\d{4})(\d{2})(\d{2})$/, "$1年$2月$3日") + " 攻破了E" + i + "S \r\n"
+                            var q = i+8
+                            levelData = levelData + eval(Data).replace(/^(\d{4})(\d{2})(\d{2})$/, "$1年$2月$3日") + " 攻破了E" + q + "S \r\n"
 
                         } else {
                             levelData = levelData + " 尚未攻破E" + i + "S，加油哦 \r\n"
