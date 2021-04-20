@@ -75,7 +75,9 @@ const transfer = class Transfer {
             return this.EorzeaDpsRank(this.re_type, this.re_id, this.messageArr)
         } else if (this.message.substring(0, 3) == "喵零式") {
             return this.EorzeaRaidInfo(this.re_type, this.re_id, this.messageArr)
-        } else if (this.message == "喵色图") {
+        } else if (this.message.substring(0, 3) == "喵色图") {
+            return this.MiaoSetu(this.re_type, this.re_id)
+        } else if (this.message.substring(0, 3) == "喵涩图") {
             return this.MiaoSetu(this.re_type, this.re_id)
         } else if (this.message == "喵帮助") {
             return this.MewHelp(this.re_type, this.re_id)
@@ -138,8 +140,6 @@ const transfer = class Transfer {
                     //输出一言与来源
                     var re_message = re_message.hitokoto + "\r\n" + "——" + re_message.from
 
-
-
                     var REdata = {
                         re_type,
                         re_id,
@@ -159,17 +159,19 @@ const transfer = class Transfer {
         const MiaoSetu = new Promise(function (resolve, reject) {
             var num = config.server.SETU_NUM
             // var SETUid = pad(randomNum(1,num),3)
-            var SETUid = random(1,num,3)
+            var SETUid = random()
             var link = SETUSrc + SETUid + ".jpg"
             var re_message = link
-
+            var is_image = true
             // console.log(re_message)
 
             var REdata = {
                 re_type,
                 re_id,
                 re_message,
+                is_image,
             }
+            console.log("getsetu",re_message,is_image)
             resolve(REdata)
         })
 

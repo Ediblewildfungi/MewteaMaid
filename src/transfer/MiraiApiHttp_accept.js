@@ -14,7 +14,7 @@ const transfer = require('./transfer')
 const server = config.server.host + ":" + config.server.port
 const ServerHost = "http://" + server
 
-const ws = new WebSocket('ws://'+server+'/all?sessionKey=' + config.server.MI_SKey)
+const ws = new WebSocket('ws://' + server + '/all?sessionKey=' + config.server.MI_SKey)
 
 const sendMSGurl = ServerHost + "/sendGroupMessage"
 
@@ -38,28 +38,23 @@ ws.onmessage = e => {
             message = receivedData.messageChain[1].text
             user_id = receivedData.sender.id
             group_id = receivedData.sender.group.id
-            console.log(group_id, user_id)
         } else {
             post_type = "message"
             message_type = "group"
             message = "none"
             user_id = receivedData.sender.id
             group_id = receivedData.sender.group.id
-            console.log(group_id, user_id)
         }
-       
+
     }
     else if (receivedData.type == "FriendMessage") {
-
         post_type = "message"
         message = receivedData.messageChain[1].text
         message_type = "private"
         user_id = receivedData.sender.id
         group_id = "none"
-        console.log(group_id, user_id)
     }
     else if (receivedData.type == "MemberJoinEvent") {
-
         post_type = "notice"
         message = "group_increase"
         message_type = "group"
@@ -72,7 +67,7 @@ ws.onmessage = e => {
         message = "group_increase"
         user_id = "member.id"
         group_id = "member.group.id"
-        console.log(group_id, user_id)
+      
     }
     console.log(receivedData)
 
@@ -86,14 +81,28 @@ ws.onmessage = e => {
 
             //返回值
             if (value.re_type == "group") {
+                if (value.is_image) {
+                    var REbody = {
+                        sessionKey: config.server.MI_SKey,
+                        target: value.re_id,
+                        messageChain: [{
+                            "type": "Image",
+                            "url": value.re_message
+                        }]
 
-                //返回信息内容
-                var REbody = {
-                    "group_id": value.re_id,
-                    "message": value.re_message
+                    }
+                } else {
+                    //返回信息内容
+                    var REbody = {
+                        sessionKey: config.server.MI_SKey,
+                        target: value.re_id,
+                        messageChain: [{
+                            "type": "Plain",
+                            "text": value.re_message
+                        }]
+                    }
+                    console.log("REbody:",REbody)
                 }
-                console.log(REbody)
-
             }
             ////////verifyRequestData/////////
             var verifyRequestData = {
@@ -115,7 +124,7 @@ ws.onmessage = e => {
                 headers: {
                     "content-type": "application/json",
                 },
-                body: verifyRequestData
+                body: REbody
             }, function (error, response, body) {
                 if (!error && response.statusCode == 200) {
                     // 请求成功
