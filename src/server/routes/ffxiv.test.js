@@ -65,9 +65,9 @@ test('艾欧泽亚天气 指定天气', async (done) => {
 
   expect(response.body.data)
     .toEqual([
-      { startTime: 8, LocalTime: '2019-10-24 23:53:20', weather: '小雨' },
-      { startTime: 0, LocalTime: '2019-10-25 6:30:00', weather: '小雨' },
-      { startTime: 8, LocalTime: '2019-10-25 9:13:20', weather: '小雨' },
+      { startTime: 8, LocalTime: '2019-11-24 23:53:20', weather: '小雨' },
+      { startTime: 0, LocalTime: '2019-11-25 6:30:00', weather: '小雨' },
+      { startTime: 8, LocalTime: '2019-11-25 9:13:20', weather: '小雨' },
     ])
 
   done()
@@ -88,9 +88,9 @@ test('艾欧泽亚天气 指定天气 前置天气', async (done) => {
 
   expect(response.body.data)
     .toEqual([
-      { startTime: 8, LocalTime: '2019-10-24 23:53:20', weather: '小雨' },
-      { startTime: 8, LocalTime: '2019-10-25 9:13:20', weather: '小雨' },
-      { startTime: 0, LocalTime: '2019-10-25 15:50:00', weather: '小雨' },
+      { startTime: 8, LocalTime: '2019-11-24 23:53:20', weather: '小雨' },
+      { startTime: 8, LocalTime: '2019-11-25 9:13:20', weather: '小雨' },
+      { startTime: 0, LocalTime: '2019-11-25 15:50:00', weather: '小雨' },
     ])
 
   done()

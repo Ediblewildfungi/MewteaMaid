@@ -3,6 +3,8 @@ config.js
 
 # loacl test.js
 local_test.js
+mirai_test.js
+MiraiAlarmClock*
 
 # Logs
 logs

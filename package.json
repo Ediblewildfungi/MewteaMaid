@@ -8,6 +8,8 @@
     "dev": "node -r dotenv/config src/server/main.js dotenv_config_path=.env.dev",
     "start": "node -r dotenv/config src/server/main.js",
     "kqa": "node -r dotenv/config src/transfer/KQ_accept.js",
+    "mia": "node -r dotenv/config src/transfer/MiraiApiHttp_accept.js",
+    "miat": "node -r dotenv/config src/transfer/mirai_test.js",
     "commit": "git-cz",
     "test": "jest"
   },
@@ -44,6 +46,7 @@
     "koa-json": "^2.0.2",
     "koa-logger": "^3.2.1",
     "mongodb": "^3.5.9",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.1",
+    "ws": "^7.4.4"
   }
 }
