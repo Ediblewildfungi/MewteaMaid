@@ -17,7 +17,7 @@ const ServerHost = "http://" + server
 const ws = new WebSocket('ws://' + server + '/all?sessionKey=' + config.server.MI_SKey)
 
 const sendMSGurl = ServerHost + "/sendGroupMessage"
-
+const sendMSFurl = ServerHost + "/sendFriendMessage"
 ws.onopen = () => {
     console.log('WebSocket onopen')
 }
@@ -42,8 +42,8 @@ ws.onmessage = e => {
             post_type = "message"
             message_type = "group"
             message = "none"
-            user_id = receivedData.sender.id
-            group_id = receivedData.sender.group.id
+            user_id = "member.id"
+            group_id = "member.group.id"
         }
 
     }
@@ -67,7 +67,7 @@ ws.onmessage = e => {
         message = "group_increase"
         user_id = "member.id"
         group_id = "member.group.id"
-      
+
     }
     console.log(receivedData)
 
@@ -77,10 +77,11 @@ ws.onmessage = e => {
     ////// getTransfer.REmessage//////////
     getTransfer.REmessage.then(function (value) {
 
+        var reurl
         if (value !== 0) {
-
             //返回值
             if (value.re_type == "group") {
+                reurl = sendMSGurl
                 if (value.is_image) {
                     var REbody = {
                         sessionKey: config.server.MI_SKey,
@@ -101,24 +102,34 @@ ws.onmessage = e => {
                             "text": value.re_message
                         }]
                     }
-                    console.log("REbody:",REbody)
+                    console.log("REbody:", REbody)
                 }
-            }
-            ////////verifyRequestData/////////
-            var verifyRequestData = {
-                sessionKey: config.server.MI_SKey,
-                target: REbody.group_id,
-                messageChain: [
-                    {
-                        "type": "Plain",
-                        "text": REbody.message
-                    }
-                ]
+            } else if (value.re_type == "private") {
+                reurl = sendMSFurl
+                if (value.is_image) {
+                    var REbody = {
+                        sessionKey: config.server.MI_SKey,
+                        target: value.re_id,
+                        messageChain: [{
+                            "type": "Image",
+                            "url": value.re_message
+                        }]
 
+                    }
+                } else {
+                    var REbody = {
+                        sessionKey: config.server.MI_SKey,
+                        target: value.re_id,
+                        messageChain: [{
+                            "type": "Plain",
+                            "text": value.re_message
+                        }]
+                    }
+                }
             }
             /////////request////////
             request({
-                url: sendMSGurl,
+                url: reurl,
                 method: "POST",
                 json: true,
                 headers: {
