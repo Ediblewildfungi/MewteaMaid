@@ -1,8 +1,8 @@
 module.exports = {
 
     Admin: {
-        id: 000,
-        group: 000
+        id: 9000,
+        group: 9000
     },
     server: {
 
@@ -40,9 +40,9 @@ module.exports = {
     key: {
 
         //和风天气平台KEY
-        weatherKey: "000",
+        weatherKey: "9000",
 
         //FFLOGS 公钥
-        fflogsKey: "000",
+        fflogsKey: "9000",
     }
 };
