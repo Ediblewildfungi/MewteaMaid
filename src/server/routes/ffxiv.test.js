@@ -133,6 +133,34 @@ test('艾欧泽亚天气 指定天气 不存在的前置天气', async (done) =>
   done()
 })
 
+
+test('获取物品信息', async (done) => {
+  const response = await request(app.callback())
+    .get('/api/v1/ffxiv/ItemSearch')
+    .query({
+      itemName: '小柠檬'
+    })
+  expect(response.body.ok)
+    .toBe(true)
+
+  done()
+})
+
+test('获取物价信息', async (done) => {
+  const response = await request(app.callback())
+    .get('/api/v1/ffxiv/universalis')
+    .query({
+      DCName: '陆行鸟',
+      itemNo: '27835',
+    })
+
+  expect(response.body.ok)
+    .toBe(true)
+
+  done()
+})
+
+
 // test('艾欧泽亚演奏信息获取', async (done) => {
 //   const response = await request(app.callback())
 //     .get('/api/v1/ffxiv/concert')
@@ -141,7 +169,7 @@ test('艾欧泽亚天气 指定天气 不存在的前置天气', async (done) =>
 //     .toBe(true)
 
 //   for (let i = 0; i < response.body.data.length; i++) {
-    
+
 //   expect(response.body.data[i])
 //     .toHaveProperty('info.concertTitle')
 
