@@ -153,7 +153,7 @@ module.exports = {
 
     RaidInfoResponse = await fetch(`${RaidInfoSource}${new URLSearchParams(questData).toString()}`, { method: 'POST' })
     if (RaidInfoResponse.ok) {
-      
+
       ctx.logger.info("Server - QuestData - " + `${RaidInfoSource}${new URLSearchParams(questData).toString()}`)
       ctx.sendOk(await RaidInfoResponse.json())
       return next()
@@ -186,7 +186,7 @@ module.exports = {
         // DpsRankSource = 'https://www.fflogs.com/zone/statistics/table/28/dps/1046/100/8/5/100/1000/7/0/Global/Astrologian/All/0/normalized/single/0/-1/?keystone=15&dpstype=adps'
         // DpsRankSource = 'https://cn.fflogs.com/zone/statistics/table/32/dps/1050/100/8/3/100/1/14/0/Global/Astrologian/All/0/normalized/single/0/-1/?keystone=15&dpstype=rdps'
         DpsRankSource = "https://cn.fflogs.com/zone/statistics/table/" + boss.zone + "/dps/" + boss.id + "/" + boss.difficulty + "/8/" + boss.bossCnServer + "/100/1/14/0/Global/" + job.name + "/All/0/normalized/single/0/-1/?keystone=15&dpstype=" + sdpsType
-        
+
         // DpsRankSourc3 = "https://cn.fflogs.com/zone/statistics/table/    30           /dps/     1048      /101/8/       3                 /100/1/14/0/Global/BlackMage       /All/0/normalized/single/0/-1/?keystone=15&dpstype=rdps"
         // DpsRankSource = "https://cn.fflogs.com/zone/statistics/table/30/dps/1048/100/8/3/100/1/14/0/Global/BlackMage/All/0/normalized/single/0/-1/?keystone=15&dpstype=rdps"
         // questData = {
@@ -247,14 +247,39 @@ module.exports = {
     return next()
   },
 
-  fetchUniversalis: async (ctx, next) => {
+  createItemSearch: async (ctx, next) => {
+    const { itemName } = ctx.request.query
+    const itemSearchSource = "https://cafemaker.wakingsands.com/search?"
+    questData = {
+      indexes: "Item",
+      string: itemName,
+    }
+    itemSearchResponse = await fetch(`${itemSearchSource}${new URLSearchParams(questData).toString()}`)
 
-
+    if (itemSearchResponse.ok) {
+      ctx.logger.info("Server - QuestData - " + `${itemSearchSource}${new URLSearchParams(questData).toString()}`)
+      ctx.sendOk(await itemSearchResponse.json())
+      return next()
+    }
+    ctx.logger.error('物品搜索服务异常')
+    ctx.sendError('物品搜索服务暂不可用，请稍后重试！')
+    return next()
   },
 
+  createUniversalisSearch: async (ctx, next) => {
+    const { DCName, itemNo } = ctx.request.query
+    const universalisSource = "https://universalis.app/api/" + encodeURI(DCName) + "/" + itemNo
+    ctx.logger.info("Server - QuestData - " + universalisSource)
+    universalisResponse = await fetch(`${ universalisSource }${ ctx.request.search }`)
 
-
-
-
+    if (universalisResponse.ok) {
+      ctx.logger.info("Server - QuestData - " + universalisSource)
+    ctx.sendOk(await universalisResponse.json())
+    return next()
+  }
+    ctx.logger.error('universalis服务异常')
+    ctx.sendError('universalis查询服务暂不可用，请稍后重试！')
+    return next()
+},
 
 }
