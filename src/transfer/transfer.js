@@ -24,6 +24,11 @@ const ConcertSrc = KernelSrc + "ffxiv/concert"
 //零式出警请求地址
 const RaidSrc = KernelSrc + "ffxiv/raid"
 
+//物品查询地址
+const ItemSearchSrc = KernelSrc + "ffxiv/itemSearch"
+//比价服务请求地址
+const UniversalisSrc = KernelSrc + "ffxiv/universalis"
+
 //logs排行请求地址
 const DpsrankSrc = KernelSrc + "ffxiv/dpsrank"
 
@@ -79,9 +84,10 @@ const transfer = class Transfer {
             return this.MiaoSetu(this.re_type, this.re_id)
         } else if (this.message.substring(0, 3) == "喵涩图") {
             return this.MiaoSetu(this.re_type, this.re_id)
+        } else if (this.message.substring(0, 3) == "喵比价") {
+            return this.Universalis(this.re_type, this.re_id, this.messageArr)
         } else if (this.message == "喵帮助") {
             return this.MewHelp(this.re_type, this.re_id)
-
 
             // 群成员增加
         } else if (this.post_type == "notice" && this.message == "group_increase") {
@@ -89,9 +95,7 @@ const transfer = class Transfer {
         } else if (this.message.substring(0, 3) == "喵你说" && this.user_id == config.Admin.id) {
 
             return this.MewYouSay(this.re_type, this.re_id, this.message)
-
-        }
-        else {
+        } else {
             return this.OtherMessage()
         }
     }
@@ -120,7 +124,6 @@ const transfer = class Transfer {
         //返回函数
         return GroupUserIncreasePromise
     }
-    
 
     //一言处理
     Hitokoto(re_type, re_id) {
@@ -171,7 +174,7 @@ const transfer = class Transfer {
                 re_message,
                 is_image,
             }
-            console.log("getsetu",re_message,is_image)
+            console.log("getsetu", re_message, is_image)
             resolve(REdata)
         })
 
@@ -479,13 +482,13 @@ const transfer = class Transfer {
 
                         if (eval(Data) != "" && eval(Data)) {
 
-                            var q = i+8
+                            var q = i + 8
                             levelData = levelData + eval(Data).replace(/^(\d{4})(\d{2})(\d{2})$/, "$1年$2月$3日") + " 攻破了E" + q + "S \r\n"
 
                         } else {
                             levelData = levelData + " 尚未攻破E" + i + "S，加油哦 \r\n"
                         }
-                        if (i == 4 && eval(Data) != "" && eval(Data)) {
+                        if (i === 4 && eval(Data) != "" && eval(Data)) {
                             levelData = levelData + "太强了"
                         }
                     }
@@ -514,14 +517,11 @@ const transfer = class Transfer {
 
             var josbName = messageArr[1]
             var bossName = messageArr[2]
-
             var dpsType = "rdps"
 
             if (messageArr[3] == "adps") {
                 dpsType = "adps"
             }
-
-
             var SrcDpsRankAddress = DpsrankSrc + "?josbName=" + josbName + "&bossName=" + bossName + "&dpsType=" + dpsType
 
             //get 请求核心服务
@@ -535,12 +535,10 @@ const transfer = class Transfer {
                     // 格式化返回数据
                     var raid_data = JSON.parse(content)
                     var raid_data = raid_data.data
-
                     var levelData = ""
-
                     if (raid_data.job.cnName) {
                         if (raid_data.boss.cnName) {
-                            levelData = raid_data.job.cnName + "的<" + raid_data.boss.cnName + "> ["+ dpsType +"] 数据喵~ \r\n"
+                            levelData = raid_data.job.cnName + "的<" + raid_data.boss.cnName + "> [" + dpsType + "] 数据喵~ \r\n"
                             levelData += "10% -> " + raid_data.Percent["10"] + "\r\n"
                             levelData += "25% -> " + raid_data.Percent["25"] + "\r\n"
                             levelData += "50% -> " + raid_data.Percent["50"] + "\r\n"
@@ -555,8 +553,6 @@ const transfer = class Transfer {
                         levelData = "职业木有找到"
                     }
 
-
-
                     //拼接
                     var re_message = levelData + "呜喵~"
 
@@ -565,7 +561,6 @@ const transfer = class Transfer {
                         re_id,
                         re_message,
                     }
-
                     resolve(REdata)
                 })
             })
@@ -574,6 +569,123 @@ const transfer = class Transfer {
         //返回函数
         return RaidHttp
     }
+
+    //比价查询处理
+    Universalis(re_type, re_id, messageArr) {
+        const UniversalisHttp = new Promise(function (resolve, reject) {
+            var DCName = messageArr[1]
+            var itemName = messageArr[2]
+
+            //判断是否存在数据中心参数，如不存在，返回错误
+            if (DCName != undefined) {
+
+                //判断是否存在物品参数，如不存在，返回错误
+                if (itemName != undefined) {
+
+                    var SrcISAddAddress = ItemSearchSrc + "?itemName=" + itemName
+
+                    //get 请求核心服务
+                    http.get(SrcISAddAddress, function (req, res) {
+                        var content = ''
+                        req.on('data', function (data) {
+                            content += data
+                        })
+                        req.on('end', function () {
+
+                            // 格式化返回数据
+                            var ItemSearch_data = JSON.parse(content)
+
+                            if (ItemSearch_data.data.Results[0] != null) {
+                                var itemNo = ItemSearch_data.data.Results[0].ID
+                                var itemName = ItemSearch_data.data.Results[0].Name
+                                var SrcUAddAddress = UniversalisSrc + "?DCName=" + DCName + "&itemNo=" + itemNo
+
+                                //get 请求核心服务
+                                http.get(SrcUAddAddress, function (req, res) {
+                                    var content = ''
+                                    req.on('data', function (data) {
+                                        content += data
+                                        req.on('end', function () {
+                                            // 格式化返回数据
+                                            var Universali_data = JSON.parse(content)
+                                            console.log(Universali_data.data.listings[0])
+
+                                            if (Universali_data.data.listings[0] != undefined) {
+
+                                                re_message = "比价情报  " + Universali_data.data.dcName + " " + itemName + "\r\n"
+
+                                                var REdataJSON = Universali_data.data.listings
+
+                                                if (REdataJSON.length > 10) {
+                                                    REdataJSON.length = 10
+                                                }
+                                                for (let i = 1; i < REdataJSON.length; i++) {
+                                                    re_message = re_message + REdataJSON[i].pricePerUnit + "金币 "
+                                                    re_message = re_message + REdataJSON[i].quantity
+
+                                                    if (REdataJSON[i].hq) {
+                                                        re_message = re_message + "hq "
+                                                    } else {
+                                                        re_message = re_message + "nq "
+                                                    }
+                                                    re_message = re_message + REdataJSON[i].worldName + " "
+                                                    re_message = re_message + REdataJSON[i].retainerName + "\r\n"
+                                                }
+                                                var REdata = {
+                                                    re_type,
+                                                    re_id,
+                                                    re_message,
+                                                }
+                                                //返回结果
+                                                resolve(REdata)
+                                            } else {
+                                                var re_message = "比价查询失败"
+                                                var REdata = {
+                                                    re_type,
+                                                    re_id,
+                                                    re_message,
+                                                }
+                                                resolve(REdata)
+                                            }
+                                        })
+                                    })
+                                })
+                            } else {
+                                var re_message = "物品查询失败"
+                                var REdata = {
+                                    re_type,
+                                    re_id,
+                                    re_message,
+                                }
+                                resolve(REdata)
+                            }
+                        })
+                    })
+                } else {
+                    var re_message = "喵比价：请指定物品"
+                    var REdata = {
+                        re_type,
+                        re_id,
+                        re_message,
+                    }
+                    resolve(REdata)
+                }
+            } else {
+                var re_message = "喵比价：请指定服务器"
+                var REdata = {
+                    re_type,
+                    re_id,
+                    re_message,
+                }
+                resolve(REdata)
+            }
+
+        })
+        //返回函数
+        return UniversalisHttp
+    }
+
+
 
     //意外的输入
     OtherMessage() {
