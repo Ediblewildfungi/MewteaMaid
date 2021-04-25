@@ -31,23 +31,30 @@ ws.onmessage = e => {
     var self_id = "1304665612"
     var request = require('request')
     if (receivedData.type == "GroupMessage") {
+        if (receivedData.messageChain[1] != undefined) {
 
-        if (receivedData.messageChain[1].type === "Plain") {
-            post_type = "message"
-            message_type = "group"
-            message = receivedData.messageChain[1].text
-            user_id = receivedData.sender.id
-            group_id = receivedData.sender.group.id
+
+            if (receivedData.messageChain[1].type === "Plain") {
+                post_type = "message"
+                message_type = "group"
+                message = receivedData.messageChain[1].text
+                user_id = receivedData.sender.id
+                group_id = receivedData.sender.group.id
+            } else {
+                post_type = "message"
+                message_type = "group"
+                message = "none"
+                user_id = "member.id"
+                group_id = "member.group.id"
+            }
         } else {
             post_type = "message"
             message_type = "group"
-            message = "none"
+            message = "喵喵喵"
             user_id = "member.id"
             group_id = "member.group.id"
         }
-
-    }
-    else if (receivedData.type == "FriendMessage") {
+    } else if (receivedData.type == "FriendMessage") {
         post_type = "message"
         message = receivedData.messageChain[1].text
         message_type = "private"
@@ -64,9 +71,10 @@ ws.onmessage = e => {
     } else {
         post_type = "message"
         message_type = "group"
-        message = "group_increase"
+        message = "喵喵喵"
         user_id = "member.id"
         group_id = "member.group.id"
+
 
     }
     console.log(receivedData)
@@ -137,7 +145,7 @@ ws.onmessage = e => {
                 },
                 body: REbody
             }, function (error, response, body) {
-                if (!error && response.statusCode == 200) {
+                if (!error && response.statusCode === 200) {
                     // 请求成功
                     console.log(body)
                     console.log(body.msg)

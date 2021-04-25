@@ -110,6 +110,7 @@ const transfer = class Transfer {
             re_message = re_message + "喵天气 艾欧泽亚城市 天气类型 \n"
             re_message = re_message + "喵输出 职业名(昵称) 副本名(简称)	 \n"
             re_message = re_message + "喵零式 服务器 玩家名称	 \n"
+            re_message = re_message + "喵比价 大区 物品名称	 \n"
             re_message = re_message + "喵出警 还没开发喵	 \n"
             re_message = re_message + "喵色图 （？？ 不存在的 \n"
             re_message = re_message + "喵你说 （限定"
