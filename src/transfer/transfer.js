@@ -609,38 +609,48 @@ const transfer = class Transfer {
                                         req.on('end', function () {
                                             // 格式化返回数据
                                             var Universali_data = JSON.parse(content)
-                                            console.log(Universali_data.data.listings[0])
+                                            
+                                            if (Universali_data.ok) {
 
-                                            if (Universali_data.data.listings[0] != undefined) {
+                                                if (Universali_data.data.listings[0] != undefined) {
+                                                    
+                                                    re_message = "比价情报  " + Universali_data.data.dcName + " " + itemName + "\r\n"
 
-                                                re_message = "比价情报  " + Universali_data.data.dcName + " " + itemName + "\r\n"
+                                                    var REdataJSON = Universali_data.data.listings
 
-                                                var REdataJSON = Universali_data.data.listings
-
-                                                if (REdataJSON.length > 10) {
-                                                    REdataJSON.length = 10
-                                                }
-                                                for (let i = 1; i < REdataJSON.length; i++) {
-                                                    re_message = re_message + REdataJSON[i].pricePerUnit + "金币 "
-                                                    re_message = re_message + REdataJSON[i].quantity
-
-                                                    if (REdataJSON[i].hq) {
-                                                        re_message = re_message + "hq "
-                                                    } else {
-                                                        re_message = re_message + "nq "
+                                                    if (REdataJSON.length > 10) {
+                                                        REdataJSON.length = 10
                                                     }
-                                                    re_message = re_message + REdataJSON[i].worldName + " "
-                                                    re_message = re_message + REdataJSON[i].retainerName + "\r\n"
+                                                    for (let i = 1; i < REdataJSON.length; i++) {
+                                                        re_message = re_message + REdataJSON[i].pricePerUnit + "金币 "
+                                                        re_message = re_message + REdataJSON[i].quantity
+
+                                                        if (REdataJSON[i].hq) {
+                                                            re_message = re_message + "hq "
+                                                        } else {
+                                                            re_message = re_message + "nq "
+                                                        }
+                                                        re_message = re_message + REdataJSON[i].worldName + " "
+                                                        re_message = re_message + REdataJSON[i].retainerName + "\r\n"
+                                                    }
+                                                    var REdata = {
+                                                        re_type,
+                                                        re_id,
+                                                        re_message,
+                                                    }
+                                                    //返回结果
+                                                    resolve(REdata)
+                                                } else {
+                                                    var re_message = "服务器查询失败"
+                                                    var REdata = {
+                                                        re_type,
+                                                        re_id,
+                                                        re_message,
+                                                    }
+                                                    resolve(REdata)
                                                 }
-                                                var REdata = {
-                                                    re_type,
-                                                    re_id,
-                                                    re_message,
-                                                }
-                                                //返回结果
-                                                resolve(REdata)
                                             } else {
-                                                var re_message = "比价查询失败"
+                                                var re_message = "服务器查询失败，是不是写反了喵"
                                                 var REdata = {
                                                     re_type,
                                                     re_id,

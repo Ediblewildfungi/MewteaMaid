@@ -7,7 +7,7 @@ const path = require('path')
 const Logger = require('../helpers/logger')
 const config = require("./config")
 
-// const logger = Logger(path.resolve(__dirname, '../../logs'), process.env.NODE_ENV !== 'development')
+const logger = Logger(path.resolve(__dirname, '../../logs'), process.env.NODE_ENV !== 'development')
 
 const WebSocket = require('ws');
 const transfer = require('./transfer')
@@ -19,14 +19,16 @@ const ws = new WebSocket('ws://' + server + '/all?sessionKey=' + config.server.M
 const sendMSGurl = ServerHost + "/sendGroupMessage"
 const sendMSFurl = ServerHost + "/sendFriendMessage"
 ws.onopen = () => {
-    console.log('WebSocket onopen')
+    // console.log('WebSocket onopen')
+    logger.info(`MiraiApiHttp_accept WebSocket onopen`)
+
 }
 
 ws.onmessage = e => {
 
     var post_type, message, user_id, group_id, message_type
     // console.log('WebSocket message received：', e)
-    console.log('WebSocket data received：', e.data)
+    // console.log('WebSocket data received：', e.data)
     var receivedData = JSON.parse(e.data)
     var self_id = "1304665612"
     var request = require('request')
@@ -71,22 +73,27 @@ ws.onmessage = e => {
     } else {
         post_type = "message"
         message_type = "group"
-        message = "喵喵喵"
+        message = "无数据"
         user_id = "member.id"
         group_id = "member.group.id"
 
 
     }
-    console.log(receivedData)
+    // console.log(receivedData)
 
     //消息传入语言处理单元
     const getTransfer = new transfer("Mia_Accept", post_type, self_id, user_id, message_type, group_id, message)
 
+    var messagelog = message.replace(/[\n]/g, "\n                       - Mia_Accept - Accept ");
+
+    logger.info(`MIA_Accept - Accept - BOOTID:${self_id} UID:${user_id} message: \r\n                       - Mia_Accept - Accept ${messagelog}`)
+
     ////// getTransfer.REmessage//////////
     getTransfer.REmessage.then(function (value) {
-
         var reurl
         if (value !== 0) {
+            var remessagelog = value.re_message.replace(/[\n]/g, "\n                       - Mia_Accept - Send ");
+
             //返回值
             if (value.re_type == "group") {
                 reurl = sendMSGurl
@@ -98,9 +105,10 @@ ws.onmessage = e => {
                             "type": "Image",
                             "url": value.re_message
                         }]
-
                     }
+                    logger.info(`Mia_Accept - -Send- - BOOTID:${self_id} GID:${value.re_id} type: Image message: \r\n                      - Mia_Accept - Send ${remessagelog}`)
                 } else {
+
                     //返回信息内容
                     var REbody = {
                         sessionKey: config.server.MI_SKey,
@@ -110,7 +118,7 @@ ws.onmessage = e => {
                             "text": value.re_message
                         }]
                     }
-                    console.log("REbody:", REbody)
+                    logger.info(`Mia_Accept -  Send  - BOOTID:${self_id} GID:${value.re_id} type: Plain message: \r\n                      - Mia_Accept - Send ${remessagelog}`)
                 }
             } else if (value.re_type == "private") {
                 reurl = sendMSFurl
@@ -122,8 +130,8 @@ ws.onmessage = e => {
                             "type": "Image",
                             "url": value.re_message
                         }]
-
                     }
+                    logger.info(`Mia_Accept -  Send  - BOOTID:${self_id} UID:${value.re_id} type: Image message: \r\n                      - Mia_Accept - Send ${remessagelog}`)
                 } else {
                     var REbody = {
                         sessionKey: config.server.MI_SKey,
@@ -133,8 +141,10 @@ ws.onmessage = e => {
                             "text": value.re_message
                         }]
                     }
+                    logger.info(`Mia_Accept -  Send  - BOOTID:${self_id} UID:${value.re_id} type: Plain message: \r\n                  - Mia_Accept - Send ${remessagelog}`)
                 }
             }
+
             /////////request////////
             request({
                 url: reurl,
@@ -151,6 +161,7 @@ ws.onmessage = e => {
                     console.log(body.msg)
                 }
             })
+            
             //////////request///////////
         }
         /////////if/////////////
