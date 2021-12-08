@@ -35,13 +35,13 @@ const eorzeaJobs = [
   {
     "id": 6,
     "name": "Machinist",
-    "cnName": "机工士",
+    "cnName": "拿枪的",
     "nickname": ["机工士","机", "机工"]
   },
   {
     "id": 7,
     "name": "Monk",
-    "cnName": "武僧",
+    "cnName": "扫地僧",
     "nickname": ["武僧","僧", "扫地僧"]
   },
   {
@@ -54,26 +54,26 @@ const eorzeaJobs = [
   {
     "id": 9,
     "name": "Paladin",
-    "cnName": "骑士",
+    "cnName": "发光大翅膀的",
     "nickname": ["骑士","骑"]
   },
   {
     "id": 10,
     "name": "Scholar",
-    "cnName": "学者",
+    "cnName": "小仙女",
     "nickname": ["学者","学", "小仙女"]
   },
   {
     "id": 11,
     "name": "Summoner",
-    "cnName": "召唤师",
-    "nickname": ["召唤师","召","召唤", "巴哈"]
+    "cnName": "宝石兽",
+    "nickname": ["召唤师","召","召唤", "巴哈","宝石兽"]
   },
   {
     "id": 12,
     "name": "Warrior",
-    "cnName": "战士",
-    "nickname": ["战士","战"]
+    "cnName": "拿斧头的",
+    "nickname": ["战士","战","拿斧头的"]
   },
   {
     "id": 13,
@@ -84,19 +84,19 @@ const eorzeaJobs = [
   {
     "id": 14,
     "name": "Red Mage",
-    "cnName": "赤魔法师",
-    "nickname": ["赤魔法师","赤", "赤魔"]
+    "cnName": "会帮忙复活的",
+    "nickname": ["赤魔法师","赤", "赤魔","会帮忙复活的"]
   },
   {
     "id": 15,
     "name": "Samurai",
-    "cnName": "武士",
+    "cnName": "方向盘",
     "nickname": ["武士","侍", "方向盘"]
   },
   {
     "id": 16,
     "name": "Dancer",
-    "cnName": "舞者",
+    "cnName": "舞娘",
     "nickname": ["舞者","舞", "舞娘"]
   },
   {
