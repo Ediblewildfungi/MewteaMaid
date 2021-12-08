@@ -10,14 +10,14 @@ const eorzeaJobs = [
   {
     "id": 2,
     "name": "Bard",
-    "cnName": "吟游诗人",
+    "cnName": "那个唱歌",
     "nickname": ["吟游诗人","诗", "诗人", "唱歌的",]
 
   },
   {
     "id": 3,
     "name": "Black Mage",
-    "cnName": "黑魔法师",
+    "cnName": "伏地魔",
     "nickname": ["黑魔法师","黑", "黑魔", "狗黑魔", "伏地魔"]
   },
   {
@@ -29,13 +29,13 @@ const eorzeaJobs = [
   {
     "id": 5,
     "name": "Dragoon",
-    "cnName": "龙骑士",
+    "cnName": "躺尸龙",
     "nickname": ["龙骑士","龙", "龙骑", "躺尸龙"]
   },
   {
     "id": 6,
     "name": "Machinist",
-    "cnName": "拿枪的",
+    "cnName": "拿枪",
     "nickname": ["机工士","机", "机工"]
   },
   {
@@ -47,14 +47,14 @@ const eorzeaJobs = [
   {
     "id": 8,
     "name": "Ninja",
-    "cnName": "忍者",
+    "cnName": "兔忍",
     "nickname": ["忍者","忍", "兔", "兔忍"]
 
   },
   {
     "id": 9,
     "name": "Paladin",
-    "cnName": "发光大翅膀的",
+    "cnName": "发光大翅膀",
     "nickname": ["骑士","骑"]
   },
   {
@@ -72,19 +72,19 @@ const eorzeaJobs = [
   {
     "id": 12,
     "name": "Warrior",
-    "cnName": "拿斧头的",
+    "cnName": "拿斧头",
     "nickname": ["战士","战","拿斧头的"]
   },
   {
     "id": 13,
     "name": "White Mage",
-    "cnName": "白魔法师",
+    "cnName": "白魔",
     "nickname": ["白魔法师","白", "白魔"]
   },
   {
     "id": 14,
     "name": "Red Mage",
-    "cnName": "会帮忙复活的",
+    "cnName": "会帮忙复活",
     "nickname": ["赤魔法师","赤", "赤魔","会帮忙复活的"]
   },
   {
