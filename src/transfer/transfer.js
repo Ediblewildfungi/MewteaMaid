@@ -70,7 +70,7 @@ const transfer = class Transfer {
 
         if (this.message == "喵一言") {
             return this.Hitokoto(this.re_type, this.re_id)
-        } else if (this.message == "喵暖暖") {
+        } else if (this.message == "喵暖暖xx") {
             return this.Nuannuan(this.re_type, this.re_id)
         } else if (this.message.substring(0, 3) == "喵天气") {
             return this.EorzeaWeather(this.re_type, this.re_id, this.messageArr)
@@ -105,7 +105,7 @@ const transfer = class Transfer {
 
             var re_message = "目前支持的功能有: \n"
             re_message = re_message + "喵一言 \n"
-            re_message = re_message + "喵暖暖 \n"
+            re_message = re_message + "喵暖暖 （挂了 \n"
             re_message = re_message + "喵天气 地球城市/艾欧泽亚城市 \n"
             re_message = re_message + "喵天气 艾欧泽亚城市 天气类型 \n"
             re_message = re_message + "喵输出 职业名(昵称) 副本名(简称)	 \n"
@@ -142,7 +142,7 @@ const transfer = class Transfer {
                     var re_message = hitokoto_data.data
 
                     //输出一言与来源
-                    var re_message = re_message.hitokoto + "\r\n" + "——" + re_message.from
+                    var re_message = re_message.hitokoto + "\n" + "——" + re_message.from
 
                     var REdata = {
                         re_type,

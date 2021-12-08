@@ -120,7 +120,7 @@ class KQ_Accept {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
-                  'Content-Length': REbody.length
+                  // 'Content-Length': REbody.length
                 }
               }
 
@@ -144,7 +144,8 @@ class KQ_Accept {
 
                   //格式化返回参数
                   content = JSON.parse(content)
-                  console.log("--> status: " + content.status + " retcode: " + content.retcode)
+                  // console.log("--> status: " + content.status + " retcode: " + content.retcode)
+                  console.log(content)
                 })
                 req.on('error', function (err) {
                   // handle error.
