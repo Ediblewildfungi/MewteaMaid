@@ -1,6 +1,10 @@
 # loacl config
 config.js
 
+#packages config
+package.json-npm
+package.json-github
+
 # loacl test.js
 local_test.js
 mirai_test.js

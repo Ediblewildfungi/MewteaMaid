@@ -1,6 +1,6 @@
 {
   "name": "mewtea-maid",
-  "version": "0.1.1",
+  "version": "0.1.3",
   "description": "A QQBot for FFXIV",
   "main": "src/server/main.js",
   "private": false,
@@ -26,6 +26,9 @@
     "url": "https://github.com/Ediblewildfungi/MewteaMaid/issues"
   },
   "homepage": "https://github.com/Ediblewildfungi/MewteaMaid#readme",
+  "publishConfig": {
+    "registry":"https://npm.pkg.github.com"
+  },
   "devDependencies": {
     "cz-conventional-changelog": "^3.2.0",
     "jest": "^26.6.3",
